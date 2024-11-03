@@ -2,6 +2,7 @@ import { MessageTree } from "./message-tree";
 
 export interface Parameters {
     temperature: number;
+    topP: number;
     apiKey?: string;
     initialSystemPrompt?: string;
     model: string;

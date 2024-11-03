@@ -97,6 +97,7 @@ export function useCreateAppContext(): Context {
         const parameters: Parameters = {
             model: chatManager.options.getOption<string>('parameters', 'model', id),
             temperature: chatManager.options.getOption<number>('parameters', 'temperature', id),
+            topP: chatManager.options.getOption<number>('parameters', 'top_p', id),
         };
 
         if (id === nextID) {
@@ -159,6 +160,7 @@ export function useCreateAppContext(): Context {
         const parameters: Parameters = {
             model: chatManager.options.getOption<string>('parameters', 'model', id),
             temperature: chatManager.options.getOption<number>('parameters', 'temperature', id),
+            topP: chatManager.options.getOption<number>('parameters', 'topP', id),
         };
 
         await chatManager.regenerate(message, {
@@ -191,6 +193,7 @@ export function useCreateAppContext(): Context {
         const parameters: Parameters = {
             model: chatManager.options.getOption<string>('parameters', 'model', id),
             temperature: chatManager.options.getOption<number>('parameters', 'temperature', id),
+            topP: chatManager.options.getOption<number>('parameters', 'topP', id),
         };
 
         if (id && chatManager.has(id)) {

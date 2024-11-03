@@ -61,6 +61,7 @@ export class TitlePlugin extends Plugin<TitlePluginOptions> {
                 const output = await this.context?.createChatCompletion(messages, {
                     model: defaultModel,
                     temperature: 0,
+                    topP: 1,
                 });
                 
                 if (!output || output === 'N/A') {

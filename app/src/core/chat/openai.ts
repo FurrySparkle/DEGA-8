@@ -69,6 +69,7 @@ export async function createChatCompletion(messages: OpenAIMessage[], parameters
             "model": parameters.model,
             "messages": messages,
             "temperature": parameters.temperature,
+            "top_p": parameters.topP,
         }),
     });
 
@@ -140,6 +141,6 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
 }
 
 export const maxTokensByModel = {
-    "chatgpt-3.5-turbo": 2048,
-    "gpt-4": 8192,
+    "gpt-o1-preview": 16048,
+    "gpt-4o": 8192,
 }

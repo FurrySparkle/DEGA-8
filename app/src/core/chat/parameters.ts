@@ -3,6 +3,7 @@ import { Parameters } from "./types";
 
 export const defaultParameters: Parameters = {
     temperature: 0.5,
+    topP: 0.8,
     model: defaultModel
 };
 
