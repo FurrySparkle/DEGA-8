@@ -28,6 +28,7 @@
     "minisearch": "^6.0.1",
     "natural": "^6.2.0",
     "openai": "^3.2.1",
+    "pako": "^2.1.0",
     "papaparse": "^5.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
