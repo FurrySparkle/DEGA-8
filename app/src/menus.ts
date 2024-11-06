@@ -7,12 +7,12 @@ export interface MenuItem {
 export const secondaryMenu: MenuItem[] = [
     {
         label: "GitHub",
-        link: "https://github.com/OpenAccessGPT/open-access-gpt",
+        link: "https://github.com/FurrySparkle/DEGA-8",
         icon: "github fab",
     },
     {
         label: "Feedback",
-        link: "https://tally.so/r/3lBZko",
+        link: "https://tally.so/r/wzQ66R",
         icon: "comment",
     },    
 ];
