@@ -6,6 +6,11 @@ export interface MenuItem {
 
 export const secondaryMenu: MenuItem[] = [
     {
+        label:'Patreon',
+        link: 'https://patreon.com/NotPublic',
+        icon: "fa-solid fa-dollar-sign" ,
+    },
+    {
         label: "GitHub",
         link: "https://github.com/FurrySparkle/DEGA-8",
         icon: "github fab",

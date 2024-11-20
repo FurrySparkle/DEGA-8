@@ -237,7 +237,7 @@ export default function Header(props: HeaderProps) {
 
 function SubHeaderMenuItem(props: { item: MenuItem }) {
     return (
-        <Button variant="subtle" size="sm" compact component={Link} to={props.item.link} target="_blank" key={props.item.link}>
+        <Button variant="subtle" size="lg" compact component={Link} to={props.item.link} target="_blank" key={props.item.link}>
             {props.item.icon && <i className={'fa fa-' + props.item.icon} />}
             <span>{props.item.label}</span>
         </Button>

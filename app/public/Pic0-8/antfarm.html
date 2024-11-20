@@ -1115,13 +1115,13 @@ canvas{
 	});
 	
 	
-  function loadGameCode(code) {  // This is used for DEGA-8, to reload and reset the player with newly made code 
-    pico8_gpio[0] = 1; // Signal to the game that new code is available
-    pico8_game_cartdata = code;
-    Module.pico8_resetcart();
+  function loadGameCode() {  // This is used for DEGA-8, to reload and reset the player with newly made code 
+    console.log("Cart Reset!!");
+    p8_run_cart();
   }
 
-
+  // Attach loadGameCode to the window object to ensure it's globally accessible
+  window.loadGameCode = loadGameCode;
 
 </script>
 

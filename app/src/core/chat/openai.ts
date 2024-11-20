@@ -3,8 +3,8 @@ import { Configuration, OpenAIApi } from "openai";
 import SSE from "../utils/sse";
 import { OpenAIMessage, Parameters } from "./types";
 import { backend } from "../backend";
-
-export const defaultModel = 'gpt-3.5-turbo';
+import { P8Injector } from "../../components/DEGA-8/CartTemplater";
+export const defaultModel = "gpt-4o";
 
 export function isProxySupported() {
     return !!backend.current?.services?.includes('openai');
@@ -74,7 +74,9 @@ export async function createChatCompletion(messages: OpenAIMessage[], parameters
     });
 
     const data = await response.json();
-
+    //possible location for .p8 injection
+    P8Injector(data.choices[0].message?.content?.trim() || '');
+    console.log("P8 Injector Fired! Data:" + data.choices[0].message?.content?.trim() || '');
     return data.choices[0].message?.content?.trim() || '';
 }
 
@@ -99,6 +101,7 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
             "model": parameters.model,
             "messages": messages,
             "temperature": parameters.temperature,
+            "top_p": parameters.topP,
             "stream": true,
         }),
     }) as SSE;
@@ -126,12 +129,15 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
             if (chunk.choices && chunk.choices.length > 0) {
                 contents += chunk.choices[0]?.delta?.content || '';
                 emitter.emit('data', contents);
+                
             }
+                
+            
         } catch (e) {
             console.error(e);
         }
     });
-
+    
     eventSource.stream();
 
     return {

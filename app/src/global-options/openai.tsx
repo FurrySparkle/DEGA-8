@@ -1,9 +1,40 @@
 import { FormattedMessage } from "react-intl";
 import { OptionGroup } from "../core/options/option-group";
 
+
 export const openAIOptions: OptionGroup = {
     id: 'openai',
     options: [
+        { id: 'PicoDat',
+            defaultValue: "",
+            displayOnSettingsScreen: "user",
+            displayAsSeparateSection: true,
+            renderProps: (value, options, context) => ({
+                type: "select",
+                label: context.intl.formatMessage({defaultMessage: "Your Pico-8 Dat File"}),
+                placeholder: "Upload your Pico.dat file",
+                description: <>
+                    <p>
+                        <a href="https://www.lexaloffle.com/dl/docs/pico-8_manual.html#Getting_Started" target="_blank" rel="noopener noreferrer">
+                            <FormattedMessage defaultMessage="Find your Dat File here." description="Label for the link that takes the user to the page on the Pico website where they can find their Dat file." />
+                        </a>
+                    </p>
+                    
+                <form action="/upload" method="post" >
+                    <input type="file" name="file" accept=".dat"></input>
+                    <input type="submit" value="Upload" style={{backgroundColor: 'green'}}></input>
+                    </form>
+                    <p>
+                        <FormattedMessage defaultMessage="Your Dat File is stored only on this device and never transmitted to anyone." />
+                    </p>
+                    <p>
+                    <FormattedMessage defaultMessage="Be aware that you must legitimately own your Dat File. <a>Click here to get more infos.</a>"
+                        values={{
+                            a: (chunks: any) => <a href="https://www.lexaloffle.com/pico-8.php" target="_blank" rel="noopener noreferrer">{chunks}</a>
+                        }} />
+                    </p>
+                </>,
+            }), },
         {
             id: 'apiKey',
             defaultValue: "",

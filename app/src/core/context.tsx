@@ -160,7 +160,7 @@ export function useCreateAppContext(): Context {
         const parameters: Parameters = {
             model: chatManager.options.getOption<string>('parameters', 'model', id),
             temperature: chatManager.options.getOption<number>('parameters', 'temperature', id),
-            topP: chatManager.options.getOption<number>('parameters', 'topP', id),
+            topP: chatManager.options.getOption<number>('parameters', 'top_p', id),
         };
 
         await chatManager.regenerate(message, {

@@ -1,1 +1,1 @@
-export const APP_NAME = "Open Access GPT";
+export const APP_NAME = "DEGA-8";

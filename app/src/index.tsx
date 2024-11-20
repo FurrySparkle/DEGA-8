@@ -8,7 +8,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { PersistGate } from 'redux-persist/integration/react';
 import { AppContextProvider } from './core/context';
 import store, { persistor } from './store';
-import Pico8Player from './components/DEGA-8/Pico8Player';
+
 import ChatPage from './components/pages/chat';
 import LandingPage from './components/pages/landing';
 
@@ -24,9 +24,10 @@ const router = createBrowserRouter([
     {
         path: "/chat/:id",
         element: <AppContextProvider>
+
+
             <ChatPage />
-            {/* Pico-8 Player   <Pico8Player code={code} /> */}
-    
+           
         </AppContextProvider>,
     },
     {

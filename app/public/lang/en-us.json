@@ -31,7 +31,7 @@
     "defaultMessage": "Your API key is stored only on this device and never transmitted to anyone except OpenAI."
   },
   "4I+enA": {
-    "defaultMessage": "GPT 4 (requires invite)"
+    "defaultMessage": "GPT o1 preview (requires invite)"
   },
   "5sg7KC": {
     "defaultMessage": "Password"
@@ -63,7 +63,7 @@
     "description": "Label for a button that appears when the user is editing the text of one of their messages, to save the changes"
   },
   "CJwO9s": {
-    "defaultMessage": "GPT 3.5 Turbo (default)"
+    "defaultMessage": "GPT 4o (default)"
   },
   "DWnFkx": {
     "defaultMessage": "Choose a Text-to-Speech Provider"
@@ -107,7 +107,7 @@
     "defaultMessage": "Enter a message here..."
   },
   "OjPxF5": {
-    "defaultMessage": "OpenAccessGPT",
+    "defaultMessage": "DEGA-8",
     "description": "HTML title tag"
   },
   "Q97T+z": {
@@ -141,7 +141,7 @@
     "description": "Label for a button on the Create Account page that lets the user sign into their existing account instead"
   },
   "YuI4EF": {
-    "defaultMessage": "OpenAccessGPT",
+    "defaultMessage": "DEGA-8",
     "description": "app name"
   },
   "c60o5M": {
@@ -157,7 +157,7 @@
     "defaultMessage": "Speech"
   },
   "f/hGIY": {
-    "defaultMessage": "Hello, how can I help you today?",
+    "defaultMessage": "Ready to make a Game?",
     "description": "A friendly message that appears at the start of new chat sessions"
   },
   "gzJlXS": {
@@ -207,7 +207,7 @@
     "defaultMessage": "Model"
   },
   "role-chatgpt": {
-    "defaultMessage": "ChatGPT",
+    "defaultMessage": "DEGA-8",
     "description": "Label that is shown above messages written by the AI (as opposed to the user)"
   },
   "role-system": {

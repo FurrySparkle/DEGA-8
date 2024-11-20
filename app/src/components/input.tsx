@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import { Button, ActionIcon, Textarea, Loader, Popover } from '@mantine/core';
 import { getHotkeyHandler, useHotkeys, useMediaQuery } from '@mantine/hooks';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState,useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppContext } from '../core/context';
@@ -12,6 +12,7 @@ import { speechRecognition, supportsSpeechRecognition } from '../core/speech-rec
 import { useWhisper } from '@chengsokdara/use-whisper';
 import QuickSettings from './quick-settings';
 import { useOption } from '../core/options/use-option';
+import Pico8Player from '../components/DEGA-8/Pico8Player';
 
 const Container = styled.div`
     background: #292933;
@@ -84,7 +85,8 @@ export default function MessageInput(props: MessageInputProps) {
             dispatch(setMessage(''));
         }
     }, [context, message, dispatch, navigate]);
-
+// Create a ref for the iframe element
+const iframeRef = useRef<HTMLIFrameElement>(null);
     const onSpeechError = useCallback((e: any) => {
         console.error('speech recognition error', e);
         setSpeechError(e.message);
@@ -275,12 +277,16 @@ export default function MessageInput(props: MessageInputProps) {
 
     return <Container>
         <div className="inner">
+    
+            {/* Pico-8 Player    */}
+           
+<Pico8Player iframeRef={iframeRef} />
             <Textarea disabled={props.disabled || disabled}
                 id="message-input"
                 autosize
                 minRows={(hasVerticalSpace || context.isHome) ? 3 : 2}
                 maxRows={12}
-                placeholder={intl.formatMessage({ defaultMessage: "Enter a message here..." })}
+                placeholder={intl.formatMessage({ defaultMessage: "Enter your fun inspirations here..." })}
                 value={message}
                 onChange={onChange}
                 rightSection={rightSection}
