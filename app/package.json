@@ -67,7 +67,7 @@
     "start": "concurrently \"npm run start:frontend\" \"npm run start:server\"",
   "start:frontend": "craco start",
   "start:server": "node NewGamePlus.js",
-    "build": "concurrently \"npm run build:frontend\" \"npm run build:server\"",
+    "build": "npm run build:frontend & npm run build:server",
     "build:frontend": "craco build",
   "build:server": "node NewGamePlus.js",
     "test": "craco test",
