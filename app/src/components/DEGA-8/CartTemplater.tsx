@@ -1,8 +1,5 @@
 
 
-import pako from 'pako';
-
-
 // Save updated .js content to local storage
 function saveToLocalStorage(key: string, content: string) {
     localStorage.setItem(key, content);
@@ -13,8 +10,7 @@ function saveToLocalStorage(key: string, content: string) {
 
 //.p8 Injector from GPT responses
 
-const cartridgeTemplate = (luaCode) => `
-pico-8 cartridge // http://www.pico-8.com
+const cartridgeTemplate = (luaCode) => `pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
 ${luaCode}
@@ -169,39 +165,36 @@ __sfx__
 
 
 
-const updateGameCode = (newCode)=> {
-    
-      const cartridge = cartridgeTemplate(newCode);
-    return cartridge;
-};
-export function setP8Code(newCode){
-  
-  const readyCode = updateGameCode(newCode)
-  console.log('P8 file is in local storage!')
-saveToLocalStorage("gameP8File", readyCode);
- handleConvert();
-};
 
 
-export function P8Injector(GPTchoice:string){//Might need work
+
+
+export function  P8Injector(GPTchoice:string){
     console.log(GPTchoice)
- const isPico8Code = (text: string) => text.includes('<code>') && text.includes('</code>');
- const extractCode = (text: string) => {
-   const match = text.match(/<code>([\s\S]*?)<\/code>/);
-   return match ? match[1] : '';
- };
+    const isPico8Code = (text: string) => text.includes('```') && text.split('```').length > 2;
+
+    const extractCode = (text: string) => {
+      const match = text.match(/```([\s\S]*?)```/);
+      return match ? match[1] : '';
+    };
+    
 
  const GoGame = isPico8Code(GPTchoice);
  console.log(GoGame);
  const LUACode  = extractCode(GPTchoice);
  console.log(LUACode);
 
- const ReadyP8 = updateGameCode(LUACode)
-console.log(ReadyP8);
+ const ReadyP8 = LUACode; // Just semantics really
+  console.log(ReadyP8);
  setP8Code( ReadyP8);
 };
 
-
+ function setP8Code(newCode){
+  const readyCode = cartridgeTemplate(newCode)
+  console.log('P8 file is in local storage! Code>' + readyCode)
+  saveToLocalStorage("gameP8File", readyCode);
+ handleConvert();
+};
 
 
 
@@ -213,10 +206,10 @@ console.log(gameP8Code);
 
 
 
-export async function handleConvert(){
+ async function handleConvert(){
    
     console.log('Handling Convert!!  PicoLUA>' + gameP8Code)
-    const response = await fetch('http://localhost:5000/convertP8', {
+    const response = await fetch('/convertP8', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

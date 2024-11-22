@@ -6,6 +6,7 @@ import { Chat, Message, OpenAIMessage, Parameters, getOpenAIMessageFromMessage }
 import { EventEmitterAsyncIterator } from "../utils/event-emitter-async-iterator";
 import { YChat } from "./y-chat";
 import { OptionsManager } from "../options";
+import { P8Injector } from "../../components/DEGA-8/CartTemplater";
 
 export class ReplyRequest extends EventEmitter {
     private mutatedMessages: OpenAIMessage[];
@@ -149,6 +150,10 @@ export class ReplyRequest extends EventEmitter {
         });
 
         this.yChat.setMessageContent(this.replyID, this.content);
+          //possible location for .p8 injection
+    P8Injector(this.content.trim() || '');
+    console.log("P8 Injector Fired! Data:" + this.content.trim() || '');
+       
     }
 
     public async onError(error: string) {

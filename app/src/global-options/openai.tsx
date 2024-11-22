@@ -1,5 +1,7 @@
 import { FormattedMessage } from "react-intl";
 import { OptionGroup } from "../core/options/option-group";
+import FileUploadSingle from "../components/FileUpload";
+
 
 
 export const openAIOptions: OptionGroup = {
@@ -16,14 +18,11 @@ export const openAIOptions: OptionGroup = {
                 description: <>
                     <p>
                         <a href="https://www.lexaloffle.com/dl/docs/pico-8_manual.html#Getting_Started" target="_blank" rel="noopener noreferrer">
-                            <FormattedMessage defaultMessage="Find your Dat File here." description="Label for the link that takes the user to the page on the Pico website where they can find their Dat file." />
+                            <FormattedMessage defaultMessage="Find the Pico-8 Manual here." description="Label for the link that takes the user to the page on the Pico website where they can find their Dat file." />
                         </a>
                     </p>
-                    
-                <form action="/upload" method="post" >
-                    <input type="file" name="file" accept=".dat"></input>
-                    <input type="submit" value="Upload" style={{backgroundColor: 'green'}}></input>
-                    </form>
+                    <FileUploadSingle></FileUploadSingle>
+                
                     <p>
                         <FormattedMessage defaultMessage="Your Dat File is stored only on this device and never transmitted to anyone." />
                     </p>

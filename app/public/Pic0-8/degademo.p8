@@ -1,66 +1,103 @@
 pico-8 cartridge // http://www.pico-8.com
 version 42
 __lua__
--- dega large vertical bouncing animation
--- pico-8 version
 
+-- mario clone in pico-8
+
+-- define constants
+gravity = 0.2
+jump_force = -3
+player_speed = 1.5
+player_width = 8
+player_height = 8
+
+-- define player state
+player = {
+    x = 64,
+    y = 64,
+    dx = 0,
+    dy = 0,
+    on_ground = false
+}
+
+-- define enemy state
+enemy = {
+    x = 96,
+    y = 64,
+    dx = -0.5,
+    width = 8,
+    height = 8
+}
+
+-- initialize game
 function _init()
-    -- initialize position, velocity, and color
-    dega = {
-        letters = {
-            {char="d", x=16, y=16, dy=1, color=13}, -- purple
-            {char="e", x=48, y=32, dy=1, color=12}, -- teal
-            {char="g", x=80, y=48, dy=1, color=13}, -- purple
-            {char="a", x=112, y=64, dy=1, color=12}  -- teal
-        }
-    }
+    cls()
 end
 
+-- update game state
 function _update()
-    -- update vertical positions and bounce
-    for letter in all(dega.letters) do
-        letter.y += letter.dy
+    -- player movement
+    if btn(0) then
+        player.dx = -player_speed
+    elseif btn(1) then
+        player.dx = player_speed
+    else
+        player.dx = 0
+    end
 
-        -- bounce off top and bottom
-        if letter.y < 0 or letter.y > 104 then
-            letter.dy = -letter.dy
-        end
+    -- player jump
+    if player.on_ground and btnp(4) then
+        player.dy = jump_force
+        player.on_ground = false
+    end
+
+    -- apply gravity
+    player.dy = player.dy + gravity
+
+    -- update player position
+    player.x = player.x + player.dx
+    player.y = player.y + player.dy
+
+    -- check ground collision
+    if player.y > 120 then
+        player.y = 120
+        player.dy = 0
+        player.on_ground = true
+    end
+
+    -- update enemy position
+    enemy.x = enemy.x + enemy.dx
+
+    -- enemy wrap around
+    if enemy.x < 0 then
+        enemy.x = 128
+    end
+
+    -- check collision with enemy
+    if collide(player, enemy) then
+        sfx(04) -- play damage sound
     end
 end
 
+-- draw game elements
 function _draw()
     cls()
+    -- draw player
+    rectfill(player.x, player.y, player.x + player_width, player.y + player_height, 8)
 
-    -- draw each letter
-    for letter in all(dega.letters) do
-        draw_letter(letter)
-    end
+    -- draw enemy
+    rectfill(enemy.x, enemy.y, enemy.x + enemy.width, enemy.y + enemy.height, 8)
+
+    -- draw ground
+    rectfill(0, 128, 128, 128, 3)
 end
 
-function draw_letter(letter)
-    local x, y, c = letter.x, letter.y, letter.color
-
-    if letter.char == "d" then
-        rectfill(x, y, x+10, y+20, c)
-        circfill(x+10, y+10, 10, c)
-    elseif letter.char == "e" then
-       // rectfill(x, y, x+10, y+20, c)
-        rectfill(x, y, x+20, y+4, c)
-        rectfill(x, y+8, x+16, y+12, c)
-        rectfill(x, y+16, x+20, y+20, c)
-    elseif letter.char == "g" then
-        rectfill(x+4, y, x+16, y+4, c)
-        rectfill(x, y+4, x+4, y+16, c)
-        rectfill(x+4, y+12, x+16, y+16, c)
-        rectfill(x+12, y+8, x+16, y+12, c)
-        rectfill(x+8, y+8, x+12, y+10, c)
-    elseif letter.char == "a" then
-        rectfill(x, y+2, x+4, y+18, c) -- left bar
-        rectfill(x+8, y+2, x+12, y+18, c) -- right bar
-        rectfill(x, y+8, x+12, y+12, c) -- crossbar
-          rectfill(x, y+1, x+12, y-2, c) -- crossbar top
-
-    end
+-- collision detection function
+function collide(a, b)
+    return a.x < b.x + b.width and
+           b.x < a.x + player_width and
+           a.y < b.y + b.height and
+           b.y < a.y + player_height
 end
 
 __gfx__
@@ -208,3 +245,4 @@ __sfx__
 00040000196501f150166501c1500c150131500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 000300000000007150000001515000000061500000015150000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00030000072500d640072500a65006260056300320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+
