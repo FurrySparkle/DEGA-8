@@ -47,9 +47,9 @@ export const parameterOptions: OptionGroup = {
                     },
                     {
                         label: context.intl.formatMessage({
-                            defaultMessage: "GPT o1(requires invite)",
+                            defaultMessage: "GPT o1-mini(requires invite)",
                         }),
-                        value: "gpt-o1-preview",
+                        value: "o1-mini",
                     },
                 ],
             }),

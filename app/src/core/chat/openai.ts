@@ -147,6 +147,6 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
 }
 
 export const maxTokensByModel = {
-    "gpt-o1-preview": 16048,
+    "o1-mini": 16048,
     "gpt-4o": 8192,
 }
