@@ -3,3 +3,4 @@ package-lock.json
 .env
 .env.*
 build
+app\public\Pic0-8\pico8.dat

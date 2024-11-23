@@ -7,8 +7,8 @@ build('gpt')
 cert_manager('local-dev.duckdns.org',namespace=namespace)
 
 helm_resource(
-  'openaccessgpt',
-  'openaccessgpt',
+  'DEGA-8',
+  'DEGA-8',
   labels="frontend",
   flags=[
     '--set', 'pdb.minAvailable=1',

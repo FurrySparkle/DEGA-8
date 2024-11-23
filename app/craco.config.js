@@ -19,7 +19,7 @@ module.exports = {
     proxy: [{
  
       context: ['/convertP8', '/upload'],
-      target:  'http://dega-8.com:5000/', // The port your Express server is running onserverOrigin +
+      target:  'http://localhost:5000/', // The port your Express server is running onserverOrigin +
       changeOrigin: true,
   
   

@@ -1,24 +1,3 @@
-
-//Deprecated CODE to be moved;
-
-
-
-// // Retrieve JavaScript content from local storage
-// const gameCode = localStorage.getItem("gameJsFile");
-
-// let LocalJSblob
-// if (gameCode) {
-//     // Create a Blob from the JavaScript content
-//     const blob = new Blob([gameCode], { type: "application/javascript" });
-//      LocalJSblob = URL.createObjectURL(blob);
-
-    
-// } else {
-//     console.error("Game JS code not found in local storage.");
-// }
-
-// Import necessary modules
-
 const express = require('express');
 const path = require('path');
 const { spawn } = require('child_process');
@@ -52,38 +31,6 @@ server.use(express.raw({ type: 'application/octet-stream', limit: '12mb' })); //
 
 // Set the constant path to pico8.dat if it's fixed
 const PICO8_DAT_PATH = path.join(serverOrigin, 'public', 'Pic0-8', 'pico8.dat');
-
-
-//TODONE add /upload for saving dat file locally
-
-
-server.post('/upload', function ( req, res){
-
-    // const { file } = Buffer.from(req.body);
-    console.log('Server receieved file');
-
- // Convert Buffer (req.body) to ArrayBuffer
- const arrayBuffer = req.body.buffer.slice(req.body.byteOffset, req.body.byteOffset + req.body.byteLength);
-
- // Wrap the ArrayBuffer in a DataView
- const dataView = new DataView(arrayBuffer);
-
-    const filename = req.headers['x-filename'];
-    console.log(filename);
-
-    const DatCheck = path.extname(filename);
-    console.log(DatCheck);
-    if(DatCheck === '.dat'){
-    fs.writeFile(PICO8_DAT_PATH, dataView,'utf8', (writeErr) => {
-        if (writeErr) {
-            console.error(`Error writing file ${PICO8_DAT_PATH}:`, writeErr);
-            return res.status(500).send('Failed to save Dat file');
-        }
-      })
-      res.send('File uploaded successfully.')
-    };
-
-});
 
 // Middleware to parse JSON bodies
 server.use(express.json({ limit: '50mb' })); // Adjust limit as needed
@@ -166,4 +113,3 @@ server.all('*', (req, res) => {
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
- 
