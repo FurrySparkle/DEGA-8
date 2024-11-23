@@ -168,7 +168,7 @@ server.all('*', (req, res) => {
 /**
  * Event Listener for Fetch Events
  */
-window.addEventListener('fetch', event => {
+addEventListener('fetch', event => {
     event.respondWith(server(event.request))
   });
 
