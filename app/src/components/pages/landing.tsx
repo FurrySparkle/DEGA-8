@@ -7,6 +7,7 @@ import { openOpenAIApiKeyPanel } from '../../store/settings-ui';
 import { Page } from '../page';
 import { useOption } from '../../core/options/use-option';
 import { isProxySupported } from '../../core/chat/openai';
+import { P8Injector } from '../DEGA-8/CartTemplater';
 
 const Container = styled.div`
     flex-grow: 1;
@@ -20,10 +21,14 @@ const Container = styled.div`
     gap: 1rem;
 `;
 
+
+
 export default function LandingPage(props: any) {
     const [openAIApiKey] = useOption<string>('openai', 'apiKey');
     const dispatch = useAppDispatch();
     const onConnectButtonClick = useCallback(() => dispatch(openOpenAIApiKeyPanel()), [dispatch]);
+
+       
 
     return <Page id={'landing'} showSubHeader={true}>
         <Container>

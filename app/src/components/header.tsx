@@ -14,6 +14,12 @@ import { selectSidebarOpen, toggleSidebar } from '../store/sidebar';
 import { openLoginModal, openSignupModal } from '../store/ui';
 import { useOption } from '../core/options/use-option';
 import { useHotkeys } from '@mantine/hooks';
+import { P8Injector } from './DEGA-8/CartTemplater';
+
+
+
+
+
 
 const Banner = styled.div`
     background: rgba(224, 49, 49, 0.2);
@@ -157,15 +163,90 @@ export default function Header(props: HeaderProps) {
         ? intl.formatMessage({ defaultMessage: "Close sidebar" })
         : intl.formatMessage({ defaultMessage: "Open sidebar" });
 
+   
+
+    const onNewGame = () =>{
+        const DEGAtemplate:string = `\`\`\`-- dega large vertical bouncing animation
+-- pico-8 version
+
+function _init()
+    -- initialize position, velocity, and color
+    dega = {
+        letters = {
+            {char="d", x=16, y=16, dy=1, color=13}, -- purple
+            {char="e", x=48, y=32, dy=1, color=12}, -- teal
+            {char="g", x=80, y=48, dy=1, color=13}, -- purple
+            {char="a", x=112, y=64, dy=1, color=12}  -- teal
+        }
+    }
+end
+
+function _update()
+    -- update vertical positions and bounce
+    for letter in all(dega.letters) do
+        letter.y += letter.dy
+
+        -- bounce off top and bottom
+        if letter.y < 0 or letter.y > 104 then
+            letter.dy = -letter.dy
+        end
+    end
+end
+
+function _draw()
+    cls()
+
+    -- draw each letter
+    for letter in all(dega.letters) do
+        draw_letter(letter)
+    end
+end
+
+function draw_letter(letter)
+    local x, y, c = letter.x, letter.y, letter.color
+
+    if letter.char == "d" then
+        rectfill(x, y, x+10, y+20, c)
+        circfill(x+10, y+10, 10, c)
+    elseif letter.char == "e" then
+       // rectfill(x, y, x+10, y+20, c)
+        rectfill(x, y, x+20, y+4, c)
+        rectfill(x, y+8, x+16, y+12, c)
+        rectfill(x, y+16, x+20, y+20, c)
+    elseif letter.char == "g" then
+        rectfill(x+4, y, x+16, y+4, c)
+        rectfill(x, y+4, x+4, y+16, c)
+        rectfill(x+4, y+12, x+16, y+16, c)
+        rectfill(x+12, y+8, x+16, y+12, c)
+        rectfill(x+8, y+8, x+12, y+10, c)
+    elseif letter.char == "a" then
+        rectfill(x, y+2, x+4, y+18, c) -- left bar
+        rectfill(x+8, y+2, x+12, y+18, c) -- right bar
+        rectfill(x, y+8, x+12, y+12, c) -- crossbar
+          rectfill(x, y+1, x+12, y-2, c) -- crossbar top
+
+    end
+end\`\`\``
+
+         //possible location for .p8 injection
+         P8Injector(DEGAtemplate);
+         console.log("P8 Injector Fired! New Chat, DEGA template Deployed!" );
+
+         
+    };
     const onNewChat = useCallback(async () => {
+
+                  
         setLoading(true);
+
+        onNewGame();
         navigate(`/`);
         setLoading(false);
         setTimeout(() => document.querySelector<HTMLTextAreaElement>('#message-input')?.focus(), 100);
+       
     }, [navigate]);
-
     const openSettings = useCallback(() => {
-        dispatch(setTab(openAIApiKey ? 'chat' : 'user'));
+        dispatch(setTab(openAIApiKey ? 'pico' : 'user'));
     }, [openAIApiKey, dispatch]);
 
     const signIn = useCallback(() => {

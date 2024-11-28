@@ -45,12 +45,12 @@ export const parameterOptions: OptionGroup = {
                         }),
                         value: "gpt-4o",
                     },
-                    {
-                        label: context.intl.formatMessage({
-                            defaultMessage: "GPT o1-mini(requires invite)",
-                        }),
-                        value: "o1-mini",
-                    },
+                    // {
+                    //     label: context.intl.formatMessage({
+                    //         defaultMessage: "GPT o1-preview(requires invite)",
+                    //     }),
+                    //     value: "o1-preview",
+                    // },
                 ],
             }),
         },

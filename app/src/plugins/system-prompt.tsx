@@ -82,7 +82,7 @@ export class SystemPromptPlugin extends Plugin<SystemPromptPluginOptions> {
                 {
                     id: "systemPrompt",
                     defaultValue: defaultSystemPrompt,
-                    displayOnSettingsScreen: "chat",
+                    displayOnSettingsScreen: "pico",
                     resettable: true,
                     scope: "chat",
                     renderProps: {

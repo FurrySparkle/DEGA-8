@@ -154,15 +154,19 @@ export class ChatManager extends EventEmitter {
         const messages: Message[] = this.doc.getMessagesPrecedingMessage(message.chatID, message.id);
         messages.push(message);
 
-        await this.getReply(messages, userSubmittedMessage.requestedParameters);
+
+         await this.getReply(messages, userSubmittedMessage.requestedParameters);
+
+
+             //possible location for .p8 injection
+// P8Injector(OutputMessage.content.trim() || '');
+// console.log("P8 Injector Fired! Data:" + OutputMessage.content.trim() || '');
     }
 
     public async regenerate(message: Message, requestedParameters: Parameters) {
         const messages = this.doc.getMessagesPrecedingMessage(message.chatID, message.id);
         await this.getReply(messages, requestedParameters);
-         //possible location for .p8 injection
-        //  P8Injector(message.content.trim() || '');
-        //  console.log("P8 Injector Fired! Data:" + message.content.trim() || '');
+         
     }
 
     private async getReply(messages: Message[], requestedParameters: Parameters) {
@@ -189,13 +193,19 @@ export class ChatManager extends EventEmitter {
 
         this.doc.addMessage(message);
 
+
+
+
         const request = new ReplyRequest(this.get(chatID), chat, messages, message.id, requestedParameters, this.options);
         request.on('done', () => this.activeReplies.delete(message.id));
         request.execute();
 
+
+        
         this.activeReplies.set(message.id, request);
 
        
+  
         
     }
 

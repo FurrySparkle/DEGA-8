@@ -31,6 +31,7 @@
     "match-sorter": "^6.3.1",
     "minisearch": "^6.0.1",
     "natural": "^6.2.0",
+    "next": "^15.0.3",
     "openai": "^3.2.1",
     "pako": "^2.1.0",
     "papaparse": "^5.4.0",
@@ -65,11 +66,10 @@
   },
   "scripts": {
     "start": "concurrently \"npm run start:frontend\" \"npm run start:server\"",
-  "start:frontend": "craco start",
-  "start:server": "node NewGamePlus.js",
-    "build": "concurrently \"npm run build:frontend\" \"npm run start:server\"", 
+    "start:frontend": "craco start",
+    "start:server": "node NewGamePlus.js",
+    "build": "concurrently \"npm run build:frontend\" \"npm run start:server\"",
     "build:frontend": "craco build",
-  
     "test": "craco test",
     "eject": "craco eject",
     "extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file public/lang/en-us.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'"

@@ -23,5 +23,5 @@
   },
   "include": [
     "src"
-, "src/components/pages", "pages/api/convertP8.js","pages/api/upload.js" ,"NewGamePlus.js" ]
+, "src/components/pages", "convertP8/route.ts","uploupload/route.tsNewGamePlus.js" ]
 }

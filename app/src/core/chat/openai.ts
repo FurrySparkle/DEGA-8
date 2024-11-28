@@ -75,8 +75,8 @@ export async function createChatCompletion(messages: OpenAIMessage[], parameters
 
     const data = await response.json();
     //possible location for .p8 injection
-    P8Injector(data.choices[0].message?.content?.trim() || '');
-    console.log("P8 Injector Fired! Data:" + data.choices[0].message?.content?.trim() || '');
+    // P8Injector(data.choices[0].message?.content?.trim() || '');
+    // console.log("P8 Injector Fired! Data:" + data.choices[0].message?.content?.trim() || '');
     return data.choices[0].message?.content?.trim() || '';
 }
 
@@ -142,11 +142,15 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
 
     return {
         emitter,
-        cancel: () => eventSource.close(),
+        cancel: () =>{
+            //possible location for .p8 injection
+    P8Injector(contents?.trim() || '');
+    console.log("P8 Injector Fired! Data:" + contents.trim() || '');
+             eventSource.close();}
     };
 }
 
 export const maxTokensByModel = {
-    "o1-mini": 16048,
+    //"o1-preview": 16048,
     "gpt-4o": 8192,
 }

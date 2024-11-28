@@ -137,3 +137,6 @@ out
 .yarn/install-state.gz
 .pnp.*
 .DS_Store
+app/public/Pic0-8/pico8.dat
+app/public/Pic0-8/degademo.p8
+app/public/Pic0-8/degademo.js

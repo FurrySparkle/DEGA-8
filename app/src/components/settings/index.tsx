@@ -9,6 +9,7 @@ import { closeSettingsUI, selectSettingsOption, selectSettingsTab, setTab } from
 import SpeechOptionsTab from './speech';
 import { FormattedMessage, useIntl } from 'react-intl';
 import UIPreferencesTab from './ui-preferences';
+import PicoOptionsTab from './pico';
 
 const Container = styled.div`
     padding: .4rem 1rem 1rem 1rem;
@@ -104,12 +105,14 @@ export default function SettingsDrawer(props: SettingsDrawerProps) {
             <Container>
                 <Tabs value={tab} onTabChange={onTabChange} style={{ margin: '0rem' }}>
                     <Tabs.List grow={small}>
+                        <Tabs.Tab value="pico">Pico Options</Tabs.Tab>
                         <Tabs.Tab value="chat">Chat</Tabs.Tab>
                         <Tabs.Tab value="speech">{intl.formatMessage({ defaultMessage: 'Speech'})}</Tabs.Tab>
                         <Tabs.Tab value="ui">UI</Tabs.Tab>
                         <Tabs.Tab value="user">{intl.formatMessage({ defaultMessage: 'User'})}</Tabs.Tab>
 
                     </Tabs.List>
+                    <PicoOptionsTab />
                     <ChatOptionsTab />
                     <SpeechOptionsTab />
                     <UIPreferencesTab />

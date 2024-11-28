@@ -11,6 +11,7 @@ import { TTSContextProvider } from "./tts/use-tts";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { isProxySupported } from "./chat/openai";
 import { audioContext, resetAudioContext } from "./tts/audio-file-player";
+import { defaultSoundPrompt } from "../plugins/picoPlayerSettings";
 
 export interface Context {
     authenticated: boolean;
@@ -78,6 +79,8 @@ export function useCreateAppContext(): Context {
     const onNewMessage = useCallback(async (message?: string) => {
         resetAudioContext();
         
+       localStorage.setItem('SoundData', (chatManager.options.getOption<string>("sound-system",'systemSound') || defaultSoundPrompt));
+
         if (isShare) {
             return false;
         }
@@ -145,6 +148,8 @@ export function useCreateAppContext(): Context {
     const regenerateMessage = useCallback(async (message: Message) => {
         resetAudioContext();
 
+        localStorage.setItem('SoundData', (chatManager.options.getOption<string>("sound-system",'systemSound') || defaultSoundPrompt));
+
         if (isShare) {
             return false;
         }
@@ -174,6 +179,8 @@ export function useCreateAppContext(): Context {
     const editMessage = useCallback(async (message: Message, content: string) => {
         resetAudioContext();
         
+       localStorage.setItem('SoundData', (chatManager.options.getOption<string>("sound-system",'systemSound') || defaultSoundPrompt));
+        
         if (isShare) {
             return false;
         }
@@ -193,7 +200,7 @@ export function useCreateAppContext(): Context {
         const parameters: Parameters = {
             model: chatManager.options.getOption<string>('parameters', 'model', id),
             temperature: chatManager.options.getOption<number>('parameters', 'temperature', id),
-            topP: chatManager.options.getOption<number>('parameters', 'topP', id),
+            topP: chatManager.options.getOption<number>('parameters', 'top_p', id),
         };
 
         if (id && chatManager.has(id)) {

@@ -19,7 +19,7 @@ export interface Option {
     defaultValue: any;
     scope?: 'chat' | 'user' | 'browser';
     
-    displayOnSettingsScreen: 'speech' | 'chat' | 'plugins' | 'ui' | 'user';
+    displayOnSettingsScreen: 'speech' | 'chat' | 'plugins' | 'ui' | 'user' | 'pico';
     displayAsSeparateSection?: boolean;
     resettable?: boolean;
 

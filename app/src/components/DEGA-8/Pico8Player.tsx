@@ -6,7 +6,7 @@ declare global {
       loadGameCode: () => void;
   }
 }
-
+let isLoaded = false
 
 // Function to be used in other files
 export function ResetCart(iframeRef: React.RefObject<HTMLIFrameElement>) {
@@ -17,8 +17,12 @@ export function ResetCart(iframeRef: React.RefObject<HTMLIFrameElement>) {
             if (iframe.contentWindow) {
                 // Call the function defined in the iframe's window
                 iframe.contentWindow.loadGameCode?.(); // Use optional chaining to avoid errors if undefined
+                 isLoaded = true;
             }
         };
+        // if(isLoaded){
+        //     iframe.contentWindow?.loadGameCode();
+        // }
     }
    
 }
@@ -33,7 +37,7 @@ const Pico8Player = ( {iframeRef}) => {
 
 // Listen for local storage changes
 window.addEventListener('storage', (event) => {
-    if (event.key === 'GameReady') {
+    if (event.key === 'gameP8File') {
       ResetCart(iframeRef);
     }
     console.log('New Game loaded into cart and Running!!')

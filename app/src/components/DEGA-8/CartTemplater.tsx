@@ -5,8 +5,9 @@ function saveToLocalStorage(key: string, content: string) {
     localStorage.setItem(key, content);
   }
   
-  
-  
+  //TODO get soundData from local storage
+const SoundData = localStorage.getItem('SoundData')  ;
+
 
 //.p8 Injector from GPT responses
 
@@ -152,14 +153,7 @@ __label__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 
 __sfx__
-0007000012110000001e140000301915000000121500f150111501515017150171501b15021150000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000100001d65018150166501d5501c650215501f55023550236502365000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000200000a35005150116501365014640196201e60000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000300000875018750077501d75007750227500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00040000196501f150166501c1500c150131500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-000300000000007150000001515000000061500000015150000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-00030000072500d640072500a65006260056300320000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-
+${SoundData}
 `;
 
 
@@ -171,7 +165,9 @@ __sfx__
 
 export function  P8Injector(GPTchoice:string){
     console.log(GPTchoice)
-    const isPico8Code = (text: string) => text.includes('```') && text.split('```').length > 2;
+
+    
+    
 
     const extractCode = (text: string) => {
       const match = text.match(/```([\s\S]*?)```/);
@@ -179,12 +175,29 @@ export function  P8Injector(GPTchoice:string){
     };
     
 
- const GoGame = isPico8Code(GPTchoice);
- console.log(GoGame);
- const LUACode  = extractCode(GPTchoice);
+
+    const removeFirstLuaLines = (text: string): string => {
+      const lines = text.split('\n');
+    
+      // Process the first 6 lines
+      for (let i = 0; i < 6 && i < lines.length; i++) {
+        if (/^\s*lua\s*$/i.test(lines[i])) {
+          lines[i] = ''; // Remove the line by setting it to an empty string
+        }
+      }
+    
+      // Remove any empty lines that were set to ''
+      return lines.filter(line => line.trim() !== '').join('\n');
+    };
+
+    
+
+
+
+const LUACode  = extractCode(GPTchoice);
  console.log(LUACode);
 
- const ReadyP8 = LUACode; // Just semantics really
+ const ReadyP8 = removeFirstLuaLines(LUACode); 
   console.log(ReadyP8);
  setP8Code( ReadyP8);
 };
@@ -193,21 +206,22 @@ export function  P8Injector(GPTchoice:string){
   const readyCode = cartridgeTemplate(newCode)
   console.log('P8 file is in local storage! Code>' + readyCode)
   saveToLocalStorage("gameP8File", readyCode);
+  
  handleConvert();
 };
 
 
 
-// Retrieve P8 content from local storage
-const gameP8Code = localStorage.getItem("gameP8File");
-console.log(gameP8Code);
+
 
 
 
 
 
  async function handleConvert(){
-   
+   // Retrieve P8 content from local storage
+const gameP8Code = localStorage.getItem("gameP8File");
+console.log(gameP8Code);
     console.log('Handling Convert!!  PicoLUA>' + gameP8Code)
     const response = await fetch('/convertP8', {
         method: 'POST',
@@ -220,7 +234,8 @@ console.log(gameP8Code);
     const data = await response.json();
     if(data.jsCode){
     console.log(data.jsCode);
-    localStorage.setItem('GameReady', "set");};
+    //this.emit()
+    };
 
     
 };
