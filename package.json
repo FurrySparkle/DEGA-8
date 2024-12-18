@@ -65,12 +65,11 @@
     "@svgr/webpack": "$@svgr/webpack"
   },
   "scripts": {
-    "start:defunct": "concurrently \"npm run start:frontend\" \"npm run start:server\"",
+    
     "start": "npm run extract & next dev",
-    "start:server": "node NewGamePlus.js",
+    
     "build": "next build",
-    "test": "craco test",
-    "eject": "craco eject",
+    
     "extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file public/lang/en-us.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'"
   },
   "eslintConfig": {
