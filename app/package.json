@@ -88,6 +88,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+    
+  },
+  "engines": {
+    "node": ">=20.0.0"
   },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
