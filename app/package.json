@@ -93,6 +93,9 @@
   "engines": {
     "node": ">=20.0.0"
   },
+  "cloudflare": {
+    "node_version": "22.11.0"
+  },
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "@formatjs/cli": "^6.0.4",
@@ -101,7 +104,7 @@
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/natural": "^5.1.2",
-    "@types/node": "^22.11.0",
+    "@types/node": "^16.18.13",
     "@types/papaparse": "^5.3.7",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
