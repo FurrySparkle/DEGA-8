@@ -7,6 +7,8 @@ import MessageInput from './input';
 import SettingsDrawer from './settings';
 import Sidebar from './sidebar';
 import AudioControls from './tts-controls';
+import storage from './mockLocalStorage';
+
 
 const Container = styled.div`
     position: absolute;
@@ -86,7 +88,7 @@ export function Page(props: {
                 {props.showSubHeader && <SubHeader />}
                 {props.children}
                 <AudioControls />
-                <MessageInput key={localStorage.getItem('openai-api-key')} />
+                <MessageInput key={storage.getItem('openai-api-key')} />
                 <SettingsDrawer />
                 <LoginModal />
                 <CreateAccountModal />

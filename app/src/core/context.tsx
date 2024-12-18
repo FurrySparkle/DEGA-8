@@ -8,11 +8,11 @@ import { openOpenAIApiKeyPanel } from "../store/settings-ui";
 import { Message, Parameters } from "./chat/types";
 import { useChat, UseChatResult } from "./chat/use-chat";
 import { TTSContextProvider } from "./tts/use-tts";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { usePathname, useNavigate, useParams } from "next/navigation";
 import { isProxySupported } from "./chat/openai";
 import { audioContext, resetAudioContext } from "./tts/audio-file-player";
 import { defaultSoundPrompt } from "../plugins/picoPlayerSettings";
-
+import storage from "../components/mockLocalStorage";
 export interface Context {
     authenticated: boolean;
     sessionExpired: boolean;
@@ -44,10 +44,11 @@ export function useCreateAppContext(): Context {
     const dispatch = useAppDispatch();
 
     intl = useIntl();
-    
-    const { pathname } = useLocation();
+    let isShare;
+    const  pathname  = usePathname() || '';
     const isHome = pathname === '/';
-    const isShare = pathname.startsWith('/s/');
+    if(window === !undefined) {
+     isShare = pathname.startsWith('/s/');};
 
     const currentChat = useChat(chatManager, id, isShare);
     const [authenticated, setAuthenticated] = useState(backend?.isAuthenticated || false);
@@ -64,7 +65,7 @@ export function useCreateAppContext(): Context {
         }
         if (authenticated) {
             setWasAuthenticated(true);
-            localStorage.setItem('registered', 'true');
+            storage.setItem('registered', 'true');
         }
     }, []);
 
@@ -79,7 +80,7 @@ export function useCreateAppContext(): Context {
     const onNewMessage = useCallback(async (message?: string) => {
         resetAudioContext();
         
-       localStorage.setItem('SoundData', (chatManager.options.getOption<string>("sound-system",'systemSound') || defaultSoundPrompt));
+       storage.setItem('SoundData', (chatManager.options.getOption<string>("sound-system",'systemSound') || defaultSoundPrompt));
 
         if (isShare) {
             return false;
@@ -148,7 +149,7 @@ export function useCreateAppContext(): Context {
     const regenerateMessage = useCallback(async (message: Message) => {
         resetAudioContext();
 
-        localStorage.setItem('SoundData', (chatManager.options.getOption<string>("sound-system",'systemSound') || defaultSoundPrompt));
+        storage.setItem('SoundData', (chatManager.options.getOption<string>("sound-system",'systemSound') || defaultSoundPrompt));
 
         if (isShare) {
             return false;
@@ -179,7 +180,7 @@ export function useCreateAppContext(): Context {
     const editMessage = useCallback(async (message: Message, content: string) => {
         resetAudioContext();
         
-       localStorage.setItem('SoundData', (chatManager.options.getOption<string>("sound-system",'systemSound') || defaultSoundPrompt));
+       storage.setItem('SoundData', (chatManager.options.getOption<string>("sound-system",'systemSound') || defaultSoundPrompt));
         
         if (isShare) {
             return false;

@@ -18,7 +18,10 @@ export const parameterOptions: OptionGroup = {
             },
             renderProps: (value, options, context) => ({
                 type: "select",
-                label: context.intl.formatMessage({ defaultMessage: "Model" }),
+                label: context.intl.formatMessage({
+                    id: "parameters.model.label",
+                    defaultMessage: "Model"
+                }),
                 description:
                     value === "gpt-4" &&
                     context.intl.formatMessage(
@@ -66,7 +69,8 @@ export const parameterOptions: OptionGroup = {
                 displayByDefault: false,
                 label: (value, options, context) =>
                     context.intl.formatMessage({
-                        defaultMessage: "Temperature",
+                        id: "parameters.temperature.label",
+                        defaultMessage: "Temperature"
                     }) +
                     ": " +
                     value.toFixed(1),
@@ -75,7 +79,8 @@ export const parameterOptions: OptionGroup = {
                 type: "slider",
                 label:
                     context.intl.formatMessage({
-                        defaultMessage: "Temperature",
+                        id: "parameters.temperature.label",
+                        defaultMessage: "Temperature"
                     }) +
                     ": " +
                     value.toFixed(1),
@@ -100,7 +105,8 @@ export const parameterOptions: OptionGroup = {
                 displayByDefault: false,
                 label: (value, options, context) =>
                     context.intl.formatMessage({
-                        defaultMessage: "Top Probability",
+                        id: "parameters.top_p.label",
+                        defaultMessage: "Top Probability"
                     }) +
                     ": " +
                     value.toFixed(1),
@@ -109,7 +115,8 @@ export const parameterOptions: OptionGroup = {
                 type: "slider",
                 label:
                     context.intl.formatMessage({
-                        defaultMessage: "Top Probability",
+                        id: "parameters.top_p.label",
+                        defaultMessage: "Top Probability"
                     }) +
                     ": " +
                     value.toFixed(1),

@@ -107,9 +107,27 @@ export default function SettingsDrawer(props: SettingsDrawerProps) {
                     <Tabs.List grow={small}>
                         <Tabs.Tab value="pico">Pico Options</Tabs.Tab>
                         <Tabs.Tab value="chat">Chat</Tabs.Tab>
-                        <Tabs.Tab value="speech">{intl.formatMessage({ defaultMessage: 'Speech'})}</Tabs.Tab>
-                        <Tabs.Tab value="ui">UI</Tabs.Tab>
-                        <Tabs.Tab value="user">{intl.formatMessage({ defaultMessage: 'User'})}</Tabs.Tab>
+                        <Tabs.Tab value="speech">
+                            <FormattedMessage 
+                                id="settings.tab.speech" 
+                                defaultMessage="Speech" 
+                                description="Label for the Speech tab in settings"
+                            />
+                        </Tabs.Tab>
+                        <Tabs.Tab value="ui">
+                            <FormattedMessage 
+                                id="settings.tab.ui" 
+                                defaultMessage="UI" 
+                                description="Label for the UI tab in settings"
+                            />
+                        </Tabs.Tab>
+                        <Tabs.Tab value="user">
+                            <FormattedMessage 
+                                id="settings.tab.user" 
+                                defaultMessage="User" 
+                                description="Label for the User tab in settings"
+                            />
+                        </Tabs.Tab>
 
                     </Tabs.List>
                     <PicoOptionsTab />
@@ -120,9 +138,11 @@ export default function SettingsDrawer(props: SettingsDrawerProps) {
                 </Tabs>
                 <div id="save">
                     <Button variant="light" fullWidth size="md" onClick={close}>
-                        <FormattedMessage defaultMessage={"Save and Close"} 
+                        <FormattedMessage 
+                            id="settings.saveAndClose" 
+                            defaultMessage="Save and Close" 
                             description="Label for the button that closes the Settings screen, saving any changes"
-                            />
+                        />
                     </Button>
                 </div>
             </Container>

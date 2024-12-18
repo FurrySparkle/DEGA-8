@@ -2,7 +2,7 @@ import { FormattedMessage } from "react-intl";
 import Plugin from "../core/plugins";
 import { PluginDescription } from "../core/plugins/plugin-description";
 import { OpenAIMessage, Parameters } from "../core/chat/types";
-
+import storage from "../components/mockLocalStorage";
 export const defaultSoundPrompt = `
 0007000012110000001e140000301915000000121500f150111501515017150171501b15021150000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 000100001d65018150166501d5501c650215501f55023550236502365000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
@@ -32,14 +32,21 @@ export class SystemSoundPlugin extends Plugin<SystemSoundPluginOptions> {
                     renderProps: {
                         type: "textarea",
                         description: <p>
-                            <FormattedMessage defaultMessage={"The Sound System is an exposure of the pico code after export. If you want to enter your own music and sounds made in your own pico editor, you can export the .p8 file and scroll to the bottom of the file in a text editor. Collect the number block under __sfx__ and insert that here. Those numbers will be converted into the player on the next load of the PicoPlayer."}
+                            <FormattedMessage
+                                id="PicoPlayerSettings.description"
+                                defaultMessage={"The Sound System is an exposure of the pico code after export. If you want to enter your own music and sounds made in your own pico editor, you can export the .p8 file and scroll to the bottom of the file in a text editor. Collect the number block under __sfx__ and insert that here. Those numbers will be converted into the player on the next load of the PicoPlayer."}
                                 values={{ code: v => <code>{v}</code> }} />
                         </p>,
                     },
                     displayInQuickSettings: {
                         name: "Sound system",
                         displayByDefault: true,
-                        label: (value, options, context) => {return context.intl.formatMessage({defaultMessage: "Customize system sound"})},
+                        label: (value, options, context) => {
+                            return context.intl.formatMessage({
+                                id: "PicoPlayerSettings.customizeSystemSound.label",
+                                defaultMessage: "Customize system sound"
+                            });
+                        },
                     },
                 },
             ],
@@ -50,7 +57,7 @@ export class SystemSoundPlugin extends Plugin<SystemSoundPluginOptions> {
         return new Promise((resolve) => {
             
     
-            localStorage.setItem('SoundData', (this.options?.systemSound || defaultSoundPrompt));
+            storage.setItem('SoundData', (this.options?.systemSound || defaultSoundPrompt));
     
             // Explicitly resolve the promise.
             resolve();
@@ -61,7 +68,7 @@ export class SystemSoundPlugin extends Plugin<SystemSoundPluginOptions> {
        
        
 
-        localStorage.setItem('SoundData', (this.options?.systemSound || defaultSoundPrompt));
+        storage.setItem('SoundData', (this.options?.systemSound || defaultSoundPrompt));
 
         return {
             messages,

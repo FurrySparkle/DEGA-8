@@ -37,13 +37,13 @@ export class Backend extends EventEmitter {
 
     public constructor(private context: ChatManager) {
         super();
-
+        if (typeof window !== 'undefined'){ 
         if ((window as any).AUTH_PROVIDER) {
             backend.current = this;
 
             this.sessionInterval.start();
             this.syncInterval.start();
-        }
+        }}
     }
 
     public isSynced() {

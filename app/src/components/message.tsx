@@ -253,8 +253,8 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             {({ copy, copied }) => (
                                 <Button variant="subtle" size="sm" compact onClick={copy} style={{ marginLeft: '1rem' }}>
                                     <i className="fa fa-clipboard" />
-                                        {copied ? <FormattedMessage defaultMessage="Copied" description="Label for copy-to-clipboard button after a successful copy" />
-                                        : <span><FormattedMessage defaultMessage="Copy" description="Label for copy-to-clipboard button" /></span>}
+                                        {copied ? <FormattedMessage id="copy-button.copied" defaultMessage="Copied" description="Label for copy-to-clipboard button after a successful copy" />
+                                        : <span><FormattedMessage id="copy-button.copy" defaultMessage="Copy" description="Label for copy-to-clipboard button" /></span>}
                                 </Button>
                             )}
                         </CopyButton>
@@ -262,7 +262,7 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             <Button variant="subtle" size="sm" compact onClick={() => share(props.message.content)}>
                                 <i className="fa fa-share" />
                                 <span>
-                                    <FormattedMessage defaultMessage="Share" description="Label for a button which shares the text of a chat message using the user device's share functionality" />
+                                    <FormattedMessage id="share-button.share" defaultMessage="Share" description="Label for a button which shares the text of a chat message using the user device's share functionality" />
                                 </span>
                             </Button>
                         )}
@@ -273,8 +273,8 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             }}>
                                 <i className="fa fa-edit" />
                                 <span>
-                                    {editing ? <FormattedMessage defaultMessage="Cancel" description="Label for a button that appears when the user is editing the text of one of their messages, to cancel without saving changes" />
-                                        : <FormattedMessage defaultMessage="Edit" description="Label for the button the user can click to edit the text of one of their messages" />}
+                                    {editing ? <FormattedMessage id="edit-button.cancel" defaultMessage="Cancel" description="Label for a button that appears when the user is editing the text of one of their messages, to cancel without saving changes" />
+                                        : <FormattedMessage id="edit-button.edit" defaultMessage="Edit" description="Label for the button the user can click to edit the text of one of their messages" />}
                                 </span>
                             </Button>
                         )}
@@ -282,7 +282,7 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             <Button variant="subtle" size="sm" compact onClick={() => context.regenerateMessage(props.message)}>
                                 <i className="fa fa-refresh" />
                                 <span>
-                                    <FormattedMessage defaultMessage="Regenerate" description="Label for the button used to ask the AI to regenerate one of its messages. Since message generations are stochastic, the resulting message will be different." />
+                                    <FormattedMessage id="regenerate-button.regenerate" defaultMessage="Regenerate" description="Label for the button used to ask the AI to regenerate one of its messages. Since message generations are stochastic, the resulting message will be different." />
                                 </span>
                             </Button>
                         )}
@@ -293,10 +293,10 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             onChange={e => setContent(e.currentTarget.value)}
                             autosize={true} />
                         <Button variant="light" onClick={() => context.editMessage(props.message, content)}>
-                            <FormattedMessage defaultMessage="Save changes" description="Label for a button that appears when the user is editing the text of one of their messages, to save the changes" />
+                            <FormattedMessage id="save-changes-button.save" defaultMessage="Save changes" description="Label for a button that appears when the user is editing the text of one of their messages, to save the changes" />
                         </Button>
                         <Button variant="subtle" onClick={() => setEditing(false)}>
-                            <FormattedMessage defaultMessage="Cancel" description="Label for a button that appears when the user is editing the text of one of their messages, to cancel without saving changes" />
+                            <FormattedMessage id="cancel-button.cancel" defaultMessage="Cancel" description="Label for a button that appears when the user is editing the text of one of their messages, to cancel without saving changes" />
                         </Button>
                     </Editor>)}
                 </div>

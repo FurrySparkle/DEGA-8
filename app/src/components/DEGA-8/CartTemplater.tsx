@@ -1,13 +1,14 @@
-
+import storage from "../mockLocalStorage";
 
 // Save updated .js content to local storage
-function saveToLocalStorage(key: string, content: string) {
-    localStorage.setItem(key, content);
+function saveTostorage(key: string, content: string) {
+    storage.setItem(key, content);
   }
-  
-  //TODO get soundData from local storage
-const SoundData = localStorage.getItem('SoundData')  ;
+  let SoundData: string | null = null;
 
+  if (typeof window !== 'undefined') {
+    SoundData = storage.getItem('SoundData');
+  }
 
 //.p8 Injector from GPT responses
 
@@ -205,7 +206,7 @@ const LUACode  = extractCode(GPTchoice);
  function setP8Code(newCode){
   const readyCode = cartridgeTemplate(newCode)
   console.log('P8 file is in local storage! Code>' + readyCode)
-  saveToLocalStorage("gameP8File", readyCode);
+  saveTostorage("gameP8File", readyCode);
   
  handleConvert();
 };
@@ -220,7 +221,7 @@ const LUACode  = extractCode(GPTchoice);
 
  async function handleConvert(){
    // Retrieve P8 content from local storage
-const gameP8Code = localStorage.getItem("gameP8File");
+const gameP8Code = storage.getItem("gameP8File");
 console.log(gameP8Code);
     console.log('Handling Convert!!  PicoLUA>' + gameP8Code)
     const response = await fetch('/convertP8', {

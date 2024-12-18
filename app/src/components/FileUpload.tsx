@@ -1,25 +1,46 @@
 import { ChangeEvent, useEffect, useState } from 'react';
+import { Switch, Group } from '@mantine/core';
+import storage from './mockLocalStorage';
 
 function FileUploadSingle() {
   const [file, setFile] = useState<File | null>(null);
   const [submitted, setSubmitted] = useState(() => {
-    // Check localStorage for persisted state
-    return localStorage.getItem('fileUploaded') === 'true';
+    return storage.getItem('fileUploaded') === 'true';
   });
-  const [progress, setProgress] = useState(0); // Track upload progress
+  const [progress, setProgress] = useState(0);
+
 
   useEffect(() => {
-    if (submitted) {
-      // Persist the submitted state to localStorage
-      localStorage.setItem('fileUploaded', 'true');
+
+    fetch("/upload", {
+  
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((response) => {
+      
+      if (response.ok) {
+
+        setSubmitted(true);
+        return response.json();
+      }
+      setSubmitted(false);
+      throw new Error('Network response indicates no dat file, please upload a legitimate pico.dat file.');
+      
     }
+    )
+
+
+    
   }, [submitted]);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
-      setSubmitted(false); // Reset submission state on new file selection
-      localStorage.removeItem('fileUploaded'); // Clear persisted state
+      setSubmitted(false);
+      storage.removeItem('fileUploaded');
+      
     }
   };
 
@@ -54,6 +75,10 @@ function FileUploadSingle() {
 
   return (
     <div style={{ textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
+      <Group justify="center">
+        <Switch size="xl" onLabel="Loaded" offLabel="Unloaded" radius="md" checked={submitted}
+      onChange={(event) => setSubmitted(event.currentTarget.checked)} />
+        </Group>
       {!submitted ? (
         <>
           <input type="file" accept=".dat" onChange={handleFileChange} />

@@ -4,7 +4,7 @@
 
 
 // // Retrieve JavaScript content from local storage
-// const gameCode = localStorage.getItem("gameJsFile");
+// const gameCode = storage.getItem("gameJsFile");
 
 // let LocalJSblob
 // if (gameCode) {

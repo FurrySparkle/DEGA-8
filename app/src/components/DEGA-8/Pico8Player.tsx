@@ -1,66 +1,79 @@
-import React, { RefObject, useEffect, useRef } from 'react';
-
+import React, { useEffect, useRef, useState } from 'react';
 
 declare global {
   interface Window {
-      loadGameCode: () => void;
+    loadGameCode: () => void;
   }
 }
-let isLoaded = false
 
-// Function to be used in other files
-export function ResetCart(iframeRef: React.RefObject<HTMLIFrameElement>) {
-    // Ensure the iframeRef is valid and current points to an iframe
-    if (iframeRef.current) {
-        const iframe = iframeRef.current;
-        iframe.onload = () => {
-            if (iframe.contentWindow) {
-                // Call the function defined in the iframe's window
-                iframe.contentWindow.loadGameCode?.(); // Use optional chaining to avoid errors if undefined
-                 isLoaded = true;
-            }
-        };
-        // if(isLoaded){
-        //     iframe.contentWindow?.loadGameCode();
-        // }
+const Pico8Player = () => {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const [gameP8File, setGameP8File] = useState<string | null>(null);
+
+  // Function to reload the iframe content using location.reload()
+  const resetCart = () => {
+    const iframe = iframeRef.current;
+    if (iframe) {
+      iframe.contentWindow?.location.reload();
+      console.log('Iframe reloaded with new game code.');
     }
-   
-}
+  };
 
-const Pico8Player = ( {iframeRef}) => {
-    
+  useEffect(() => {
+    // Function to handle localStorage changes from other windows
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === 'gameP8File') {
+        setGameP8File(event.newValue);
+        resetCart();
+      }
+    };
 
-    useEffect(() => {
-        // Call ResetCart when the component mounts
-        ResetCart(iframeRef);
+    // Custom event listener for changes within the same window
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = function (key, value) {
+      const event = new Event('itemInserted');
+      document.dispatchEvent(event);
+      originalSetItem.apply(this, [key, value]);
+    };
 
+    const handleItemInserted = () => {
+      const newValue = localStorage.getItem('gameP8File');
+      setGameP8File(newValue);
+      resetCart();
+    };
 
-// Listen for local storage changes
-window.addEventListener('storage', (event) => {
-    if (event.key === 'gameP8File') {
-      ResetCart(iframeRef);
-    }
-    console.log('New Game loaded into cart and Running!!')
-  });
-  console.log('PicoPlayer mounted!');
+    // Listen for storage events from other windows
+    window.addEventListener('storage', handleStorageChange);
 
-    }, [iframeRef]); 
+    // Listen for custom events within the same window
+    document.addEventListener('itemInserted', handleItemInserted);
 
-    
+    // Initial load
+    resetCart();
 
-    return (
-        <div>
-            <iframe
-                title="PicoPlayer"
-                ref={iframeRef} // Pass the iframe ref
-                src="/Pic0-8/degademo.html"
-                width="356"
-                height="256"
-                style={{ border: 'none' }}
-            ></iframe>
-        </div>
-    );
+    console.log('PicoPlayer mounted!');
+
+    // Cleanup function
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      document.removeEventListener('itemInserted', handleItemInserted);
+      // Restore original setItem method
+      localStorage.setItem = originalSetItem;
+    };
+  }, []);
+
+  return (
+    <div>
+      <iframe
+        title="PicoPlayer"
+        ref={iframeRef}
+        src="/Pic0-8/degademo.html"
+        width="356"
+        height="256"
+        style={{ border: 'none' }}
+      ></iframe>
+    </div>
+  );
 };
 
 export default Pico8Player;
-

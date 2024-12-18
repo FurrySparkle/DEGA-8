@@ -15,6 +15,7 @@ export const ttsServiceOptions: OptionGroup = {
                 return {
                     type: "checkbox",
                     label: context.intl.formatMessage({
+                        id: "tts.autoplay.label",
                         defaultMessage: "Read messages aloud automatically",
                     }),
                 };
@@ -29,6 +30,7 @@ export const ttsServiceOptions: OptionGroup = {
                 return {
                     type: "select",
                     label: context.intl.formatMessage({
+                        id: "tts.service.label",
                         defaultMessage: "Choose a Text-to-Speech Provider",
                     }),
                     options: ttsPluginMetadata.map((p) => ({

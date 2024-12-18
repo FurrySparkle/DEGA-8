@@ -1,115 +1,168 @@
-const express = require('express');
-const path = require('path');
-const { spawn } = require('child_process');
-const fs = require('fs');
-const process = require('process')
-// Initialize the Express server
-const server = express();
+import { NextResponse, NextRequest } from 'next/server';
+import path from 'path';
+import { spawn } from 'child_process';
+import fs from 'fs';
 
+// Define the CORS whitelist
+const ALLOWED_ORIGINS = [
+  'http://localhost:5000',
+  'http://localhost:3000',
+  'https://dega-8.com',
+];
 
+// Helper function for CORS
+const handleCors = (req: NextRequest) => {
+  const origin = req.headers.get('origin') || '';
+  if (ALLOWED_ORIGINS.includes(origin)) {
+    return origin;
+  }
+  return '';
+};
 
+// Helper function to parse JSON body
+const parseJsonBody = async (req: NextRequest): Promise<any> => {
+  const text = await req.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error('Invalid JSON body');
+  }
+};
 
-server.use(function(req, res, next){
-    var whitelist = ['localhost:5000', 'localhost:3000', 'dega-8.com']
-    var host = req.get('host');
-     
-    whitelist.forEach(function(val, key){
-      if (host.indexOf(val) > -1){
-       res.setHeader('Access-Control-Allow-Origin', host);
-      }
-    })
-    next();
-    });
+// Handle OPTIONS request for CORS preflight
+export async function OPTIONS(req: NextRequest) {
+  const origin = handleCors(req);
+  return NextResponse.json(
+    { message: 'CORS preflight' },
+    {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+    }
+  );
+}
 
+// Handle GET request
+export async function GET(req: NextRequest) {
+  return NextResponse.json(
+    { error: 'Method Not Allowed' },
+    {
+      status: 405,
+      headers: {
+        Allow: 'POST, OPTIONS',
+      },
+    }
+  );
+}
 
-// Assume we have the server origin current working directory
-const serverOrigin = process.cwd();
+// Handle POST request
+export async function POST(req: NextRequest) {
+  const origin = handleCors(req);
 
-// Middleware to parse Raw Files bodies
-server.use(express.raw({ type: 'application/octet-stream', limit: '12mb' })); // For raw file uploads
+  if (!origin) {
+    return NextResponse.json('CORS origin denied', { status: 403 });
+  }
 
+  const headers: HeadersInit = {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
 
-// Set the constant path to pico8.dat if it's fixed
-const PICO8_DAT_PATH = path.join(serverOrigin, 'public', 'Pic0-8', 'pico8.dat');
+  try {
+    // Parse the JSON body
+    const body = await parseJsonBody(req);
+    const { P8code } = body;
 
-// Middleware to parse JSON bodies
-server.use(express.json({ limit: '50mb' })); // Adjust limit as needed
-
-
-// Define the /convertP8 route
-server.post('/convertP8', function (req, res) {
-    const { P8code } = req.body;
-    console.log(P8code);
-    const inputPath = path.join(serverOrigin, 'public', 'Pic0-8', 'degademo.p8');
-
-    const outputPath = path.join(serverOrigin, 'public', 'Pic0-8', 'degademo.js');
-// Compute the relative path from server origin to target
-const relativeP8Path = path.relative(serverOrigin, inputPath);
-const relativeJSPath = path.relative(serverOrigin, outputPath);
-console.log('Relative path:', relativeP8Path); // Outputs: public/Pic0-8/degademo.p8
-console.log('Relative path:', relativeJSPath); // Outputs: public/Pic0-8/degademo.js
-
-
-
-
-
-    console.log(`Input path: ${inputPath}, Output path: ${outputPath}, DAT path: ${PICO8_DAT_PATH}`);
-
-    // Write P8 code into .p8 file
-    fs.writeFile(inputPath, P8code, 'utf8', (writeErr) => {
-        if (writeErr) {
-            console.error(`Error writing file ${inputPath}:`, writeErr);
-            return res.status(500).send('Failed to save file');
-        }
+    if (!P8code) {
+      return NextResponse.json('P8code is required', {
+        status: 400,
+        headers,
       });
-        // Run the Shrinko8 command
-        const pythonProcess = spawn('python', [
-            path.join(serverOrigin, 'src','core','plugins','shrinko8-main','shrinko8.py'),
-            inputPath,
-            outputPath,
-            '--pico8-dat',
-            PICO8_DAT_PATH,
-        ]);
+    }
 
-        let result = '';
+    // Define paths
+    const serverOrigin = process.cwd();
+    const inputPath = path.join(serverOrigin, 'public', 'Pic0-8', 'degademo.p8');
+    const outputPath = path.join(serverOrigin, 'public', 'Pic0-8', 'degademo.js');
+    const PICO8_DAT_PATH = path.join(
+      serverOrigin,
+      'public',
+      'Pic0-8',
+      'pico8.dat'
+    );
 
-        pythonProcess.stdout.on('data', (data) => {
-            result += data.toString();
-            console.log(result);
-        });
+    // Write P8 code to .p8 file
+    await fs.promises.writeFile(inputPath, P8code, 'utf8');
 
-        pythonProcess.stderr.on('data', (data) => {
-            console.error('Python Error:', data.toString());
-        });
+    // Run the Shrinko8 command
+    const pythonProcess = spawn('python', [
+      path.join(
+        serverOrigin,
+        'app',
+        'src',
+        'core',
+        'plugins',
+        'shrinko8-main',
+        'shrinko8.py'
+      ),
+      inputPath,
+      outputPath,
+      '--pico8-dat',
+      PICO8_DAT_PATH,
+    ]);
 
-        pythonProcess.on('close', (code) => {
-            if (code === 0) {
-                // Read the output.js content here and return it in the response
-                fs.readFile(outputPath, 'utf8', (readErr, jsCode) => {
-                    if (readErr) {
-                        console.error('Error reading output file:', readErr);
-                        return res.status(500).json({ error: 'Error reading output file' });
-                    }
-                    // Send the jsCode back in the response
-                    res.status(200).json({ jsCode });
-                    console.log('Server sent')
-                });
-            } else {
-                res.status(500).json({ error: 'Python script failed' });
-            }
+    let result = '';
+    let errorOutput = '';
 
-           
-        });
-
+    pythonProcess.stdout.on('data', (data) => {
+      result += data.toString();
     });
 
+    pythonProcess.stderr.on('data', (data) => {
+      errorOutput += data.toString();
+    });
 
-// Handle all other routes with a 405 Method Not Allowed
-server.all('*', (req, res) => {
-    res.status(405).json({ error: 'Method Not Allowed' });
-});
+    const exitCode = await new Promise((resolve) => {
+      pythonProcess.on('close', resolve);
+    });
 
-// Start the server
-const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+    if (exitCode === 0) {
+      try {
+        const jsCode = await fs.promises.readFile(outputPath, 'utf8');
+        return NextResponse.json(
+          { jsCode },
+          {
+            status: 200,
+            headers: {
+              ...headers,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
+      } catch {
+        return NextResponse.json('Error reading output file', {
+          status: 501,
+          headers,
+          
+        });
+      }
+    } else {
 
+      console.log('Python script failed', errorOutput);
+      return NextResponse.json('Python script failed', {
+        status: 502,
+        headers,
+       
+      });
+    }
+  } catch {
+    return NextResponse.json('Internal Server Error', {
+      status: 504,
+      headers,
+    });
+  }
+}

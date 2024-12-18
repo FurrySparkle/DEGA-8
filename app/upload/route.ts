@@ -29,7 +29,7 @@ export async function OPTIONS() {
     {
       status: 200,
       headers: {
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Methods':  'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, x-filename',
         'Access-Control-Allow-Origin': ALLOWED_ORIGINS.join(', '),
       },
@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
   // Set CORS headers
   const headers: HeadersInit = {
     'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods':  'GET, POST, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, x-filename',
   };
 
@@ -116,20 +116,40 @@ export async function POST(req: NextRequest) {
 /**
  * Handle all other HTTP methods with 405 Method Not Allowed
  */
-export async function GET() {
-  return new NextResponse('Method Not Allowed', {
-    status: 405,
-    headers: {
-      'Allow': 'POST, OPTIONS',
-    },
-  });
+export async function GET(req: NextRequest) {
+  const origin = req.headers.get('origin') || '';
+  const headers: HeadersInit = {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+
+  try {
+    const stat = await fs.promises.stat(PICO8_DAT_PATH);
+    const fileSizeInBytes = stat.size;
+    const nineMB = 9 * 1024 * 1024; // 9MB in bytes
+    const isLargerThan9MB = fileSizeInBytes > nineMB;
+
+    return NextResponse.json(
+      { isLargerThan9MB },
+      {
+        status: 200,
+        headers,
+      }
+    );
+  } catch (error) {
+    return new NextResponse('File not found', {
+      status: 404,
+      headers,
+    });
+  }
 }
 
 export async function PUT() {
   return new NextResponse('Method Not Allowed', {
     status: 405,
     headers: {
-      'Allow': 'POST, OPTIONS',
+      'Allow': 'GET, POST, OPTIONS',
     },
   });
 }
@@ -138,13 +158,13 @@ export async function DELETE() {
   return new NextResponse('Method Not Allowed', {
     status: 405,
     headers: {
-      'Allow': 'POST, OPTIONS',
+      'Allow': 'GET, POST, OPTIONS',
     },
   });
 }
 
 // Add more method handlers as needed...
-
+//TODO-- Add GET for frontend to query if the dat file is larger than 9mb on the server to toggle UI
 
 
 // const express = require('express');

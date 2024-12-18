@@ -7,7 +7,7 @@ import { openOpenAIApiKeyPanel } from '../../store/settings-ui';
 import { Page } from '../page';
 import { useOption } from '../../core/options/use-option';
 import { isProxySupported } from '../../core/chat/openai';
-import { P8Injector } from '../DEGA-8/CartTemplater';
+
 
 const Container = styled.div`
     flex-grow: 1;
@@ -33,12 +33,12 @@ export default function LandingPage(props: any) {
     return <Page id={'landing'} showSubHeader={true}>
         <Container>
             <p>
-                <FormattedMessage defaultMessage={'Hello, how can I help you today?'}
+                <FormattedMessage id="landingPage.welcome" defaultMessage={'Hello, how can I help you today?'}
                     description="A friendly message that appears at the start of new chat sessions" />
             </p>
             {!openAIApiKey && !isProxySupported() && (
                 <Button size="xs" variant="light" compact onClick={onConnectButtonClick}>
-                    <FormattedMessage defaultMessage={'Connect your OpenAI account to get started'} />
+                    <FormattedMessage id="landingPage.connect" defaultMessage={'Connect your OpenAI account and Upload your pic0-8 dat file to get started'} />
                 </Button>
             )}
         </Container>

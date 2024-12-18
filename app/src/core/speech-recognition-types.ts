@@ -123,12 +123,12 @@ declare global {
 }
 
 let speechRecognition: SpeechRecognition | null = null;
-
+if (typeof window !== 'undefined') {
 if (window.SpeechRecognition) {
     speechRecognition = new SpeechRecognition()
 } else if ((window as any).webkitSpeechRecognition) {
     speechRecognition = new (window as any).webkitSpeechRecognition() as SpeechRecognition;
-}
+}}
 
 const supportsSpeechRecognition = speechRecognition !== null;
 

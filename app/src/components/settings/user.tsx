@@ -5,6 +5,7 @@ import { useAppContext } from "../../core/context";
 import SettingsOption from "./option";
 import SettingsTab from "./tab";
 import { useState, useCallback } from "react";
+import { FormattedMessage } from "react-intl";
 
 export default function UserOptionsTab(props: any) {
     const context = useAppContext();
@@ -63,12 +64,23 @@ export default function UserOptionsTab(props: any) {
     const successMessage = importedChats ? (
         <div style={{ color: 'green' }}>
             <i className="fa fa-check-circle"></i>
-            <span style={{ marginLeft: '0.5em' }}>Imported {importedChats} chat(s)</span>
+            <span style={{ marginLeft: '0.5em' }}>
+                <FormattedMessage 
+                    id="UserOptionsTab.importSuccess" 
+                    defaultMessage="Imported {count} chat(s)"
+                    description="Success message after importing chats"
+                />
+            </span>
         </div>
     ) : null;
 
     const errorMessageElement = errorMessage ? (
-        <div style={{ color: 'red' }}>{errorMessage}</div>
+        <div style={{ color: 'red' }}>
+            <FormattedMessage 
+                id="UserOptionsTab.importError" 
+                defaultMessage="Failed to import chat data." 
+            />
+        </div>
     ) : null;
 
     return (
@@ -77,9 +89,19 @@ export default function UserOptionsTab(props: any) {
                 <div>
                     <Button variant="light" onClick={handleExport} style={{
                         marginRight: '1rem',
-                    }}>Export</Button>
+                    }}>
+                        <FormattedMessage 
+                            id="UserOptionsTab.exportButton" 
+                            defaultMessage="Export" 
+                        />
+                    </Button>
                     <FileButton onChange={handleImport} accept=".json">
-                        {(props) => <Button variant="light" {...props}>Import</Button>}
+                        {(props) => <Button variant="light" {...props}>
+                            <FormattedMessage 
+                                id="UserOptionsTab.importButton" 
+                                defaultMessage="Import" 
+                            />
+                        </Button>}
                     </FileButton>
                 </div>
                 {successMessage}

@@ -1,3 +1,5 @@
+'use client';
+
 import styled from "@emotion/styled";
 import { Button, NumberInput, PasswordInput, Select, Slider, Switch, Tabs, Text, TextInput, Textarea } from "@mantine/core";
 import { Option } from "../../core/options/option";
@@ -187,7 +189,9 @@ export function PluginOptionWidget(props: { pluginID: string, option: Option, ch
 
     const elem = <OptionWrapper className={(focused && !option.displayAsSeparateSection) ? 'focused' : ''}>
         {component}
-        {typeof renderProps.description?.props === 'undefined' && <p style={{ marginBottom: '0.7rem' }}>{renderProps.description}</p>}
+        {typeof renderProps.description?.props === 'undefined' && <p style={{ marginBottom: '0.7rem' }}>
+            <FormattedMessage id="PluginOptionWidget.description" values={renderProps.description} description="Description for the Plugin Option Widget" defaultMessage="Description for the Plugin Option Widget"/>
+        </p>}
         {typeof renderProps.description?.props !== 'undefined' && renderProps.description}
     </OptionWrapper>;
 
@@ -200,7 +204,7 @@ export function PluginOptionWidget(props: { pluginID: string, option: Option, ch
                 marginTop: '1rem',
             }}>
                 <Button size="xs" compact variant="light" onClick={() => setValue(option.defaultValue)}>
-                    <FormattedMessage defaultMessage="Reset to default" />
+                    <FormattedMessage id="PluginOptionWidget.resetToDefault" defaultMessage="Reset to default" />
                 </Button>
             </div>}
         </SettingsOption>;
@@ -245,7 +249,7 @@ export default function SettingsTab(props: {
                             marginTop: '1rem',
                         }}>
                             <Button size="xs" compact variant="light" onClick={() => context.chat.resetPluginOptions(id, context.id)}>
-                                <FormattedMessage defaultMessage="Reset to default" />
+                                <FormattedMessage id="SettingsTab.resetToDefault" defaultMessage="Reset to default" />
                             </Button>
                         </div>}
                     </SettingsOption>

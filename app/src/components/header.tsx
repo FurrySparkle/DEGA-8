@@ -1,10 +1,13 @@
+'use client';
+
 import styled from '@emotion/styled';
-import Helmet from 'react-helmet';
+import Head from 'next/head';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useSpotlight } from '@mantine/spotlight';
 import { Burger, Button, ButtonProps, Text } from '@mantine/core';
 import { useCallback, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useAppContext } from '../core/context';
 import { backend } from '../core/backend';
 import { MenuItem, secondaryMenu } from '../menus';
@@ -15,11 +18,6 @@ import { openLoginModal, openSignupModal } from '../store/ui';
 import { useOption } from '../core/options/use-option';
 import { useHotkeys } from '@mantine/hooks';
 import { P8Injector } from './DEGA-8/CartTemplater';
-
-
-
-
-
 
 const Banner = styled.div`
     background: rgba(224, 49, 49, 0.2);
@@ -127,21 +125,21 @@ const SubHeaderContainer = styled.div`
     }
 `;
 
-function HeaderButton(props: ButtonProps & { icon?: string, onClick?: any, children?: any }) {
+function HeaderButton(props: ButtonProps & { icon?: string, onClick?: () => void, children?: React.ReactNode }) {
     return (
-        <Button size='xs'
+        <Button
+            size='xs'
             variant={props.variant || 'subtle'}
-            onClick={props.onClick}>
+            onClick={props.onClick}
+        >
             {props.icon && <i className={'fa fa-' + props.icon} />}
-            {props.children && <span>
-                {props.children}
-            </span>}
+            {props.children && <span>{props.children}</span>}
         </Button>
-    )
+    );
 }
 
 export interface HeaderProps {
-    title?: any;
+    title?: string;
     onShare?: () => void;
     share?: boolean;
     canShare?: boolean;
@@ -149,7 +147,7 @@ export interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
     const context = useAppContext();
-    const navigate = useNavigate();
+    const router = useRouter();
     const spotlight = useSpotlight();
     const [loading, setLoading] = useState(false);
     const [openAIApiKey] = useOption<string>('openai', 'apiKey');
@@ -160,13 +158,11 @@ export default function Header(props: HeaderProps) {
     const onBurgerClick = useCallback(() => dispatch(toggleSidebar()), [dispatch]);
 
     const burgerLabel = sidebarOpen
-        ? intl.formatMessage({ defaultMessage: "Close sidebar" })
-        : intl.formatMessage({ defaultMessage: "Open sidebar" });
+        ? intl.formatMessage({ id: "close.sidebar", defaultMessage: "Close sidebar" })
+        : intl.formatMessage({ id: "open.sidebar", defaultMessage: "Open sidebar" });
 
-   
-
-    const onNewGame = () =>{
-        const DEGAtemplate:string = `\`\`\`-- dega large vertical bouncing animation
+    const onNewGame = () => {
+        const DEGAtemplate: string = `\`\`\`-- dega large vertical bouncing animation
 -- pico-8 version
 
 function _init()
@@ -209,8 +205,7 @@ function draw_letter(letter)
         rectfill(x, y, x+10, y+20, c)
         circfill(x+10, y+10, 10, c)
     elseif letter.char == "e" then
-       // rectfill(x, y, x+10, y+20, c)
-        rectfill(x, y, x+20, y+4, c)
+       rectfill(x, y, x+20, y+4, c)
         rectfill(x, y+8, x+16, y+12, c)
         rectfill(x, y+16, x+20, y+20, c)
     elseif letter.char == "g" then
@@ -226,25 +221,21 @@ function draw_letter(letter)
           rectfill(x, y+1, x+12, y-2, c) -- crossbar top
 
     end
-end\`\`\``
+end\`\`\``;
 
-         //possible location for .p8 injection
-         P8Injector(DEGAtemplate);
-         console.log("P8 Injector Fired! New Chat, DEGA template Deployed!" );
-
-         
+        // Possible location for .p8 injection
+        P8Injector(DEGAtemplate);
+        console.log("P8 Injector Fired! New Chat, DEGA template Deployed!");
     };
+
     const onNewChat = useCallback(async () => {
-
-                  
         setLoading(true);
-
         onNewGame();
-        navigate(`/`);
+        router.push(`/`);
         setLoading(false);
         setTimeout(() => document.querySelector<HTMLTextAreaElement>('#message-input')?.focus(), 100);
-       
-    }, [navigate]);
+    }, [router]);
+
     const openSettings = useCallback(() => {
         dispatch(setTab(openAIApiKey ? 'pico' : 'user'));
     }, [openAIApiKey, dispatch]);
@@ -255,7 +246,7 @@ end\`\`\``
         } else {
             dispatch(openLoginModal());
         }
-    }, [dispatch])
+    }, [dispatch]);
 
     const signUp = useCallback(() => {
         if ((window as any).AUTH_PROVIDER !== 'local') {
@@ -263,62 +254,109 @@ end\`\`\``
         } else {
             dispatch(openSignupModal());
         }
-    }, [dispatch])
+    }, [dispatch]);
 
     useHotkeys([
         ['c', onNewChat],
     ]);
 
-    const header = useMemo(() => (<>
-        {context.sessionExpired && <Banner onClick={signIn}>
-            You have been signed out. Click here to sign back in.
-        </Banner>}
-        <HeaderContainer className={context.isHome ? 'shaded' : ''}>
-            <Helmet>
-                <title>
-                    {props.title ? `${props.title} - ` : ''}
-                    {intl.formatMessage({ defaultMessage: "DEGA-8", description: "HTML title tag" })}
-                </title>
-            </Helmet>
-            {!sidebarOpen && <Burger opened={sidebarOpen} onClick={onBurgerClick} aria-label={burgerLabel} transitionDuration={0} />}
-            {<h2>
-                <Text
-                    variant="gradient"
-                    gradient={{ from: '#1DDCB8', to: '#FF00F7', deg: 45 }}
-                    ta="center"
-                    fz="l"
-                    fw={700}
+    const header = useMemo(() => (
+        <>
+            {context.sessionExpired && (
+                <Banner onClick={signIn}>
+                    <FormattedMessage
+                        id="session.expired"
+                        defaultMessage="You have been signed out. Click here to sign back in."
+                    />
+                </Banner>
+            )}
+            <HeaderContainer className={context.isHome ? 'shaded' : ''}>
+                <Head>
+                    <title>
+                        {props.title ? `${props.title} - ` : ''}
+                        {intl.formatMessage({
+                            id: "app.title",
+                            defaultMessage: "DEGA-8",
+                            description: "HTML title tag"
+                        })}
+                    </title>
+                </Head>
+                {!sidebarOpen && (
+                    <Burger
+                        opened={sidebarOpen}
+                        onClick={onBurgerClick}
+                        aria-label={burgerLabel}
+                        transitionDuration={0}
+                    />
+                )}
+                <h2>
+                    <Text
+                        variant="gradient"
+                        gradient={{ from: '#1DDCB8', to: '#FF00F7', deg: 45 }}
+                        ta="center"
+                        fz="lg"
+                        fw={700}
                     >
-                        {intl.formatMessage({ defaultMessage: "DEGA-8", description: "app name" })}
+                        {intl.formatMessage({
+                            id: "app.name",
+                            defaultMessage: "DEGA-8",
+                            description: "app name"
+                        })}
                     </Text>
-            </h2>}
-            <div className="spacer" />
-            <HeaderButton icon="search" onClick={spotlight.openSpotlight} />
-            <HeaderButton icon="gear" onClick={openSettings} />
-            {backend.current && !props.share && props.canShare && typeof navigator.share !== 'undefined' && <HeaderButton icon="share" onClick={props.onShare}>
-                <FormattedMessage defaultMessage="Share" description="Label for the button used to create a public share URL for a chat log" />
-            </HeaderButton>}
-            {/* {backend.current && !context.authenticated && (
-                <HeaderButton onClick={localStorage.getItem('registered') ? signIn : signUp}>
-                    <FormattedMessage defaultMessage="Sign in <h>to sync</h>"
-                        description="Label for sign in button, which indicates that the purpose of signing in is to sync your data between devices. Less important text inside <h> tags is hidden on small screens."
-                        values={{
-                            h: (chunks: any) => <span className="hide-on-mobile">{chunks}</span>
-                        }} />
+                </h2>
+                <div className="spacer" />
+                <HeaderButton icon="search" onClick={spotlight.openSpotlight} />
+                <HeaderButton icon="gear" onClick={openSettings} />
+                {backend.current && !props.share && props.canShare && typeof navigator.share !== 'undefined' && (
+                    <HeaderButton icon="share" onClick={props.onShare}>
+                        <FormattedMessage
+                            id="share.button"
+                            defaultMessage="Share"
+                            description="Label for the button used to create a public share URL for a chat log"
+                        />
+                    </HeaderButton>
+                )}
+                <HeaderButton icon="plus" onClick={onNewChat} loading={loading} variant="light">
+                    <FormattedMessage
+                        id="new.chat.button"
+                        defaultMessage="New Chat"
+                        description="Label for the button used to start a new chat session"
+                    />
                 </HeaderButton>
-            )} */}
-            <HeaderButton icon="plus" onClick={onNewChat} loading={loading} variant="light">
-                <FormattedMessage defaultMessage="New Chat" description="Label for the button used to start a new chat session" />
-            </HeaderButton>
-        </HeaderContainer>
-    </>), [context.sessionExpired, context.isHome, context.authenticated, signIn, props.title, props.share, props.canShare, props.onShare, intl, sidebarOpen, onBurgerClick, burgerLabel, spotlight.openSpotlight, openSettings, signUp, onNewChat, loading]);
+            </HeaderContainer>
+        </>
+    ), [
+        context.sessionExpired,
+        context.isHome,
+        signIn,
+        props.title,
+        props.share,
+        props.canShare,
+        props.onShare,
+        intl,
+        sidebarOpen,
+        onBurgerClick,
+        burgerLabel,
+        spotlight.openSpotlight,
+        openSettings,
+        onNewChat,
+        loading
+    ]);
 
     return header;
 }
 
 function SubHeaderMenuItem(props: { item: MenuItem }) {
     return (
-        <Button variant="subtle" size="lg" compact component={Link} to={props.item.link} target="_blank" key={props.item.link}>
+        <Button
+            variant="subtle"
+            size="lg"
+            compact
+            component={Link}
+            href={props.item.link}
+            target="_blank"
+            key={props.item.link}
+        >
             {props.item.icon && <i className={'fa fa-' + props.item.icon} />}
             <span>{props.item.label}</span>
         </Button>
@@ -329,7 +367,9 @@ export function SubHeader(props: any) {
     const elem = useMemo(() => (
         <SubHeaderContainer>
             <div className="spacer" />
-            {secondaryMenu.map(item => <SubHeaderMenuItem item={item} key={item.link} />)}
+            {secondaryMenu.map(item => (
+                <SubHeaderMenuItem item={item} key={item.link} />
+            ))}
         </SubHeaderContainer>
     ), []);
 

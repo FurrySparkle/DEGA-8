@@ -56,6 +56,11 @@ export function truncateText(text: string, tokens: number) {
 }
 
 export function truncateMessage(message: OpenAIMessage, tokens: number) {
+    if (typeof window === 'undefined') {
+        // Return the message unmodified or handle accordingly
+        return message;
+      }
+
     const encoded = tokenizer.encodeOrdinary(message.content);
     const decoded = tokenizer.decodeBytes(encoded.slice(0, Math.max(0, tokens - overheadTokens.perMessage)));
     return {

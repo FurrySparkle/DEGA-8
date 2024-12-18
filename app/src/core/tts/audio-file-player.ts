@@ -4,7 +4,9 @@ import { AsyncLoop } from "../utils/async-loop";
 import * as idb from '../utils/idb';
 import TTSPlugin from './tts-plugin';
 
-export let audioContext = new AudioContext();
+export let audioContext;
+
+if (typeof window !== 'undefined') audioContext = new AudioContext();
 export let audioContextInUse = false;
 
 export function resetAudioContext() {

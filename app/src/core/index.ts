@@ -15,8 +15,9 @@ import { pluginRunner } from "./plugins/plugin-runner";
 import { createBasicPluginContext } from './plugins/plugin-context';
 import { P8Injector } from "../components/DEGA-8/CartTemplater";
 
+export let channel
 
-export const channel = new BroadcastChannel('chats');
+if (typeof window !== 'undefined')  channel = new BroadcastChannel('chats');
 
 export class ChatManager extends EventEmitter {
     public doc!: YChatDoc;
@@ -42,14 +43,14 @@ export class ChatManager extends EventEmitter {
             .then(() => this.emit('update'));
         
         setInterval(() => this.emitChanges());
-
+        if (typeof window !== 'undefined'){ 
         channel.onmessage = message => {
             if (message.type === 'y-update') {
                 this.applyYUpdate(message.data);
             }
         };
 
-        (window as any).chat = this;
+        (window as any).chat = this;}
     }
 
     public login(username: string) {
@@ -85,7 +86,7 @@ export class ChatManager extends EventEmitter {
 
         this.options = new OptionsManager(this.doc, pluginMetadata);
         this.options.on('update', (...args) => this.emit('plugin-options-update', ...args));
-
+        if (typeof window !== 'undefined'){ 
         // connect new doc to persistance, scoped to the current username
         this.provider = new IndexeddbPersistence('chats:' + username, this.doc.root);
         this.provider.whenSynced.then(() => {
@@ -94,7 +95,7 @@ export class ChatManager extends EventEmitter {
             this.doc.emit('ready');
             this.options.reloadOptions();
         });
-
+    }
         pluginRunner(
             'init',
             pluginID => createBasicPluginContext(pluginID, this.options),

@@ -5,25 +5,31 @@ import { YChat, YChatDoc } from "../chat/y-chat";
 import { globalOptions } from "../../global-options";
 import { OptionGroup } from "./option-group";
 import { BroadcastChannel } from "broadcast-channel";
+import storage from "../../components/mockLocalStorage";
 
-export const broadcastChannel = new BroadcastChannel("options");
+
+export let broadcastChannel:BroadcastChannel;
+
+if (typeof window !== 'undefined') broadcastChannel = new BroadcastChannel("options");
 
 function cacheKey(groupID: string, optionID: string, chatID?: string | null) {
     return chatID ? `${chatID}.${groupID}.${optionID}` : `${groupID}.${optionID}`;
 }
 
 export class OptionsManager extends EventEmitter {
+
+   
     private optionGroups: OptionGroup[];
     private optionsCache: Map<string, any> = new Map();
-
+    
     constructor(private yDoc: YChatDoc, private pluginMetadata: PluginDescription[]) {
         super();
 
         this.optionGroups = [...globalOptions, ...this.pluginMetadata];
 
-        // Load options from localStorage and YChats
+        // Load options from storage and YChats
         this.reloadOptions();
-
+        if (typeof window !== 'undefined'){ 
         // Listen for update events on the broadcast channel
         broadcastChannel.onmessage = (event: MessageEvent) => {
             this.reloadOptions();
@@ -31,7 +37,7 @@ export class OptionsManager extends EventEmitter {
             if (event.data?.groupID) {
                 this.emit('update', event.data.groupID);
             }
-        };
+        };}
     }
 
     private loadOption(groupID: string, option: Option, yChat?: YChat) {
@@ -42,10 +48,10 @@ export class OptionsManager extends EventEmitter {
                 value = yChat.getOption(groupID, option.id);
             }
     
-            // Fallback to localStorage if value is not found in YChat
+            // Fallback to storage if value is not found in YChat
             if (typeof value === 'undefined' || value === null) {
                 const fallbackKey = cacheKey(groupID, option.id);
-                const raw = localStorage.getItem(fallbackKey);
+                const raw = storage.getItem(fallbackKey);
                 value = raw ? JSON.parse(raw) : option.defaultValue;
             }
     
@@ -57,7 +63,7 @@ export class OptionsManager extends EventEmitter {
             this.optionsCache.set(key, value);
         } else {
             const key = cacheKey(groupID, option.id);
-            const raw = localStorage.getItem(key);
+            const raw = storage.getItem(key);
             const value = raw ? JSON.parse(raw) : option.defaultValue;
             this.optionsCache.set(key, value);
         }
@@ -83,7 +89,9 @@ export class OptionsManager extends EventEmitter {
             });
         });
 
-        (window as any).options = this;
+        if (typeof window !== 'undefined') {
+            (window as any).options = this;
+          }
 
         this.emit("update");
     }
@@ -174,11 +182,11 @@ export class OptionsManager extends EventEmitter {
             yChat?.setOption(groupID, optionID, value);
 
             const fallbackKey = cacheKey(groupID, optionID);
-            localStorage.setItem(fallbackKey, JSON.stringify(value));
+            storage.setItem(fallbackKey, JSON.stringify(value));
         } else if (option.scope === 'user') {
             this.yDoc.setOption(groupID, optionID, value);
         } else {
-            localStorage.setItem(key, JSON.stringify(value));
+            storage.setItem(key, JSON.stringify(value));
         }
 
         console.log(`setting ${groupID}.${optionID} = ${value} (${typeof value})`)
@@ -207,4 +215,8 @@ export class OptionsManager extends EventEmitter {
         this.removeAllListeners();
         broadcastChannel.onmessage = null;
     }
+
+
 }
+
+

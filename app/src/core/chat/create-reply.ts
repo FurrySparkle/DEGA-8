@@ -75,6 +75,8 @@ export class ReplyRequest extends EventEmitter {
                 this.lastChunkReceivedAt = Date.now();
             });
 
+            
+            if (typeof window !== 'undefined') {
             const { emitter, cancel } = await createStreamingChatCompletion(this.mutatedMessages, {
                 ...this.mutatedParameters,
                 apiKey: this.requestedParameters.apiKey,
@@ -102,6 +104,11 @@ export class ReplyRequest extends EventEmitter {
                         break;
                 }
             }
+        } else {
+            // Handle the server-side case or throw an error
+            throw new Error('This code must be executed on the client side.');
+        }
+
         } catch (e: any) {
             console.error(e);
             this.onError(e.message);

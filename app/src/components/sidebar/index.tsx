@@ -135,8 +135,8 @@ export default function Sidebar(props: { className?: string }) {
     }, []);
 
     const burgerLabel = sidebarOpen
-        ? intl.formatMessage({ defaultMessage: "Close sidebar" })
-        : intl.formatMessage({ defaultMessage: "Open sidebar" });
+        ? intl.formatMessage({ id: "Sidebar.close", defaultMessage: "Close sidebar" })
+        : intl.formatMessage({ id: "Sidebar.open", defaultMessage: "Open sidebar" });
 
     const elem = useMemo(
         () => (
@@ -147,7 +147,8 @@ export default function Sidebar(props: { className?: string }) {
                 <div className="sidebar-header">
                     <h2>
                         <FormattedMessage
-                            defaultMessage={"Chat History"}
+                            id="Sidebar.chatHistory"
+                            defaultMessage="Chat History"
                             description="Heading for the chat history screen"
                         />
                     </h2>
@@ -190,7 +191,8 @@ export default function Sidebar(props: { className?: string }) {
                                 icon={<i className="fas fa-gear" />}
                             >
                                 <FormattedMessage
-                                    defaultMessage={"User settings"}
+                                    id="Sidebar.userSettings"
+                                    defaultMessage="User settings"
                                     description="Menu item that opens the user settings screen"
                                 />
                             </Menu.Item>
@@ -201,7 +203,7 @@ export default function Sidebar(props: { className?: string }) {
                                 onClick={() => backend.current?.logout()}
                                 icon={<i className="fas fa-sign-out-alt" />}
                             >
-                                <FormattedMessage defaultMessage={"Sign out"} />
+                                <FormattedMessage id="Sidebar.signOut" defaultMessage="Sign out" />
                             </Menu.Item>
                         </Menu.Dropdown>
                     </Menu>

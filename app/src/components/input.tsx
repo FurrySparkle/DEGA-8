@@ -1,14 +1,16 @@
+'use client';
+
 import styled from '@emotion/styled';
 import { Button, ActionIcon, Textarea, Loader, Popover } from '@mantine/core';
 import { getHotkeyHandler, useHotkeys, useMediaQuery } from '@mantine/hooks';
-import { useCallback, useEffect, useMemo, useState,useRef } from 'react';
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { useAppContext } from '../core/context';
 import { useAppDispatch, useAppSelector } from '../store';
 import { selectMessage, setMessage } from '../store/message';
 import { selectSettingsTab, openOpenAIApiKeyPanel } from '../store/settings-ui';
-import { speechRecognition, supportsSpeechRecognition } from '../core/speech-recognition-types'
+import { speechRecognition, supportsSpeechRecognition } from '../core/speech-recognition-types';
 import { useWhisper } from '@chengsokdara/use-whisper';
 import QuickSettings from './quick-settings';
 import { useOption } from '../core/options/use-option';
@@ -57,7 +59,7 @@ export default function MessageInput(props: MessageInputProps) {
         streaming: false,
     });
 
-    const navigate = useNavigate();
+    const router = useRouter();
     const context = useAppContext();
     const dispatch = useAppDispatch();
     const intl = useIntl();
@@ -71,7 +73,7 @@ export default function MessageInput(props: MessageInputProps) {
         dispatch(setMessage(e.target.value));
     }, [dispatch]);
 
-    const pathname = useLocation().pathname;
+    const pathname = router.pathname;
 
     const onSubmit = useCallback(async () => {
         setSpeechError(null);
@@ -80,21 +82,22 @@ export default function MessageInput(props: MessageInputProps) {
 
         if (id) {
             if (!window.location.pathname.includes(id)) {
-                navigate('/chat/' + id);
+                router.push(`/chat/${id}`);
             }
             dispatch(setMessage(''));
         }
-    }, [context, message, dispatch, navigate]);
-// Create a ref for the iframe element
-const iframeRef = useRef<HTMLIFrameElement>(null);
+    }, [context, message, dispatch, router]);
+
+    // Create a ref for the iframe element
+    const iframeRef = useRef<HTMLIFrameElement>(null);
+
     const onSpeechError = useCallback((e: any) => {
         console.error('speech recognition error', e);
         setSpeechError(e.message);
 
         try {
             speechRecognition?.stop();
-        } catch (e) {
-        }
+        } catch (e) { }
 
         try {
             stopRecording();
@@ -211,7 +214,11 @@ const iframeRef = useRef<HTMLIFrameElement>(null);
                     <Button variant="subtle" size="xs" compact onClick={() => {
                         context.chat.cancelReply(context.currentChat.chat?.id, context.currentChat.leaf!.id);
                     }}>
-                        <FormattedMessage defaultMessage={"Cancel"} description="Label for the button that can be clicked while the AI is generating a response to cancel generation" />
+                        <FormattedMessage
+                            id="MessageInput.cancelGeneration"
+                            defaultMessage="Cancel"
+                            description="Label for the button used to cancel generation"
+                        />
                     </Button>
                     <Loader size="xs" style={{ padding: '0 0.8rem 0 0.5rem' }} />
                 </>)}
@@ -237,10 +244,13 @@ const iframeRef = useRef<HTMLIFrameElement>(null);
                                         textAlign: 'center',
                                         marginBottom: '0.5rem',
                                     }}>
-                                        Sorry, an error occured trying to record audio.
+                                        <FormattedMessage
+                                            id="MessageInput.speechError"
+                                            defaultMessage="Sorry, an error occurred trying to record audio."
+                                        />
                                     </p>
                                     <Button variant="light" size="xs" fullWidth onClick={onHideSpeechError}>
-                                        Close
+                                        <FormattedMessage id="MessageInput.close" defaultMessage="Close" />
                                     </Button>
                                 </div>
                             </Popover.Dropdown>
@@ -266,7 +276,6 @@ const iframeRef = useRef<HTMLIFrameElement>(null);
         const keys = [
             ['Escape', blur, { preventDefault: true }],
             ['ctrl+Enter', onSubmit, { preventDefault: true }],
-
         ];
         if (submitOnEnter) {
             keys.unshift(['Enter', onSubmit, { preventDefault: true }]);
@@ -277,16 +286,15 @@ const iframeRef = useRef<HTMLIFrameElement>(null);
 
     return <Container>
         <div className="inner">
-    
-            {/* Pico-8 Player    */}
-           
-<Pico8Player iframeRef={iframeRef} />
+
+            {/* Pico-8 Player */}
+            <Pico8Player iframeRef={iframeRef} />
             <Textarea disabled={props.disabled || disabled}
                 id="message-input"
                 autosize
                 minRows={(hasVerticalSpace || context.isHome) ? 3 : 2}
                 maxRows={12}
-                placeholder={intl.formatMessage({ defaultMessage: "Enter your fun inspirations here..." })}
+                placeholder={intl.formatMessage({ id: "MessageInput.enterInspiration", defaultMessage: "Enter your fun inspirations here...", description: "Placeholder for message input" })}
                 value={message}
                 onChange={onChange}
                 rightSection={rightSection}

@@ -1,14 +1,14 @@
-const express  = require('express');
-const { spawn }= require( 'child_process');
-const process  = require('process');
-const fs = require( 'fs');
+//const express  = require('express');
+//const { spawn }= require( 'child_process');
+//const process  = require('process');
+//const fs = require( 'fs');
 
 
 const cracoWasm = require("craco-wasm");
 const webpack = require("webpack");
 const path = require("path");
 // // Assume we have the server origin current working directory
-const serverOrigin = process.cwd();
+//const serverOrigin = process.cwd();
 
 module.exports = {
 

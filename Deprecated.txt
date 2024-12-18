@@ -81,7 +81,7 @@
 //                 res.status(500).json({ error: 'Python script failed' });
 //             }
 
-//            // localStorage.setItem('GameReady', result);
+//            // storage.setItem('GameReady', result);
 //         });
 
 //     });

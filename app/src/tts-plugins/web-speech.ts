@@ -21,7 +21,9 @@ export default class WebSpeechPlugin extends DirectTTSPlugin<WebSpeechPluginOpti
 
     async initialize() {
         await this.getVoices();
-        speechSynthesis.onvoiceschanged = () => this.getVoices();
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+            speechSynthesis.onvoiceschanged = () => this.getVoices();
+        }
     }
 
     describe(): PluginDescription {
@@ -41,6 +43,7 @@ export default class WebSpeechPlugin extends DirectTTSPlugin<WebSpeechPluginOpti
                         return {
                             type: "select",
                             label: context.intl.formatMessage({
+                                id: "webSpeech.voiceLabel", // Added id
                                 defaultMessage: "Voice",
                             }),
                             options: WebSpeechPlugin.voices.map((v) => ({
@@ -56,6 +59,7 @@ export default class WebSpeechPlugin extends DirectTTSPlugin<WebSpeechPluginOpti
     }
 
     async getVoices() {
+        if (typeof window !== 'undefined'){ 
         WebSpeechPlugin.voices = window.speechSynthesis
             .getVoices()
             .map((v) => ({
@@ -63,7 +67,7 @@ export default class WebSpeechPlugin extends DirectTTSPlugin<WebSpeechPluginOpti
                 id: v.name,
                 name: v.name,
             }));
-        return WebSpeechPlugin.voices;
+        return WebSpeechPlugin.voices;} else return;
     }
 
     async getCurrentVoice(): Promise<Voice> {

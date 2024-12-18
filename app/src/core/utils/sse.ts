@@ -16,10 +16,10 @@ export default class SSE {
     public CLOSED = 2;
 
     // Connection settings
-    private headers = this.options.headers || {};
-    private payload = this.options.payload !== undefined ? this.options.payload : '';
-    private method = this.options.method ? this.options.method : (this.payload ? 'POST' : 'GET');
-    private withCredentials = !!this.options.withCredentials;
+    private headers: any;
+    private payload: any;
+    private method: string;
+    private withCredentials: boolean;
 
     // Internal properties
     private FIELD_SEPARATOR = ':';
@@ -30,7 +30,12 @@ export default class SSE {
     private progress = 0;
     private chunk = '';
 
-    public constructor(public url: string, public options: any) { }
+    public constructor(public url: string, public options: any) { 
+        this.headers = this.options.headers || {};
+        this.payload = this.options.payload !== undefined ? this.options.payload : '';
+        this.method = this.options.method ? this.options.method : this.payload ? 'POST' : 'GET';
+        this.withCredentials = !!this.options.withCredentials;
+    }
 
     /**
      * Starts streaming data from the SSE connection.

@@ -13,7 +13,10 @@ export const whisperOptions: OptionGroup = {
             displayAsSeparateSection: false,
             renderProps: (value, options, context) => ({
                 type: "checkbox",
-                label: context.intl.formatMessage({defaultMessage: "Use the OpenAI Whisper API for speech recognition"}),
+                label: context.intl.formatMessage({
+                    id: "whisperOptions.useWhisper.label",
+                    defaultMessage: "Use the OpenAI Whisper API for speech recognition"
+                }),
                 hidden: !supportsSpeechRecognition,
             }),
         },
@@ -24,7 +27,10 @@ export const whisperOptions: OptionGroup = {
             displayAsSeparateSection: false,
             renderProps: (value, options, context) => ({
                 type: "checkbox",
-                label: context.intl.formatMessage({defaultMessage: "Show microphone in message input"}),
+                label: context.intl.formatMessage({
+                    id: "whisperOptions.showMicrophone.label",
+                    defaultMessage: "Show microphone in message input"
+                }),
             }),
         },
     ],

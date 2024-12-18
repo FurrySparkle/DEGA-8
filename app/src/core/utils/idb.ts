@@ -20,10 +20,14 @@ import * as idb from 'idb-keyval';
 let supported = true;
 const inMemoryCache = new Map<string, any>();
 
-const testDB = indexedDB.open('idb-test');
-testDB.onerror = () => {
+if (typeof window !== 'undefined' && 'indexedDB' in window) {
+    const testDB = indexedDB.open('idb-test');
+    testDB.onerror = () => {
+      supported = false;
+    };
+  } else {
     supported = false;
-};
+  }
 
 export async function keys() {
     if (supported) {

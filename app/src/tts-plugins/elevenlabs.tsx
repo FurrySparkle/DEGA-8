@@ -73,18 +73,21 @@ export default class ElevenLabsPlugin extends TTSPlugin<ElevenLabsPluginOptions>
 
                     renderProps: (value, options, context) => ({
                         type: "password",
-                        label: context.intl.formatMessage({ defaultMessage: "Your ElevenLabs API Key" }),
-                        placeholder: context.intl.formatMessage({ defaultMessage: "Paste your API key here" }),
+                        label: context.intl.formatMessage({ id: "elevenLabs.apiKeyLabel", defaultMessage: "Your ElevenLabs API Key" }),
+                        placeholder: context.intl.formatMessage({ id: "elevenLabs.apiKeyPlaceholder", defaultMessage: "Paste your API key here" }),
                         description: <>
                             <p>
                                 <FormattedMessage
+                                    id="ElevenLabsPlugin.description"
                                     defaultMessage="Give ChatGPT a realisic human voice by connecting your ElevenLabs account (preview the available voices below). <a>Click here to sign up.</a>"
                                     values={{
                                         a: (chunks: any) => <a href="https://beta.elevenlabs.io" target="_blank" rel="noreferrer">{chunks}</a>
                                     }} />
                             </p>
                             <p>
-                                <FormattedMessage defaultMessage="You can find your API key by clicking your avatar or initials in the top right of the ElevenLabs website, then clicking Profile. Your API key is stored only on this device and never transmitted to anyone except ElevenLabs." />
+                                <FormattedMessage 
+                                    id="ElevenLabsPlugin.apiKeyInfo"
+                                    defaultMessage="You can find your API key by clicking your avatar or initials in the top right of the ElevenLabs website, then clicking Profile. Your API key is stored only on this device and never transmitted to anyone except ElevenLabs." />
                             </p>
                         </>,
                         hidden: options.getOption('tts', 'service') !== 'elevenlabs',
@@ -100,7 +103,7 @@ export default class ElevenLabsPlugin extends TTSPlugin<ElevenLabsPluginOptions>
                     renderProps: (value, options, context) => {
                         return {
                             type: "select",
-                            label: context.intl.formatMessage({defaultMessage: "Voice"}),
+                            label: context.intl.formatMessage({ id: "elevenLabs.voiceLabel", defaultMessage: "Voice" }),
                             disabled: !options.getOption('elevenlabs', 'apiKey') && !isProxySupported(),
                             hidden: options.getOption('tts', 'service') !== 'elevenlabs',
                             options: [
@@ -109,7 +112,7 @@ export default class ElevenLabsPlugin extends TTSPlugin<ElevenLabsPluginOptions>
                                     value: v.id,
                                 })),
                                 {
-                                    label: context.intl.formatMessage({ defaultMessage: "Custom Voice ID" }),
+                                    label: context.intl.formatMessage({ id: "elevenLabs.customVoiceLabel", defaultMessage: "Custom Voice ID" }),
                                     value: 'custom',
                                 }
                             ],
@@ -123,7 +126,7 @@ export default class ElevenLabsPlugin extends TTSPlugin<ElevenLabsPluginOptions>
                     renderProps: (value, options, context) => {
                         return {
                             type: "text",
-                            label: context.intl.formatMessage({ defaultMessage: "Custom Voice ID" }),
+                            label: context.intl.formatMessage({ id: "elevenLabs.customVoiceIDLabel", defaultMessage: "Custom Voice ID" }),
 
                             // hide when custom voice is not selected:
                             disabled: options.getOption('elevenlabs', 'voice') !== 'custom',

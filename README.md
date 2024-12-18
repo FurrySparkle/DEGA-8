@@ -1,4 +1,13 @@
-# Open Access GPT
+# DEGA-8 The pocket instant game
+
+This is a project I created out of frustration from the DEGA community members solely obsessed with the liquidity of the token. Completely ignoring the core goal of DEGA. The core goal of DEGA is DEcentralized GAming, where anyone can pick up DEGA tools and make a game in minutes instead of months. So I built this app to showcase that vision with the tools available today. To tide over those who want to build and inspire those who only heard about the games we play.
+
+I want to thank https://github.com/thisismypassport/shrinko8 for having a conversion kit to take p8 lua into web-ready JS. Additionally I want to thank lexaloffle for Pico-8 and having such a useful platform for development. I really was inspired to include the code copy block and to allow people to upload their own sounds into the site as a testament to the limitations and opportunities the console has for devs. Finally I want to thank OpenAccessGPT for having this site available for people to build atop of. I do stand on the shoulders of giants with this app. 
+
+You can find the OpenAccessGPT readme below, included in the license is the copyrights and clauses associated with this project.
+
+
+## Open Access GPT
 
 Open Access GPT is an open-source, unofficial ChatGPT app with extra features and more ways to customize your experience.
 

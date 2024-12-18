@@ -1,10 +1,10 @@
-import React, { Suspense, useCallback } from 'react';
+'use client';
+
+import React, { Suspense, useCallback, useEffect } from 'react';
 import styled from '@emotion/styled';
 import slugify from 'slugify';
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'next/navigation';
 import { Loader } from '@mantine/core';
-
 
 import { useAppContext } from '../../core/context';
 import { backend } from '../../core/backend';

@@ -95,7 +95,7 @@ export function Markdown(props: MarkdownProps) {
                                             a.click();
                                         }}>
                                             <i className="fa fa-download" />
-                                            <span><FormattedMessage defaultMessage="Download SVG" /></span>
+                                            <span><FormattedMessage id="markdown.downloadSvg" defaultMessage="Download SVG" /></span>
                                         </Button>
                                     )}
                                     <CopyButton value={code}>
@@ -103,8 +103,8 @@ export function Markdown(props: MarkdownProps) {
                                             <Button variant="subtle" size="sm" compact onClick={copy}>
                                                 <i className="fa fa-clipboard" />
                                                 <span>
-                                                    {copied ? <FormattedMessage defaultMessage="Copied" description="Label for copy-to-clipboard button after a successful copy" />
-                                                        : <FormattedMessage defaultMessage="Copy" description="Label for copy-to-clipboard button" />}
+                                                    {copied ? <FormattedMessage id="markdown.copied" defaultMessage="Copied" description="Label for copy-to-clipboard button after a successful copy" />
+                                                        : <FormattedMessage id="markdown.copy" defaultMessage="Copy" description="Label for copy-to-clipboard button" />}
                                                 </span>
                                             </Button>
                                         )}
