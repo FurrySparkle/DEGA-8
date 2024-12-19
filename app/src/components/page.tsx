@@ -8,9 +8,8 @@ import SettingsDrawer from './settings';
 import Sidebar from './sidebar';
 import AudioControls from './tts-controls';
 import storage from './mockLocalStorage';
-import { NextPage } from 'next/dist/types';
-import exp from 'constants';
 
+import { FC, ReactNode } from 'react';
 
 const Container = styled.div`
     position: absolute;
@@ -75,10 +74,10 @@ interface PageProps {
     id: string;
     headerProps?: HeaderProps;
     showSubHeader?: boolean;
-    children: any;
+    children: ReactNode;
 }
 
- const Page:NextPage<PageProps> = ({ id, headerProps, showSubHeader, children }) => {
+ const Page:FC<PageProps> = ({ id, headerProps, showSubHeader, children }) => {
     const spotlightProps = useChatSpotlightProps();
 
     return <SpotlightProvider {...spotlightProps}>
