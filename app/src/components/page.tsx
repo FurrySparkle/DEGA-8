@@ -8,6 +8,8 @@ import SettingsDrawer from './settings';
 import Sidebar from './sidebar';
 import AudioControls from './tts-controls';
 import storage from './mockLocalStorage';
+import { NextPage } from 'next/dist/types';
+import exp from 'constants';
 
 
 const Container = styled.div`
@@ -69,12 +71,12 @@ const Main = styled.div`
     }
 `;
 
-export default function Page(props: {
+ const Page = (props: {
     id: string;
     headerProps?: HeaderProps;
     showSubHeader?: boolean;
     children: any;
-}) {
+}) => {
     const spotlightProps = useChatSpotlightProps();
 
     return <SpotlightProvider {...spotlightProps}>
@@ -96,3 +98,5 @@ export default function Page(props: {
         </Container>
     </SpotlightProvider>;
 }
+
+export default Page;
