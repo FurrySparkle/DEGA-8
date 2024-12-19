@@ -77,7 +77,7 @@ interface PageProps {
     children: ReactNode;
 }
 
- const Page:FC<PageProps> = ({ id, headerProps, showSubHeader, children }) => {
+ export const Page:FC<PageProps> = ({ id, headerProps, showSubHeader, children }) => {
     const spotlightProps = useChatSpotlightProps();
 
     return <SpotlightProvider {...spotlightProps}>
@@ -100,4 +100,3 @@ interface PageProps {
     </SpotlightProvider>;
 }
 
-export default Page;
