@@ -69,7 +69,7 @@ const Main = styled.div`
     }
 `;
 
-export function Page(props: {
+export default function Page(props: {
     id: string;
     headerProps?: HeaderProps;
     showSubHeader?: boolean;
