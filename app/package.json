@@ -90,12 +90,7 @@
     ]
     
   },
-  "engines": {
-    "node": ">=20.0.0"
-  },
-  "cloudflare": {
-    "node_version": "22.11.0"
-  },
+  
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "@formatjs/cli": "^6.0.4",

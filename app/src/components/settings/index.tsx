@@ -1,3 +1,5 @@
+'use client';
+
 import styled from '@emotion/styled';
 import { Button, Drawer, Tabs } from "@mantine/core";
 import { useMediaQuery } from '@mantine/hooks';

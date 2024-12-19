@@ -1,3 +1,4 @@
+'use client';
 import styled from '@emotion/styled';
 import { ActionIcon, Button } from '@mantine/core';
 import { useCallback, useEffect } from 'react';
