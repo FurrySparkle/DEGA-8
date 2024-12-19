@@ -71,24 +71,26 @@ const Main = styled.div`
     }
 `;
 
- const Page = (props: {
+interface PageProps {
     id: string;
     headerProps?: HeaderProps;
     showSubHeader?: boolean;
     children: any;
-}) => {
+}
+
+ const Page:NextPage<PageProps> = ({ id, headerProps, showSubHeader, children }) => {
     const spotlightProps = useChatSpotlightProps();
 
     return <SpotlightProvider {...spotlightProps}>
         <Container>
             <Sidebar />
-            <Main key={props.id}>
-                <Header share={props.headerProps?.share}
-                    canShare={props.headerProps?.canShare}
-                    title={props.headerProps?.title}
-                    onShare={props.headerProps?.onShare} />
-                {props.showSubHeader && <SubHeader />}
-                {props.children}
+            <Main key={id}>
+                <Header share={headerProps?.share}
+                    canShare={headerProps?.canShare}
+                    title={headerProps?.title}
+                    onShare={headerProps?.onShare} />
+                {showSubHeader && <SubHeader />}
+                {children}
                 <AudioControls />
                 <MessageInput key={storage.getItem('openai-api-key')} />
                 <SettingsDrawer />
