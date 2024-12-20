@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useAppDispatch } from '../../store';
 import { openOpenAIApiKeyPanel } from '../../store/settings-ui';
-import { Page } from '../page';
+import { Page } from '../pageComponent';
 import { useOption } from '../../core/options/use-option';
 import { isProxySupported } from '../../core/chat/openai';
 

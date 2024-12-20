@@ -8,7 +8,7 @@ import { Loader } from '@mantine/core';
 
 import { useAppContext } from '../../core/context';
 import { backend } from '../../core/backend';
-import { Page } from '../page';
+import { Page } from '../pageComponent';
 import { useOption } from '../../core/options/use-option';
 
 const Message = React.lazy(() => import(/* webpackPreload: true */ '../message'));
