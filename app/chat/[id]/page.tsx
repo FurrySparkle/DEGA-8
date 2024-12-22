@@ -9,7 +9,7 @@ import { Loader } from '@mantine/core';
 
 import { useAppContext } from '../../src/core/context';
 import { backend } from '../../src/core/backend';
-import  Page  from '../../page';
+import { Page}  from '../../src/components/pageComponent';
 import { useOption } from '../../src/core/options/use-option';
 
 const Message = React.lazy(() => import(/* webpackPreload: true */ '../../src/components/message'));
@@ -42,7 +42,7 @@ const EmptyMessage = styled.div`
 export default function ChatPage(props: any) {
     const { id } = useParams();
     const context = useAppContext();
-
+    const sanitizedId = Array.isArray(id) ? id[0] : id || 'landing';
     const [autoScrollWhenOpeningChat] = useOption('auto-scroll', 'auto-scroll-when-opening-chat')
     const [autoScrollWhileGenerating] = useOption('auto-scroll', 'auto-scroll-while-generating');
 
@@ -87,7 +87,7 @@ export default function ChatPage(props: any) {
 
     const shouldShowChat = id && context.currentChat.chat && !!messagesToDisplay.length;
 
-    return <Page id={id || 'landing'}
+    return <Page id={sanitizedId}
         headerProps={{
             share: context.isShare,
             canShare: messagesToDisplay.length > 1,
