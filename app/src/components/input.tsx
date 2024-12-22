@@ -5,7 +5,7 @@ import { Button, ActionIcon, Textarea, Loader, Popover } from '@mantine/core';
 import { getHotkeyHandler, useHotkeys, useMediaQuery } from '@mantine/hooks';
 import { useCallback, useEffect, useMemo, useState, useRef } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useAppContext } from '../core/context';
 import { useAppDispatch, useAppSelector } from '../store';
 import { selectMessage, setMessage } from '../store/message';
@@ -73,7 +73,7 @@ export default function MessageInput(props: MessageInputProps) {
         dispatch(setMessage(e.target.value));
     }, [dispatch]);
 
-    const pathname = router.pathname;
+    const pathname = usePathname();
 
     const onSubmit = useCallback(async () => {
         setSpeechError(null);
@@ -267,10 +267,7 @@ export default function MessageInput(props: MessageInputProps) {
 
     const disabled = context.generating;
 
-    const isLandingPage = pathname === '/';
-    if (context.isShare || (!isLandingPage && !context.id)) {
-        return null;
-    }
+  
 
     const hotkeyHandler = useMemo(() => {
         const keys = [
@@ -283,12 +280,16 @@ export default function MessageInput(props: MessageInputProps) {
         const handler = getHotkeyHandler(keys as any);
         return handler;
     }, [onSubmit, blur, submitOnEnter]);
-
+    
+    const isLandingPage = pathname === '/';
+    if (context.isShare || (!isLandingPage && !context.id)) {
+        return null;
+    }
     return <Container>
         <div className="inner">
 
             {/* Pico-8 Player */}
-            <Pico8Player iframeRef={iframeRef} />
+            <Pico8Player />
             <Textarea disabled={props.disabled || disabled}
                 id="message-input"
                 autosize
