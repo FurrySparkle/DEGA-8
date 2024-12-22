@@ -3,8 +3,14 @@
 import React from 'react';
 import ChatPage from '../../src/components/pages/chat';
 //export const runtime = 'edge';
-export default function NewChatPage() {
-  return <ChatPage  />;
+
+
+
+export default async function NewChatPage({ params }: { params: Promise<{ id: string }> }) {
+
+    const { id } = await params;
+    console.log('ChatPage||', id);
+  return <ChatPage id={id} />;
 }
 
 

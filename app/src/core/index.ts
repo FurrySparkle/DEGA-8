@@ -13,7 +13,7 @@ import { Option } from './options/option';
 import { pluginMetadata } from './plugins/metadata';
 import { pluginRunner } from "./plugins/plugin-runner";
 import { createBasicPluginContext } from './plugins/plugin-context';
-import { P8Injector } from "../components/DEGA-8/CartTemplater";
+
 
 export let channel
 
@@ -158,10 +158,6 @@ export class ChatManager extends EventEmitter {
 
          await this.getReply(messages, userSubmittedMessage.requestedParameters);
 
-
-             //possible location for .p8 injection
-// P8Injector(OutputMessage.content.trim() || '');
-// console.log("P8 Injector Fired! Data:" + OutputMessage.content.trim() || '');
     }
 
     public async regenerate(message: Message, requestedParameters: Parameters) {

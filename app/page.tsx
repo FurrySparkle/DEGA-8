@@ -18,13 +18,15 @@ function Page() {
 
   if (path === '/') {
     content = <LandingPage landing={true} />;
-  } else if (path.startsWith('/chat/')) {
-    content = <ChatPage />;
-  } else if (path.startsWith('/s/')) {
-    content = <ChatPage share={true} />;
-  } else {
-    content = <div>Page not found</div>;
-  }
+  } 
+  
+  // else if (path.startsWith('/chat/')) {
+  //   content = <ChatPage />;
+  // } else if (path.startsWith('/s/')) {
+  //   content = <ChatPage share={true} />;
+  // } else {
+  //   content = <div>Page not found</div>;
+  // }
 
   return (
     <>

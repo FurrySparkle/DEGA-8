@@ -20,7 +20,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   <meta name="description" content="Your instant pocket game with Pico-8." />
   <link rel="apple-touch-icon" href="../public/Logo_solo.webp" />
  
-  <link rel="manifest" href="../public/manifest.json" />
+  
  
   <title>DEGA-8</title>
         {/* Include external stylesheets here */}

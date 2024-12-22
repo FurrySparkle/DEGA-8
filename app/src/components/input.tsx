@@ -81,15 +81,15 @@ export default function MessageInput(props: MessageInputProps) {
         const id = await context.onNewMessage(message);
 
         if (id) {
-            if (!window.location.pathname.includes(id)) {
-                router.push(`/chat/${id}`);
+            console.log('MessageInput||', id);
+             if (!window.location.pathname.includes(id)) {
+
+                console.log('MessageInput||', id);
+                //router.push(`/chat/${id}`);
             }
             dispatch(setMessage(''));
         }
     }, [context, message, dispatch, router]);
-
-    // Create a ref for the iframe element
-    const iframeRef = useRef<HTMLIFrameElement>(null);
 
     const onSpeechError = useCallback((e: any) => {
         console.error('speech recognition error', e);
