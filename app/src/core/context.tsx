@@ -39,8 +39,8 @@ let intl: IntlShape;
 export function useCreateAppContext(): Context {
     const { id: sanitizeId } = useParams();
     const [nextID, setNextID] = useState(uuidv4());
-    const sanitId = Array.isArray(sanitizeId) ? sanitizeId[0] : sanitizeId || '';
-    const id = sanitId ?? nextID;
+   // const sanitId = Array.isArray(sanitizeId) ? sanitizeId[0] : sanitizeId || '';
+    const id = sanitizeId ?? nextID;
     
     const dispatch = useAppDispatch();
 

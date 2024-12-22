@@ -47,7 +47,7 @@ export default function NewChatPage() {
 // `;
 
 // export default function ChatPage(props: any) {
-//     const  id  = useParams();
+//     const  { id } = useParams();
 //     const context = useAppContext();
 //     const sanitizedId = Array.isArray(id) ? id[0] : id || 'landing';
 //     const [autoScrollWhenOpeningChat] = useOption('auto-scroll', 'auto-scroll-when-opening-chat')

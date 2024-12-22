@@ -76,7 +76,7 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
     const { chat, onClick, selected } = props;
     const context = useAppContext();
     const modals = useModals();
-    const router = useRouter();
+   
 
     const onDelete = useCallback(
         (e?: React.MouseEvent) => {
@@ -130,7 +130,7 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
                 },
             });
         },
-        [chat.chatID, chat.title, context, modals, router]
+        [chat.chatID, chat.title, context, modals]
     );
 
     const onRename = useCallback(
@@ -221,7 +221,7 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
 export default function RecentChats(props: any) {
     const context = useAppContext();
     const dispatch = useAppDispatch();
-    const router = useRouter();
+   
 
     const currentChatID = context.currentChat.chat?.id;
     const recentChats = context.chat.searchChats('');
