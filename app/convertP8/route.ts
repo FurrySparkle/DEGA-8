@@ -10,6 +10,7 @@ const ALLOWED_ORIGINS = [
   'http://localhost:5000',
   'http://localhost:3000',
   'https://dega-8.com',
+  'https://dega8.com',
 ];
 
 // Helper function for CORS
@@ -81,7 +82,7 @@ export async function POST(req: NextRequest) {
 
     if (!P8code) {
       return NextResponse.json('P8code is required', {
-        status: 400,
+        status: 408,
         headers,
       });
     }

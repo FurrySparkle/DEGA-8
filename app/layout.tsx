@@ -13,14 +13,14 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <html lang="en">
        <head>
-       <link rel="icon" href="%PUBLIC_URL%/Logo_solo.webp" />
+       <link rel="icon" href="../public/Logo_solo.webp" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Your instant pocket game with Pico-8." />
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/Logo_solo.webp" />
+  <link rel="apple-touch-icon" href="../public/Logo_solo.webp" />
  
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="manifest" href="../public/manifest.json" />
  
   <title>DEGA-8</title>
         {/* Include external stylesheets here */}
