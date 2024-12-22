@@ -76,7 +76,7 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
     const { chat, onClick, selected } = props;
     const context = useAppContext();
     const modals = useModals();
-   
+    const router = useRouter();
 
     const onDelete = useCallback(
         (e?: React.MouseEvent) => {
@@ -130,7 +130,7 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
                 },
             });
         },
-        [chat.chatID, chat.title, context, modals]
+        [chat.chatID, chat.title, context, modals, router]
     );
 
     const onRename = useCallback(
