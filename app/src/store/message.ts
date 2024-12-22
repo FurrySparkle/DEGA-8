@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '.';
 
-const initialState = {
+interface MessageState {
+    message: string;
+  }
+const initialState: MessageState = {
     message: '',
 };
 
