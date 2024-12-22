@@ -76,7 +76,7 @@ function FileUploadSingle() {
 
   return (
     <div style={{ textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
-      <Group justify="center">
+      <Group position="center">
         <Switch size="xl" onLabel="Loaded" offLabel="Unloaded" radius="md" checked={submitted}
       onChange={(event) => setSubmitted(event.currentTarget.checked)} />
         </Group>

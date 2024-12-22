@@ -236,8 +236,8 @@ console.log(gameP8Code);
     const data = await response.json();
     if(data.jsCode){
     console.log(data.jsCode);
-    saveTostorage("GameConverted", data.jsCode);
-    //this.emit()
+    const event = new Event('GameConverted');
+      window.dispatchEvent(event);
     };
 
     
