@@ -1,3 +1,5 @@
+export {};
+
 // import { MantineProvider } from '@mantine/core';
 // import { ModalsProvider } from '@mantine/modals';
 // import React from 'react';
