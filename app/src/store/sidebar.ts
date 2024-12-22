@@ -1,7 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '.';
 
-const initialState = {
+
+export interface SidebarState {
+    open: boolean;
+    // ...
+  }
+
+const initialState: SidebarState = {
     open: false,
 };
 

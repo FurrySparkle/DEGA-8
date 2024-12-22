@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '.';
 
-interface MessageState {
+export interface MessageState {
     message: string;
   }
 const initialState: MessageState = {
@@ -20,6 +20,6 @@ export const messageSlice = createSlice({
 
 export const { setMessage } = messageSlice.actions;
 
-export const selectMessage = (state: RootState) => state.message.message!;
+export const selectMessage = (state: RootState) => state.message.message;
 
 export default messageSlice.reducer;

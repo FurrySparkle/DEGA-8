@@ -2,10 +2,10 @@ import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import messageReducer from './message';
+import messageReducer, { MessageState } from './message';
 import uiReducer from './ui';
 import settingsUIReducer from './settings-ui';
-import sidebarReducer from './sidebar';
+import sidebarReducer, { SidebarState } from './sidebar';
 
 const persistConfig = {
   key: 'root',
@@ -25,10 +25,10 @@ const persistMessageConfig = {
 
 const store = configureStore({
   reducer: {
-    message: persistReducer(persistMessageConfig, messageReducer),
+    message: persistReducer<MessageState>(persistMessageConfig, messageReducer),
     ui: uiReducer,
     settingsUI: settingsUIReducer,
-    sidebar: persistReducer(persistSidebarConfig, sidebarReducer),
+    sidebar: persistReducer<SidebarState>(persistSidebarConfig, sidebarReducer),
     
   },
   middleware: (getDefaultMiddleware) =>
