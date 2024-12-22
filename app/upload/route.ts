@@ -3,7 +3,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-export const runtime = "edge";
+export const runtime = "nodejs";
 
 // Define the allowed origins for CORS
 const ALLOWED_ORIGINS = [

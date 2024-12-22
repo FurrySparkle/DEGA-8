@@ -4,7 +4,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import path from 'path';
 import { spawn } from 'child_process';
 import fs from 'fs';
-export const runtime = "edge";
+export const runtime = "nodejs";
 // Define the CORS whitelist
 const ALLOWED_ORIGINS = [
   'http://localhost:5000',
