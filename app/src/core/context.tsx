@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo, useEffect, useCallback } from "react";
+import React, { useState,  useMemo, useEffect, useCallback } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { IntlShape, useIntl } from "react-intl";
 import { Backend, User } from "./backend";
@@ -8,9 +8,9 @@ import { openOpenAIApiKeyPanel } from "../store/settings-ui";
 import { Message, Parameters } from "./chat/types";
 import { useChat, UseChatResult } from "./chat/use-chat";
 import { TTSContextProvider } from "./tts/use-tts";
-import { usePathname, useNavigate, useParams } from "next/navigation";
+import { usePathname,  useParams } from "next/navigation";
 import { isProxySupported } from "./chat/openai";
-import { audioContext, resetAudioContext } from "./tts/audio-file-player";
+import { resetAudioContext } from "./tts/audio-file-player";
 import { defaultSoundPrompt } from "../plugins/picoPlayerSettings";
 import storage from "../components/mockLocalStorage";
 export interface Context {
@@ -37,18 +37,19 @@ const backend = new Backend(chatManager);
 let intl: IntlShape;
 
 export function useCreateAppContext(): Context {
-    const { id: _id } = useParams();
+    const { id: sanitizeId } = useParams();
     const [nextID, setNextID] = useState(uuidv4());
-    const id = _id ?? nextID;
-
+    const sanitId = Array.isArray(sanitizeId) ? sanitizeId[0] : sanitizeId || '';
+    const id = sanitId ?? nextID;
+    
     const dispatch = useAppDispatch();
 
     intl = useIntl();
     let isShare;
     const  pathname  = usePathname() || '';
     const isHome = pathname === '/';
-    if(window === !undefined) {
-     isShare = pathname.startsWith('/s/');};
+    
+     isShare = pathname.startsWith('/s/');
 
     const currentChat = useChat(chatManager, id, isShare);
     const [authenticated, setAuthenticated] = useState(backend?.isAuthenticated || false);

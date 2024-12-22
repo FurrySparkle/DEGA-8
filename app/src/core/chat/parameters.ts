@@ -1,6 +1,6 @@
 import { defaultModel } from "./openai";
 import { Parameters } from "./types";
-
+import storage from "../../components/mockLocalStorage";
 export const defaultParameters: Parameters = {
     temperature: 0.5,
     topP: 0.8,
