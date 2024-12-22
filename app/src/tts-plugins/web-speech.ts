@@ -67,7 +67,7 @@ export default class WebSpeechPlugin extends DirectTTSPlugin<WebSpeechPluginOpti
                 id: v.name,
                 name: v.name,
             }));
-        return WebSpeechPlugin.voices;} else return;
+        return WebSpeechPlugin.voices;} else return [];
     }
 
     async getCurrentVoice(): Promise<Voice> {
