@@ -20,6 +20,6 @@ export const messageSlice = createSlice({
 
 export const { setMessage } = messageSlice.actions;
 
-export const selectMessage = (state: RootState) => state.message.message;
+export const selectMessage = (state: RootState) => state.message.message!;
 
 export default messageSlice.reducer;
