@@ -129,11 +129,12 @@ export async function GET(req: NextRequest) {
     const fileSizeInBytes = stat.size;
     const nineMB = 9 * 1024 * 1024; // 9MB in bytes
     const isLargerThan9MB = fileSizeInBytes > nineMB;
-
+ console.log(isLargerThan9MB);
+ 
     return NextResponse.json(
       { isLargerThan9MB },
       {
-        status: 200,
+        status: isLargerThan9MB ? 200 : 404,
         headers,
       }
     );

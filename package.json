@@ -4,6 +4,7 @@
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.0.4",
     "@chengsokdara/use-whisper": "^0.2.0",
+    "@cloudflare/next-on-pages": "^1.13.7",
     "@emotion/css": "^11.10.6",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
@@ -65,11 +66,8 @@
     "@svgr/webpack": "$@svgr/webpack"
   },
   "scripts": {
-    
     "start": "npm run extract & next dev",
-    
     "build": "next build",
-    
     "extract": "formatjs extract 'src/**/*.ts*' --ignore='**/*.d.ts' --out-file public/lang/en-us.json --id-interpolation-pattern '[sha512:contenthash:base64:6]'"
   },
   "eslintConfig": {

@@ -19,11 +19,12 @@ function FileUploadSingle() {
         'Content-Type': 'application/json',
       },
     }).then((response) => {
+     
       
       if (response.ok) {
 
         setSubmitted(true);
-        return response.json();
+        return ;
       }
       setSubmitted(false);
       throw new Error('Network response indicates no dat file, please upload a legitimate pico.dat file.');

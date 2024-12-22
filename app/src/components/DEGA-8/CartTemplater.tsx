@@ -222,6 +222,7 @@ const LUACode  = extractCode(GPTchoice);
  async function handleConvert(){
    // Retrieve P8 content from local storage
 const gameP8Code = storage.getItem("gameP8File");
+
 console.log(gameP8Code);
     console.log('Handling Convert!!  PicoLUA>' + gameP8Code)
     const response = await fetch('/convertP8', {
@@ -235,6 +236,7 @@ console.log(gameP8Code);
     const data = await response.json();
     if(data.jsCode){
     console.log(data.jsCode);
+    saveTostorage("GameConverted", data.jsCode);
     //this.emit()
     };
 
