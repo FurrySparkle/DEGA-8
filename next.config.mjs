@@ -1,7 +1,8 @@
 // next.config.js
-const webpack = require('webpack');
-const path = require('path');
-
+import webpack from 'webpack';
+import path from 'path';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Disable ESLint during build (similar to CRACO's eslint: { enable: false })
@@ -26,9 +27,8 @@ const nextConfig = {
       buffer: require.resolve('buffer'),
       path: require.resolve('path-browserify'),
       // If you need to disable 'child_process' and 'fs' on the client-side:
-      // child_process: false,
-      // fs: false,
-      
+      child_process: false,
+    'node:child_process': false,
        
       
     };
@@ -39,8 +39,11 @@ const nextConfig = {
     // Plugins (similar to CRACO's webpack.plugins)
     config.plugins.push(
       new webpack.ProvidePlugin({
+        
         Buffer: ['buffer', 'Buffer'],
       })
+     
+      
     );
 
     // Ignore specific warnings (similar to CRACO's webpack.ignoreWarnings)
@@ -70,4 +73,4 @@ const nextConfig = {
 //   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

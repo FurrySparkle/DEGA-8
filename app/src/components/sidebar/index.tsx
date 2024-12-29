@@ -1,4 +1,4 @@
-'use client';
+
 
 import styled from "@emotion/styled";
 import {
@@ -134,7 +134,7 @@ export default function Sidebar(props: { className?: string }) {
         return () => {
             context.chat.off("update", update);
         };
-    }, []);
+    }, [context.chat, update]);
 
     const burgerLabel = sidebarOpen
         ? intl.formatMessage({ id: "Sidebar.close", defaultMessage: "Close sidebar" })

@@ -39,10 +39,10 @@ const EmptyMessage = styled.div`
 export default function ChatPage(props: any) {
     
     const context = useAppContext();
-    //const sanitizedId = Array.isArray(id) ? id[0] : id || 'landing';
+    
     const [autoScrollWhenOpeningChat] = useOption('auto-scroll', 'auto-scroll-when-opening-chat')
     const [autoScrollWhileGenerating] = useOption('auto-scroll', 'auto-scroll-while-generating');
-    const  id  = props.id;
+    const  {id} = useParams<{ id: string }>();
     
 
 
@@ -87,7 +87,7 @@ export default function ChatPage(props: any) {
 
     const shouldShowChat = id && context.currentChat.chat && !!messagesToDisplay.length;
 
-    return <Page id={id! || 'landing'}
+    return <Page id={id || 'landing'}
         headerProps={{
             share: context.isShare,
             canShare: messagesToDisplay.length > 1,

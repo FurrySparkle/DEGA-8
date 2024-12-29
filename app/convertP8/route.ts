@@ -3,8 +3,9 @@
 import { NextResponse, NextRequest } from 'next/server';
 import path from 'path';
 import { spawn } from 'child_process';
-import fs from 'fs';
-export const runtime = "nodejs";
+import fs from '@zenfs/core';
+import { initFS } from '../upload/route';
+
 // Define the CORS whitelist
 const ALLOWED_ORIGINS = [
   'http://localhost:5000',
@@ -12,6 +13,9 @@ const ALLOWED_ORIGINS = [
   'https://dega-8.com',
   'https://dega8.com',
 ];
+// Wrap ZenFS config to ensure it only runs in the browser
+
+   initFS();
 
 // Helper function for CORS
 const handleCors = (req: NextRequest) => {
@@ -89,18 +93,19 @@ export async function POST(req: NextRequest) {
 
     // Define paths
     const serverOrigin = process.cwd();
-    const inputPath = path.join(serverOrigin, 'public', 'Pic0-8', 'degademo.p8');
-    const outputPath = path.join(serverOrigin, 'public', 'Pic0-8', 'degademo.js');
+    const inputPath = path.join('picostore', 'Pic0-8', 'degademo.p8');
+    const outputPath = path.join( 'picostore', 'Pic0-8', 'degademo.js');
     const PICO8_DAT_PATH = path.join(
-      serverOrigin,
-      'public',
+      //serverOrigin,
+      'picostore',
       'Pic0-8',
       'pico8.dat'
     );
 
     // Write P8 code to .p8 file
+    
     await fs.promises.writeFile(inputPath, P8code, 'utf8');
-
+   
     // Run the Shrinko8 command
     const pythonProcess = spawn('python', [
       path.join(

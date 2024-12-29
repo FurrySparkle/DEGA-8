@@ -10,6 +10,7 @@ import AudioControls from './tts-controls';
 import storage from './mockLocalStorage';
 
 import { FC, ReactNode } from 'react';
+import { NextPage } from 'next/dist/types';
 
 const Container = styled.div`
     position: absolute;
@@ -77,7 +78,7 @@ interface PageProps {
     children: ReactNode;
 }
 
- export const Page:FC<PageProps> = ({ id, headerProps, showSubHeader, children }) => {
+ export const Page:NextPage<PageProps> = ({ id, headerProps, showSubHeader, children }) => {
     const spotlightProps = useChatSpotlightProps();
 
     return <SpotlightProvider {...spotlightProps}>

@@ -79,13 +79,13 @@ export default function MessageInput(props: MessageInputProps) {
         setSpeechError(null);
 
         const id = await context.onNewMessage(message);
-
+        console.log('MessageInput||', id);
         if (id) {
-            console.log('MessageInput||', id);
+            
              if (!window.location.pathname.includes(id)) {
 
-                console.log('MessageInput||', id);
-                //router.push(`/chat/${id}`);
+                
+                router.push(`/chat/` + id);
             }
             dispatch(setMessage(''));
         }

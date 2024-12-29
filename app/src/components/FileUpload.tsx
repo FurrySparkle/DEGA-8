@@ -1,6 +1,13 @@
+'use client';
+
+import {readPico8DatFile,savePico8DatFile} from "./DEGA-8/FileSystemControlCenter";
 import { ChangeEvent, useEffect, useState } from 'react';
 import { Switch, Group } from '@mantine/core';
 import storage from './mockLocalStorage';
+
+
+  
+ 
 
 function FileUploadSingle() {
   const [file, setFile] = useState<File | null>(null);
@@ -12,16 +19,10 @@ function FileUploadSingle() {
 
   useEffect(() => {
 
-    fetch("/upload", {
-  
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).then((response) => {
+    readPico8DatFile().then((response) => {
      
       
-      if (response.ok) {
+      if (response.status) {
 
         setSubmitted(true);
         return ;
@@ -49,29 +50,7 @@ function FileUploadSingle() {
     if (!file) {
       return;
     }
-
-    const uploadProgress = new XMLHttpRequest();
-
-    uploadProgress.upload.onprogress = (event) => {
-      if (event.lengthComputable) {
-        const percentComplete = Math.round((event.loaded / event.total) * 100);
-        setProgress(percentComplete); // Update progress state
-      }
-    };
-
-    uploadProgress.onload = () => {
-      setProgress(100); // Set progress to complete on success
-      setSubmitted(true); // Mark as successfully submitted
-    };
-
-    uploadProgress.onerror = () => {
-      console.error('File upload failed');
-    };
-
-    uploadProgress.open('POST', '/upload');
-    uploadProgress.setRequestHeader('X-Filename', file.name);
-    uploadProgress.setRequestHeader('Content-Type', 'application/octet-stream');
-    uploadProgress.send(file);
+   savePico8DatFile(file);
   };
 
   return (
@@ -269,4 +248,30 @@ export default FileUploadSingle;
 {/* <form action= >   Dreprecated Code
                     <input type="file" id="file" accept=".dat"></input>
                     <input type="submit" value="Upload" style={{backgroundColor: 'green'}}></input>
-                    </form> */}
+                    </form>
+                    
+                    
+    const uploadProgress = new XMLHttpRequest();
+
+    uploadProgress.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        const percentComplete = Math.round((event.loaded / event.total) * 100);
+        setProgress(percentComplete); // Update progress state
+      }
+    };
+
+    uploadProgress.onload = () => {
+      setProgress(100); // Set progress to complete on success
+      setSubmitted(true); // Mark as successfully submitted
+    };
+
+    uploadProgress.onerror = () => {
+      console.error('File upload failed');
+    };
+
+    uploadProgress.open('POST', '/upload');
+    uploadProgress.setRequestHeader('X-Filename', file.name);
+    uploadProgress.setRequestHeader('Content-Type', 'application/octet-stream');
+    uploadProgress.send(file);
+    
+    */}

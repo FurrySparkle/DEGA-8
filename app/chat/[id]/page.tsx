@@ -6,11 +6,10 @@ import ChatPage from '../../src/components/pages/chat';
 
 
 
-export default async function NewChatPage({ params }: { params: Promise<{ id: string }> }) {
+export default function NewChatPage() {
 
-    const { id } = await params;
-    console.log('ChatPage||', id);
-  return <ChatPage id={id} />;
+    
+  return  <ChatPage />;
 }
 
 

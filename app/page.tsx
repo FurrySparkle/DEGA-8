@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { usePathname} from 'next/navigation';
+import { usePathname, useParams} from 'next/navigation';
 
 import dynamic from 'next/dynamic';
 import './src/index.scss';
@@ -11,7 +11,7 @@ const LandingPage = dynamic(() => import('./src/components/pages/landing'));
 
 function Page() {
   
-
+  const param =  useParams<{ id: string }>();
   // Determine which component to render based on the current route
   const path = usePathname();
   let content;
@@ -19,9 +19,9 @@ function Page() {
   if (path === '/') {
     content = <LandingPage landing={true} />;
   } 
-  
   // else if (path.startsWith('/chat/')) {
-  //   content = <ChatPage />;
+  //   console.log('ChatPage||', param!.id);
+  // content = <ChatPage id={param!.id} />;
   // } else if (path.startsWith('/s/')) {
   //   content = <ChatPage share={true} />;
   // } else {

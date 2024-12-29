@@ -37,11 +37,11 @@ const backend = new Backend(chatManager);
 let intl: IntlShape;
 
 export function useCreateAppContext(): Context {
-    const { id: sanitizeId } = useParams();
+    const { id: sanitizeId } = useParams<{ id: string }>();
     const [nextID, setNextID] = useState(uuidv4());
     const sanitId = Array.isArray(sanitizeId)
     ? sanitizeId.join('') 
-    : sanitizeId ?? '';
+    : sanitizeId;
     const id = sanitId ?? nextID;
    
     const dispatch = useAppDispatch();
@@ -93,7 +93,6 @@ export function useCreateAppContext(): Context {
             return false;
         }
 
-        // const openaiApiKey = store.getState().apiKeys.openAIApiKey;
         const openaiApiKey = chatManager.options.getOption<string>('openai', 'apiKey');
 
         if (!openaiApiKey && !isProxySupported()) {
@@ -120,20 +119,13 @@ export function useCreateAppContext(): Context {
                     speechSynthesis.speak(utterance);
                 }
             }
+
+            if (!chatManager.has(id)) {
+                await chatManager.createChat(id);
+            };
         }
 
-        // if (chatManager.has(id)) {
-            // chatManager.sendMessage({
-            //     chatID: id,
-            //     content: message.trim(),
-            //     requestedParameters: {
-            //         ...parameters,
-            //         apiKey: openaiApiKey,
-            //     },
-            //     parentID: currentChat.leaf?.id,
-            // });
-        // } else {
-        //     await chatManager.createChat(id);
+        
 
             chatManager.sendMessage({
                 chatID: id,
@@ -144,10 +136,10 @@ export function useCreateAppContext(): Context {
                 },
                 parentID: currentChat.leaf?.id,
             });
-        // }
+       
 
         return id;
-    }, [dispatch, id, currentChat.leaf, isShare]);
+    }, [dispatch, id, nextID, currentChat.leaf, isShare]);
 
     const regenerateMessage = useCallback(async (message: Message) => {
         resetAudioContext();
@@ -178,7 +170,7 @@ export function useCreateAppContext(): Context {
         });
 
         return true;
-    }, [dispatch, isShare]);
+    }, [dispatch,id, isShare]);
 
     const editMessage = useCallback(async (message: Message, content: string) => {
         resetAudioContext();
@@ -251,7 +243,7 @@ export function useCreateAppContext(): Context {
         onNewMessage,
         regenerateMessage,
         editMessage,
-    }), [authenticated, wasAuthenticated, generating, onNewMessage, regenerateMessage, editMessage, currentChat, id, isHome, isShare, intl]);
+    }), [authenticated, wasAuthenticated, generating, onNewMessage, regenerateMessage, editMessage, currentChat, id, isHome, isShare]);
 
     return context;
 }

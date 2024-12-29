@@ -1,9 +1,9 @@
+"use client";
 import storage from "../mockLocalStorage";
 
-// Save updated .js content to local storage
-function saveTostorage(key: string, content: string) {
-    storage.setItem(key, content);
-  }
+
+
+
   let SoundData: string | null = null;
 
   if (typeof window !== 'undefined') {
@@ -159,24 +159,41 @@ ${SoundData}
 
 
 
+function useConvertGame(gameP8Code: string) :Promise<boolean>{
+
+  let truthy;
+
+    // Create a new worker pointing to the static file
+    const worker = new Worker("/pyodideConverter.js", { type: "module" });
+// Post some Python code to run
+worker.postMessage({ code: gameP8Code });
+// Listen for messages from the worker
+worker.onmessage = (e) => {
+  if (e.data.success) {
+    truthy = true;
+    console.log("Worker result:", e.data.result);
+  } else {
+    truthy = false;
+    console.error("Worker error:", e.data.error);
+  }
+};
+
+
+
+return truthy;
+};
 
 
 
 
-
-export function  P8Injector(GPTchoice:string){
+export async function P8Injector(GPTchoice:string){
     console.log(GPTchoice)
-
-    
     
 
     const extractCode = (text: string) => {
       const match = text.match(/```([\s\S]*?)```/);
       return match ? match[1] : '';
     };
-    
-
-
     const removeFirstLuaLines = (text: string): string => {
       const lines = text.split('\n');
     
@@ -191,54 +208,15 @@ export function  P8Injector(GPTchoice:string){
       return lines.filter(line => line.trim() !== '').join('\n');
     };
 
-    
-
-
-
 const LUACode  = extractCode(GPTchoice);
- console.log(LUACode);
+ const newCode = removeFirstLuaLines(LUACode); 
+  const readyCode = cartridgeTemplate(newCode);    
+const isConverted = useConvertGame(readyCode);
 
- const ReadyP8 = removeFirstLuaLines(LUACode); 
-  console.log(ReadyP8);
- setP8Code( ReadyP8);
-};
-
- function setP8Code(newCode){
-  const readyCode = cartridgeTemplate(newCode)
-  console.log('P8 file is in local storage! Code>' + readyCode)
-  saveTostorage("gameP8File", readyCode);
-  
- handleConvert();
-};
-
-
-
-
-
-
-
-
-
- async function handleConvert(){
-   // Retrieve P8 content from local storage
-const gameP8Code = storage.getItem("gameP8File");
-
-console.log(gameP8Code);
-    console.log('Handling Convert!!  PicoLUA>' + gameP8Code)
-    const response = await fetch('/convertP8', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ P8code: gameP8Code }),
-    });
-    
-    const data = await response.json();
-    if(data.jsCode){
-    console.log(data.jsCode);
+if (await isConverted) {
     const event = new Event('GameConverted');
       window.dispatchEvent(event);
-    };
+}
 
     
 };

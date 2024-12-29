@@ -73,7 +73,7 @@ const ChatListItemLink = styled(Link)`
 `;
 
 function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
-    const { chat, onClick, selected } = props;
+    const { chat, selected } = props;
     const context = useAppContext();
     const modals = useModals();
     const router = useRouter();
@@ -187,8 +187,8 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
 
     return (
         <ChatListItemLink
-            href={`/chat/${chat.chatID}`}
-            onClick={onClick}
+            href={`/chat/` + chat.chatID}
+            onClick={props.onClick}
             data-chat-id={chat.chatID}
             className={selected ? 'selected' : ''}
         >
@@ -228,7 +228,7 @@ export default function RecentChats(props: any) {
 
     const onClick = useCallback(
         (e: React.MouseEvent) => {
-            if ((e.target as HTMLElement).closest('button')) {
+            if ((e.currentTarget).closest('button')) {
                 e.preventDefault();
                 e.stopPropagation();
                 return;
@@ -256,7 +256,7 @@ export default function RecentChats(props: any) {
         <Container>
             {recentChats.length > 0 && (
                 <ChatList>
-                    {recentChats.map((c: any) => (
+                    {recentChats.map((c) => (
                         <ChatListItem
                             key={c.chatID}
                             chat={c}

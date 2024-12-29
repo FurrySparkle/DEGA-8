@@ -12,9 +12,9 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
     "incremental": true,
-    "module": "esnext",
+    "module": "NodeNext",
     "esModuleInterop": true,
-    "moduleResolution": "node",
+    "moduleResolution": "nodenext",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -36,7 +36,7 @@
     "upload/route.ts",
     "NewGamePlus.js",
     "page.tsx"
-  ],
+, "public/pyodideConverter.js"  ],
   "exclude": [
     "node_modules"
   ]
