@@ -1,16 +1,66 @@
+// @ts-check
+/// <reference lib="webworker" />
 // public/py-worker.js
-import * as path from 'path';
-import { loadPyodide } from "pyodide";
-import fs from '@zenfs/core';
-import { initFS } from '../app/src/components/DEGA-8/FileSystemControlCenter';
 
-self.addEventListener("error", (e) => {
-  console.error("Worker hit an error:", e);
-});
-initFS();
 
-async function convertGame(P8code) {
-      
+
+
+// 1) Load Pyodide script from the official CDN (or local copy)
+importScripts('https://cdn.jsdelivr.net/pyodide/v0.27.0/full/pyodide.js');
+let shrink8Zip = 'shrinko8-main.zip';
+let isShrinko8Loaded = false;
+let pyodideLoad;
+async function pyodide()  {
+  
+  if(!pyodideLoad) {
+     pyodideLoad = await self.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.27.0/full/'});
+  }
+  return pyodideLoad;
+}
+async function loadShrinko8Zip(zipUrl) {
+  const loadedPyodide = await pyodide();
+
+  if (isShrinko8Loaded) {
+    return;
+  } else {
+    const response = await fetch(zipUrl);
+    const zipData = await response.arrayBuffer();
+  //  Unpack into Pyodide’s in-memory FS
+  //    Tells Pyodide "this is a ZIP file", so it extracts everything
+  try{
+
+    //await loadedPyodide.FS.mkdir('shrinko8');
+    await loadedPyodide.unpackArchive(zipData, "zip");
+    // await loadedPyodide.runPythonAsync(`
+    //   from pyodide.http import pyfetch
+    //   response = await pyfetch(${zipUrl})
+    //   await response.unpack_archive()
+    // `)
+    
+
+    //walk through the directory
+    await loadedPyodide.runPythonAsync(`import os
+
+for root, dirs, files in os.walk("/"):
+    print("Directory:", root)
+    for d in dirs:
+        print("  subdir:", d)
+    for f in files:
+        print("  file:", f)`);
+
+  } catch (e) {
+    console.error(e);
+  }
+  console.log('ZIP LOADED');
+  // Now the entire "shrinko8/" folder is in the Pyodide FS
+  isShrinko8Loaded = true;
+  }
+}
+loadShrinko8Zip(shrink8Zip);
+
+async function convertGame(P8code, ZenDATfile ) {
+  const loadedPyodide = await pyodide(); 
+  let globalErrror;
   try {
      
  
@@ -21,84 +71,93 @@ async function convertGame(P8code) {
      }
  
      // Define paths
-     const serverOrigin = process.cwd();
-     const inputPath = path.join('picostore', 'Pic0-8', 'degademo.p8');
-     const outputPath = path.join( 'picostore', 'Pic0-8', 'degademo.js');
-     const PICO8_DAT_PATH = path.join(
-       //serverOrigin,
-       'picostore',
-       'Pic0-8',
-       'pico8.dat'
-     );
- 
+     
+     const inputPath = ( 'Pic0-8/degademo.p8');
+     
+     const outputPyodide = (  'Pic0-8/degademo.js');
+     
+     const PYODIDE_DAT_PATH =( 'Pic0-8/pico8.dat');
+
+     await loadShrinko8Zip(shrink8Zip);
+try {
+  await loadedPyodide.FS.mkdir('Pic0-8');
+     console.log('Directory created');
+} catch (e) {
+  // If the directory already exists, FS.mkdir will throw an error.
+  // You can safely ignore it or check if e.errno === 20 to confirm "exists".
+}
      // Write P8 code to .p8 file
+     await loadedPyodide.FS.writeFile(inputPath, P8code, { encoding: "utf8" });
      
-     await fs.promises.writeFile(inputPath, P8code, 'utf8');
-     
-      console.log('P8 code written to file' + P8code);
+     await loadedPyodide.FS.writeFile(PYODIDE_DAT_PATH, ZenDATfile);
+   const stat = await loadedPyodide.FS.stat(inputPath);
+      console.log('P8 code written to file' + stat.size + P8code);
       
-       let pyodide = await loadPyodide();  //{ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.18.1/full/' }
-    const result = await pyodide.runPythonAsync('python'+
-       path.join(
-         serverOrigin,
-         'app',
-         'src',
-         'core',
-         'plugins',
-         'shrinko8-main',
-         'shrinko8.py'
-       ) +
-       inputPath +
-       outputPath +
-       '--pico8-dat' +
-       PICO8_DAT_PATH
-     );
+      // Run the Python script and create directory for output
+      await loadedPyodide.FS.open(outputPyodide, 'w+');
+      console.log('Output file created, Dirs>' + loadedPyodide.FS.readdir('/home/pyodide/'));
+
+      // 2) Build a Python code string that sets sys.argv and runs "shrinko8.py"
+const pythonCode = `
+import sys
+import runpy
+
+sys.argv = [
+    "shrinko8.py", 
+    ${JSON.stringify(inputPath)}, 
+    ${JSON.stringify(outputPyodide)}, 
+    "--pico8-dat", 
+    ${JSON.stringify(PYODIDE_DAT_PATH)}
+]
+print('Running shrinko8.py "shrinko8.py",  ${JSON.stringify(inputPath)},   ${JSON.stringify(outputPyodide)},  "--pico8-dat" ${JSON.stringify(PYODIDE_DAT_PATH)}')
+try:
+  runpy.run_path("shrinko8.py", run_name="__main__")
+except SystemExit:
+    # If you'd like to completely ignore it, do nothing here
+    pass
+`;
+
+     try {
+      
+     await loadedPyodide.runPythonAsync(pythonCode);
      
+      
      
-     let errorOutput = result.stderr;
- 
-     // pythonProcess.stdout.on('data', (data) => {
-     //   result += data.toString();
-     // });
- 
-     // pythonProcess.stderr.on('data', (data) => {
-     //   errorOutput += data.toString();
-     // });
- 
-     // const exitCode = await new Promise((resolve) => {
-     //   pythonProcess.on('close', resolve);
-     // });
- 
+      
+     const newGame = await loadedPyodide.FS.readFile(outputPyodide, { encoding: "utf8" });
      
-       try {
-        if(result){
-         return true;}
-       } catch {
-         console.log('Python script failed', errorOutput);
-             throw Error('Python script failed');
+     console.log('Game converted', newGame);
+       
+        if(newGame) {
+         return  JSON.stringify(newGame);}
+       } catch (e) {
+         console.log('Python script failed', globalErrror);
+             throw Error('Python script failed' + e);
            
        }
       
-   } catch {
-     throw Error('Internal Server Error', {
-       
-     });
+   } catch (e) {
+     throw Error('Internal Server Error||' + e);
    }};
-
-   self.addEventListener("message", async (event) => {
+  // Handle errors
+   self.addEventListener("error", (e) => {
+    console.error("Worker hit an error:", e);
+  });
+self.addEventListener( "message", async (event) => {
   
-console.log('Message received in worker', event.data);
+  console.log('Message received in worker', event.data);
 
-  const { code } = event.data;
+  const { code, ZenDATfile } = event.data;
 
   try {
   
-    const result = await convertGame(code);
+    const result = await convertGame(code, ZenDATfile );
+    
     // Post the result back to the main thread
-    self.postMessage({ success: true, result });
+    postMessage({ success: true , result });
   } catch (error) {
-    self.postMessage({ success: false, error: error.toString() });
+    postMessage({ success: false, error: error.toString() });
   }
-   });
+});
 
 

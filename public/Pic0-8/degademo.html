@@ -1,8 +1,10 @@
 ﻿<html><head>
 <title>PICO-8 Cartridge</title>
 <meta name="viewport" content="width=device-width, user-scalable=no">
-<script type="text/javascript">
+<script type="text/javascript" >
 
+	
+	
 	// Default shell for PICO-8 0.2.2 (includes @weeble's gamepad mod 1.0)
 	// This file is available under a CC0 license https://creativecommons.org/share-your-work/public-domain/cc0/
 	// (note: "this file" does not include any cartridge or cartridge artwork injected into a derivative html file when using the PICO-8 html exporter)
@@ -631,10 +633,15 @@
 
 
 		}
-		e.type = "application/javascript";
-		e.src = "../../picostore/Pic0-8/degademo.js";
-		e.id = "e_script";
 		
+		e.type = "application/javascript";
+		const blob = new Blob([ window.localStorage.getItem("gamelink")], { type: e.type });
+		console.log(blob.size + " bytes in the blob");
+const LocalP8blob = URL.createObjectURL(blob);
+console.log("LocalP8blob: " + LocalP8blob);
+		e.src = LocalP8blob;
+		console.log("e.src: " + e.src);
+		e.id = "e_script";
 		document.body.appendChild(e); // load and run
 
 		// hide start button and show canvas / menu buttons. hide start button

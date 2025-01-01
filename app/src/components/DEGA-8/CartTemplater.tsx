@@ -1,9 +1,11 @@
 "use client";
 import storage from "../mockLocalStorage";
+import fs from "@zenfs/core";
+import path from "path";
+import { initFS } from "./FileSystemControlCenter";
 
 
-
-
+initFS();
   let SoundData: string | null = null;
 
   if (typeof window !== 'undefined') {
@@ -157,30 +159,44 @@ __sfx__
 ${SoundData}
 `;
 
+const outputPath = path.join( 'picostore', 'Pic0-8', 'degademo.js');
+const PICO8_DAT_PATH = path.join(
+  //serverOrigin,
+  'picostore',
+  'Pic0-8',
+  'pico8.dat'
+);
 
 
-function useConvertGame(gameP8Code: string) :Promise<boolean>{
 
-  let truthy;
+
+async function useConvertGame(gameP8Code: string) :Promise<boolean>{
+
 
     // Create a new worker pointing to the static file
-    const worker = new Worker("/pyodideConverter.js", { type: "module" });
+    const worker = new Worker("/pyodideConverter.js");
+const ZenDATfile = await fs.promises.readFile(PICO8_DAT_PATH)
 // Post some Python code to run
-worker.postMessage({ code: gameP8Code });
+worker.postMessage({ code: gameP8Code , ZenDATfile: ZenDATfile  });
+
+const promiseResult = new Promise<boolean>((resolve, reject) => {
 // Listen for messages from the worker
-worker.onmessage = (e) => {
+worker.onmessage = async (e) => {
   if (e.data.success) {
-    truthy = true;
+   await fs.promises.writeFile(outputPath, e.data.result, "utf8");
     console.log("Worker result:", e.data.result);
+    resolve(true);
   } else {
-    truthy = false;
+   
     console.error("Worker error:", e.data.error);
+    reject(false);  
   }
-};
 
+}
+});
 
-
-return truthy;
+ // Wait for the promise to resolve or reject
+ return await promiseResult;
 };
 
 
@@ -211,9 +227,16 @@ export async function P8Injector(GPTchoice:string){
 const LUACode  = extractCode(GPTchoice);
  const newCode = removeFirstLuaLines(LUACode); 
   const readyCode = cartridgeTemplate(newCode);    
-const isConverted = useConvertGame(readyCode);
+const isConverted = await useConvertGame(readyCode);
 
-if (await isConverted) {
+const blobCode =  await fs.promises.readlink(outputPath);
+
+
+
+globalThis.gamelink =  blobCode;
+if ( isConverted) {
+  window.localStorage.setItem('gamelink', globalThis.gamelink);
+  console.log("Game conversion successful" + globalThis.gamelink);
     const event = new Event('GameConverted');
       window.dispatchEvent(event);
 }

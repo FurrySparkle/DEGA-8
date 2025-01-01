@@ -41,8 +41,12 @@ const nextConfig = {
       new webpack.ProvidePlugin({
         
         Buffer: ['buffer', 'Buffer'],
-      })
+      }),
      
+      // new webpack.IgnorePlugin({
+      //   resourceRegExp: /^node:(child_process|crypto|fs\/promises|fs|path|url|vm)$/, // Disable Node.js built-ins so Pyodide will run in the browser
+       
+      // })
       
     );
 

@@ -4,7 +4,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import path from 'path';
 import { spawn } from 'child_process';
 import fs from '@zenfs/core';
-import { initFS } from '../upload/route';
+import { initFS } from '../upload/Deprecatedroute';
 
 // Define the CORS whitelist
 const ALLOWED_ORIGINS = [

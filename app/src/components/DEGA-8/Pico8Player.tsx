@@ -1,11 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-declare global {
-  interface Window {
-    loadGameCode: () => void;
-  }
-}
-
 const Pico8Player = () => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   
