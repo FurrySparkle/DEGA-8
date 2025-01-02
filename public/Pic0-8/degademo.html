@@ -639,7 +639,7 @@
 		console.log(blob.size + " bytes in the blob");
 const LocalP8blob = URL.createObjectURL(blob);
 console.log("LocalP8blob: " + LocalP8blob);
-		e.src = LocalP8blob;
+		e.setAttribute("src", LocalP8blob); //Needs to be a buffer, You had the image from a buffer load and failing, try loading the gamelink into a buffer type with an async function
 		console.log("e.src: " + e.src);
 		e.id = "e_script";
 		document.body.appendChild(e); // load and run
