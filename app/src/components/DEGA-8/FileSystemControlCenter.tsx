@@ -72,9 +72,7 @@ export async function readPico8DatFile() {
          }
        );
      } catch (error) {
-       throw Error('File not found', {
-         
-       });
+       throw Error('File not found');
      }}
 
 
