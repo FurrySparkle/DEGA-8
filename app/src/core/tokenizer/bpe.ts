@@ -36,6 +36,10 @@ export class RankMap {
     }
 }
 
+export function symbolToCodePoint(symbol: string): number {
+    return symbol.charCodeAt(0);
+}
+
 function bytePairMerge(piece: Uint8Array, ranks: RankMap): MergeRange[] {
     let parts: MergeRange[] = Array.from({ length: piece.length }, (_, i) => ({ start: i, end: i + 1 }));
     while (true) {
