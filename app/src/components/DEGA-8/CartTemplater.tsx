@@ -4,6 +4,9 @@ import fs from "@zenfs/core";
 import path from "path";
 import { initFS } from "./FileSystemControlCenter";
 
+import crypto from "crypto";
+
+
 
 initFS();
   let SoundData: string | null = null;
@@ -235,6 +238,7 @@ const blobCode =  await fs.promises.readlink(outputPath);
 
 globalThis.gamelink =  blobCode;
 if ( isConverted) {
+  window.localStorage.setItem('nonce', crypto.randomBytes(16).toString("base64"))
   window.localStorage.setItem('gamelink', globalThis.gamelink);
   console.log("Game conversion successful" + globalThis.gamelink);
     const event = new Event('GameConverted');

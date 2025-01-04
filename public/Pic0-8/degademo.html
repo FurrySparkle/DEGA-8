@@ -1,6 +1,8 @@
 ﻿<html><head>
 <title>PICO-8 Cartridge</title>
+
 <meta name="viewport" content="width=device-width, user-scalable=no">
+<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline' 'unsafe-eval'  blob: ;">
 <script type="text/javascript" >
 
 	
@@ -633,13 +635,19 @@
 
 
 		}
-		
-		e.type = "application/javascript";
-		const blob = new Blob([ window.localStorage.getItem("gamelink")], { type: e.type });
+		//e.referrerpolicy = "same-origin";
+		e.type = "text/javascript";
+		//e.async = true;
+
+		const code = window.localStorage.getItem("gamelink");
+		const blob = new Blob([ eval(code)], { type: e.type });
+		//const blob = new Blob([ window.localStorage.getItem("gamelink")], { type: e.type });
+		//e.nonce = window.localStorage.getItem("nonce");
 		console.log(blob.size + " bytes in the blob");
 const LocalP8blob = URL.createObjectURL(blob);
 console.log("LocalP8blob: " + LocalP8blob);
-		e.setAttribute("src", LocalP8blob); //Needs to be a buffer, You had the image from a buffer load and failing, try loading the gamelink into a buffer type with an async function
+async function bufferBlob(blob){const out= await blob.arrayBuffer();return out;}
+		e.src = LocalP8blob; 
 		console.log("e.src: " + e.src);
 		e.id = "e_script";
 		document.body.appendChild(e); // load and run

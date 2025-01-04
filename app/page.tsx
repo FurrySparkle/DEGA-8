@@ -3,11 +3,8 @@
 import React from 'react';
 import { usePathname} from 'next/navigation';
 
-import dynamic from 'next/dynamic';
 import './src/index.scss';
-
-
-const LandingPage = dynamic(() => import('./src/components/pages/landing.tsx'));
+import LandingPage from './src/components/pages/landing';
 
 function Page() {
   

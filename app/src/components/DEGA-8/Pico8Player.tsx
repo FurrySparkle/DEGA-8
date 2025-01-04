@@ -43,6 +43,8 @@ const Pico8Player = () => {
         width="356"
         height="256"
         style={{ border: 'none' }}
+        sandbox = "allow-scripts allow-same-origin"
+        
       ></iframe>
     </div>
   );
