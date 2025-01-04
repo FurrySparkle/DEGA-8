@@ -27,6 +27,9 @@ const overheadTokens = {
 const tokenCache = new Map<string, number>();
 
 export function countTokensForText(text: string) {
+    if (typeof text !== 'string') {
+        throw new TypeError('Input text must be a string');
+    }
     const cacheKey = text;
     if (tokenCache.has(cacheKey)) {
         return tokenCache.get(cacheKey)!;
@@ -38,10 +41,14 @@ export function countTokensForText(text: string) {
 }
 
 export function countTokensForMessage(message: OpenAIMessage) {
+    if (typeof message.content !== 'string') {
+        throw new TypeError('Message content must be a string');
+    }
     return countTokensForText(message.content) + overheadTokens.perMessage;
 }
 
 export function countTokensForMessages(messages: OpenAIMessage[]) {
+    
     let tokens = overheadTokens.perPrompt;
     for (const m of messages) {
         tokens += countTokensForMessage(m);
@@ -56,6 +63,9 @@ export function truncateText(text: string, tokens: number) {
 }
 
 export function truncateMessage(message: OpenAIMessage, tokens: number) {
+    if (typeof message.content !== 'string') {
+        throw new TypeError('Message content must be a string');
+    }
     if (typeof window === 'undefined') {
         // Return the message unmodified or handle accordingly
         return message;
