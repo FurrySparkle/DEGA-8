@@ -68,7 +68,7 @@
     "yjs": "^13.5.50"
   },
   "resolutions": {
-    "react-intl/typescript": "5.7.2"
+    "typescript": "5.7.2"
   },
   "overrides": {
     "@svgr/webpack": "$@svgr/webpack"
