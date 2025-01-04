@@ -70,7 +70,8 @@
     "yjs": "^13.5.50"
   },
   "resolutions": {
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "regenerate-unicode-properties": "10.1.1"
   },
   "overrides": {
     "@svgr/webpack": "$@svgr/webpack"
