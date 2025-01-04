@@ -3,6 +3,8 @@
   "version": "0.0.9",
   "dependencies": {
     "@auth0/auth0-spa-js": "^2.0.4",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
     "@chengsokdara/use-whisper": "^0.2.0",
     "@emotion/css": "^11.10.6",
     "@emotion/react": "^11.10.6",
@@ -36,7 +38,7 @@
     "match-sorter": "^6.3.1",
     "minisearch": "^6.0.1",
     "natural": "^6.2.0",
-    "next": "^15.1.0",
+    "next": "^15.1.3",
     "openai": "^3.2.1",
     "pako": "^2.1.0",
     "papaparse": "^5.4.0",
@@ -68,7 +70,7 @@
     "yjs": "^13.5.50"
   },
   "resolutions": {
-    "typescript": "5.7.2"
+    "typescript": "^5.7.2"
   },
   "overrides": {
     "@svgr/webpack": "$@svgr/webpack"
@@ -112,7 +114,6 @@
     "@types/uuid": "^9.0.1",
     "babel-plugin-formatjs": "^10.5.30",
     "http-proxy-middleware": "^2.0.6",
-    "react-scripts": "^5.0.1",
     "sass": "^1.58.3",
     "typescript": "^5.7.2"
   }

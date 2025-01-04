@@ -1,5 +1,5 @@
 import { OpenAIMessage } from "../chat/types";
-import { CoreBPE, RankMap, symbolToCodePoint } from "./bpe";
+import { CoreBPE, RankMap } from "./bpe";
 import ranks from './cl100k_base.json';
 
 const special_tokens: any = {
