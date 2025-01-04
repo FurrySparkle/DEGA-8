@@ -3,7 +3,7 @@ import fs from '@zenfs/core';
 
 import path from 'path';
 
-import { exists, writeFile } from '@zenfs/core/promises';
+
 import { configure } from '@zenfs/core';
 import { IndexedDB } from '@zenfs/dom';
 
@@ -11,7 +11,7 @@ import { IndexedDB } from '@zenfs/dom';
 
 export async function initFS() {
 
-  if(!(await exists('/picostore'))) {
+  if(!(await fs.promises.exists('/picostore'))) {
   await configure({
      disableAccessChecks: true,
      mounts:{ '/picostore': IndexedDB }});
@@ -46,13 +46,13 @@ const PICO8_DAT_PATH = path.join(
  console.log(parentDir+'<Dir/Name||PICO8_DAT_PATH:', PICO8_DAT_PATH);
    
     // Check if the parent directory exists
-    if (!(await exists(parentDir))) {
+    if (!(await fs.promises.exists(parentDir))) {
       // Create the parent directory if it doesn't exist  
       await fs.mkdir(parentDir);
     }
 
     // Write the buffer to the specified path
-    await writeFile(PICO8_DAT_PATH, dataView);
+    await fs.promises.writeFile(PICO8_DAT_PATH, dataView);
 }
 
 
