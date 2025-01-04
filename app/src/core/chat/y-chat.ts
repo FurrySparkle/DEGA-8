@@ -3,6 +3,7 @@ import { Chat, Message } from './types';
 import EventEmitter from 'events';
 import { v4 as uuidv4 } from 'uuid';
 import { MessageTree } from './message-tree';
+import { useParams } from 'next/navigation';
 
 const METADATA_KEY = 'metadata';
 const IMPORTED_METADATA_KEY = 'imported-metadata';
@@ -11,10 +12,17 @@ const MESSAGES_KEY = 'messages';
 const CONTENT_KEY = 'messages:content';
 const DONE_KEY = 'messages:done';
 
+function GetChatIDFromURL() {
+    const params = useParams();
+    return params.id as string;
+}
 export class YChat {
+    
     private callback: any;
     private pendingContent = new Map<string, string>();
-    private prefix = 'chat.' + this.id + '.';
+
+    
+    private prefix = 'chat.' + GetChatIDFromURL + '.';
 
     public static from(root: Y.Doc, id: string) {
         // const id = data.get('metadata').get('id') as string;
