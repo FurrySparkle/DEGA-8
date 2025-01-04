@@ -171,13 +171,21 @@ const PICO8_DAT_PATH = path.join(
 );
 
 
+// workerManager.js
+let pyodideWorker;
 
+export const getPyodideWorker = () => {
+  if (!pyodideWorker) {
+    pyodideWorker = new Worker("/pyodideConverter.js");
+  }
+  return pyodideWorker;
+};
 
 async function useConvertGame(gameP8Code: string) :Promise<boolean>{
 
 
-    // Create a new worker pointing to the static file
-    const worker = new Worker("/pyodideConverter.js");
+    const worker = getPyodideWorker();
+
 const ZenDATfile = await fs.promises.readFile(PICO8_DAT_PATH)
 // Post some Python code to run
 worker.postMessage({ code: gameP8Code , ZenDATfile: ZenDATfile  });
