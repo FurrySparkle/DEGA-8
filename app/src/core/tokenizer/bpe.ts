@@ -192,6 +192,9 @@ export class CoreBPE {
     }
 
     encodeOrdinary(text: string): number[] {
+        if (typeof text !== 'string') {
+            throw new TypeError('Input text must be a string');
+        }
         return this._encodeOrdinaryNative(text);
     }
 

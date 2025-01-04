@@ -57,6 +57,9 @@ export function countTokensForMessages(messages: OpenAIMessage[]) {
 }
 
 export function truncateText(text: string, tokens: number) {
+    if (typeof text !== 'string') {
+        throw new TypeError('Input text must be a string');
+    }
     const encoded = tokenizer.encodeOrdinary(text);
     const decoded = tokenizer.decodeBytes(encoded.slice(0, Math.max(0, tokens)));
     return new TextDecoder().decode(decoded);
