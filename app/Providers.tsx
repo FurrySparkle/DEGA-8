@@ -6,8 +6,8 @@ import { MantineProvider } from '@mantine/core';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { ModalsProvider } from '@mantine/modals';
-import { AppContextProvider } from './src/core/context';
-import store, { persistor } from './src/store';
+import { AppContextProvider } from './src/core/context.tsx';
+import store, { persistor } from './src/store/index.ts';
 import './src/index.scss';
 
 
