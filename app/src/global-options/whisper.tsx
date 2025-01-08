@@ -14,7 +14,7 @@ export const whisperOptions: OptionGroup = {
             renderProps: (value, options, context) => ({
                 type: "checkbox",
                 label: context.intl.formatMessage({
-                    id: "whisperOptions.useWhisper.label",
+                    id: 'LNB3XB',
                     defaultMessage: "Use the OpenAI Whisper API for speech recognition"
                 }),
                 hidden: !supportsSpeechRecognition,
@@ -28,7 +28,7 @@ export const whisperOptions: OptionGroup = {
             renderProps: (value, options, context) => ({
                 type: "checkbox",
                 label: context.intl.formatMessage({
-                    id: "whisperOptions.showMicrophone.label",
+                    id: 'UR9oCV',
                     defaultMessage: "Show microphone in message input"
                 }),
             }),

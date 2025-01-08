@@ -37,13 +37,17 @@ const backend = new Backend(chatManager);
 let intl: IntlShape;
 
 export function useCreateAppContext(): Context {
-    const { id: sanitizeId } = useParams<{ id: string }>();
     const [nextID, setNextID] = useState(uuidv4());
+    const useId = () => {
+        const { id: sanitizeId  } = useParams<{ id: string }>() ?? {};
+    
     const sanitId = Array.isArray(sanitizeId)
     ? sanitizeId.join('') 
     : sanitizeId;
     const id = sanitId ?? nextID;
-   
+    return id;
+    };
+    const id = useId();
     const dispatch = useAppDispatch();
 
     intl = useIntl();

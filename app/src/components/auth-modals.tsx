@@ -44,26 +44,26 @@ export function LoginModal(props: any) {
     return <Modal opened={modal === 'login'} onClose={onClose} withCloseButton={false}>
         <Container action="/chatapi/login" method="post">
             <h2>
-                <FormattedMessage id="authModals.signIn" defaultMessage="Sign in" />
+                <FormattedMessage id="SQJto2" defaultMessage="Sign in" />
             </h2>
             <input type="hidden" name="redirect_url" value={window.location.href} />
             <TextInput
-                label={intl.formatMessage({ defaultMessage: "Email address" })}
+                label={intl.formatMessage({ defaultMessage: "Email address", id: 'hJZwTS' })}
                 name="username"
-                placeholder={intl.formatMessage({ defaultMessage: "Enter your email address" })}
+                placeholder={intl.formatMessage({ defaultMessage: "Enter your email address", id: 'NgCT/u' })}
                 type="email"
                 required />
             <PasswordInput
-                label={intl.formatMessage({ defaultMessage: "Password" })}
+                label={intl.formatMessage({ defaultMessage: "Password", id: '5sg7KC' })}
                 name="password"
-                placeholder={intl.formatMessage({ defaultMessage: "Enter your password" })}
+                placeholder={intl.formatMessage({ defaultMessage: "Enter your password", id: '2GFjIN' })}
                 maxLength={500}
                 required />
             <Button fullWidth type="submit">
-                <FormattedMessage id="authModals.signInButton" defaultMessage="Sign in" />
+                <FormattedMessage id="SQJto2" defaultMessage="Sign in" />
             </Button>
             <Button fullWidth variant="subtle" onClick={onCreateAccountClick}>
-                <FormattedMessage id="authModals.createAccount" defaultMessage="Or create an account" description="Label for a button on the Sign In page that lets the user create an account instead" />
+                <FormattedMessage id="1j61Mn" defaultMessage="Or create an account" description="Label for a button on the Sign In page that lets the user create an account instead" />
             </Button>
         </Container>
     </Modal>
@@ -80,27 +80,27 @@ export function CreateAccountModal(props: any) {
     return <Modal opened={modal === 'signup'} onClose={onClose} withCloseButton={false}>
         <Container action="/chatapi/register" method="post">
             <h2>
-                <FormattedMessage id="authModals.createAccountTitle" defaultMessage="Create an account" />
+                <FormattedMessage id="0vL5u1" defaultMessage="Create an account" />
             </h2>
             <input type="hidden" name="redirect_url" value={window.location.href} />
             <TextInput
-                label={intl.formatMessage({ defaultMessage: "Email address" })}
+                label={intl.formatMessage({ defaultMessage: "Email address", id: 'hJZwTS' })}
                 name="username"
-                placeholder={intl.formatMessage({ defaultMessage: "Enter your email address" })}
+                placeholder={intl.formatMessage({ defaultMessage: "Enter your email address", id: 'NgCT/u' })}
                 type="email"
                 required />
             <PasswordInput
-                label={intl.formatMessage({ defaultMessage: "Password" })}
+                label={intl.formatMessage({ defaultMessage: "Password", id: '5sg7KC' })}
                 name="password"
-                placeholder={intl.formatMessage({ defaultMessage: "Enter your password" })}
+                placeholder={intl.formatMessage({ defaultMessage: "Enter your password", id: '2GFjIN' })}
                 minLength={6}
                 maxLength={500}
                 required />
             <Button fullWidth type="submit">
-                <FormattedMessage id="authModals.signUpButton" defaultMessage="Sign up" />
+                <FormattedMessage id="8HJxXG" defaultMessage="Sign up" />
             </Button>
             <Button fullWidth variant="subtle" onClick={onSignInClick}>
-                <FormattedMessage id="authModals.signInExisting" defaultMessage="Or sign in to an existing account" description="Label for a button on the Create Account page that lets the user sign into their existing account instead" />
+                <FormattedMessage id="Y0tGn6" defaultMessage="Or sign in to an existing account" description="Label for a button on the Create Account page that lets the user sign into their existing account instead" />
             </Button>
         </Container>
     </Modal>

@@ -19,7 +19,7 @@ export const parameterOptions: OptionGroup = {
             renderProps: (value, options, context) => ({
                 type: "select",
                 label: context.intl.formatMessage({
-                    id: "parameters.model.label",
+                    id: 'rhSI1/',
                     defaultMessage: "Model"
                 }),
                 description:
@@ -27,7 +27,7 @@ export const parameterOptions: OptionGroup = {
                     context.intl.formatMessage(
                         {
                             defaultMessage:
-                                "Note: GPT-4 will only work if your OpenAI account has been granted access to the new model. <a>Request access here.</a>",
+                                "Note: GPT-4 will only work if your OpenAI account has been granted access to the new model. <a>Request access here.</a>", id: 'NRJ4IQ',
                         },
                         {
                             a: (text: string) => (
@@ -44,7 +44,7 @@ export const parameterOptions: OptionGroup = {
                 options: [
                     {
                         label: context.intl.formatMessage({
-                            defaultMessage: "GPT 4o (default)",
+                            defaultMessage: "GPT 4o (default)", id: 'mF3lx/',
                         }),
                         value: "gpt-4o",
                     },
@@ -69,7 +69,7 @@ export const parameterOptions: OptionGroup = {
                 displayByDefault: false,
                 label: (value, options, context) =>
                     context.intl.formatMessage({
-                        id: "parameters.temperature.label",
+                        id: 'cG0Q8M',
                         defaultMessage: "Temperature"
                     }) +
                     ": " +
@@ -79,7 +79,7 @@ export const parameterOptions: OptionGroup = {
                 type: "slider",
                 label:
                     context.intl.formatMessage({
-                        id: "parameters.temperature.label",
+                        id: 'cG0Q8M',
                         defaultMessage: "Temperature"
                     }) +
                     ": " +
@@ -89,7 +89,7 @@ export const parameterOptions: OptionGroup = {
                 step: 0.1,
                 description: context.intl.formatMessage({
                     defaultMessage:
-                        "The temperature parameter controls the randomness of the AI's responses. Lower values will make the AI more predictable, while higher values will make it more creative.",
+                        "The temperature parameter controls the randomness of the AI's responses. Lower values will make the AI more predictable, while higher values will make it more creative.", id: 'tZdXp/',
                 }),
             }),
         },
@@ -105,7 +105,7 @@ export const parameterOptions: OptionGroup = {
                 displayByDefault: false,
                 label: (value, options, context) =>
                     context.intl.formatMessage({
-                        id: "parameters.top_p.label",
+                        id: 'JBx03V',
                         defaultMessage: "Top Probability"
                     }) +
                     ": " +
@@ -115,7 +115,7 @@ export const parameterOptions: OptionGroup = {
                 type: "slider",
                 label:
                     context.intl.formatMessage({
-                        id: "parameters.top_p.label",
+                        id: 'JBx03V',
                         defaultMessage: "Top Probability"
                     }) +
                     ": " +
@@ -125,7 +125,7 @@ export const parameterOptions: OptionGroup = {
                 step: 0.1,
                 description: context.intl.formatMessage({
                     defaultMessage:
-                        "The Top Probability parameter controls the maximum limit of randomness of the AI's responses. An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or temperature but not both.",
+                        "The Top Probability parameter controls the maximum limit of randomness of the AI's responses. An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or temperature but not both.", id: '4E4YE6',
                 }),
             }),
         }

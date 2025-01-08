@@ -85,6 +85,12 @@ export class EventEmitterAsyncIterator<T> implements AsyncIterableIterator<Event
         }
     }
 
+    async [Symbol.asyncDispose]() {
+        // Cleanup code here
+        this.eventQueue = [];
+        this.resolveQueue = [];
+    }
+    
     [Symbol.asyncIterator](): AsyncIterableIterator<EventEmitterAsyncIteratorOutput<T>> {
         return this;
     }

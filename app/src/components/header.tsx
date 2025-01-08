@@ -3,7 +3,7 @@
 import styled from '@emotion/styled';
 import Head from 'next/head';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useSpotlight } from '@mantine/spotlight';
+import { spotlight, useSpotlight } from '@mantine/spotlight';
 import { Burger, Button, ButtonProps, Text } from '@mantine/core';
 import { useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -148,7 +148,7 @@ export interface HeaderProps {
 export default function Header(props: HeaderProps) {
     const context = useAppContext();
     const router = useRouter();
-    const spotlight = useSpotlight();
+    
     const [loading, setLoading] = useState(false);
     const [openAIApiKey] = useOption<string>('openai', 'apiKey');
     const dispatch = useAppDispatch();
@@ -158,8 +158,8 @@ export default function Header(props: HeaderProps) {
     const onBurgerClick = useCallback(() => dispatch(toggleSidebar()), [dispatch]);
 
     const burgerLabel = sidebarOpen
-        ? intl.formatMessage({ id: "close.sidebar", defaultMessage: "Close sidebar" })
-        : intl.formatMessage({ id: "open.sidebar", defaultMessage: "Open sidebar" });
+        ? intl.formatMessage({ id: 'HyS0qp', defaultMessage: "Close sidebar" })
+        : intl.formatMessage({ id: '+G35mR', defaultMessage: "Open sidebar" });
 
     const onNewGame = () => {
         const DEGAtemplate: string = `\`\`\`-- dega large vertical bouncing animation
@@ -265,7 +265,7 @@ end\`\`\``;
             {context.sessionExpired && (
                 <Banner onClick={signIn}>
                     <FormattedMessage
-                        id="session.expired"
+                        id="ZN6ZQf"
                         defaultMessage="You have been signed out. Click here to sign back in."
                     />
                 </Banner>
@@ -275,7 +275,7 @@ end\`\`\``;
                     <title>
                         {props.title ? `${props.title} - ` : ''}
                         {intl.formatMessage({
-                            id: "app.title",
+                            id: 'ygJhU2',
                             defaultMessage: "DEGA-8",
                             description: "HTML title tag"
                         })}
@@ -298,19 +298,19 @@ end\`\`\``;
                         fw={700}
                     >
                         {intl.formatMessage({
-                            id: "app.name",
+                            id: 'IJZtvH',
                             defaultMessage: "DEGA-8",
                             description: "app name"
                         })}
                     </Text>
                 </h2>
                 <div className="spacer" />
-                <HeaderButton icon="search" onClick={spotlight.openSpotlight} />
+                <HeaderButton icon="search" onClick={spotlight.open} />
                 <HeaderButton icon="gear" onClick={openSettings} />
                 {backend.current && !props.share && props.canShare && typeof navigator.share !== 'undefined' && (
                     <HeaderButton icon="share" onClick={props.onShare}>
                         <FormattedMessage
-                            id="share.button"
+                            id="Bi0lS9"
                             defaultMessage="Share"
                             description="Label for the button used to create a public share URL for a chat log"
                         />
@@ -318,7 +318,7 @@ end\`\`\``;
                 )}
                 <HeaderButton icon="plus" onClick={onNewChat} loading={loading} variant="light">
                     <FormattedMessage
-                        id="new.chat.button"
+                        id="74eGxP"
                         defaultMessage="New Chat"
                         description="Label for the button used to start a new chat session"
                     />
@@ -337,7 +337,7 @@ end\`\`\``;
         sidebarOpen,
         onBurgerClick,
         burgerLabel,
-        spotlight.openSpotlight,
+        spotlight.open,
         openSettings,
         onNewChat,
         loading
@@ -350,8 +350,8 @@ function SubHeaderMenuItem(props: { item: MenuItem }) {
     return (
         <Button
             variant="subtle"
-            size="lg"
-            compact
+            size="compact-lg" 
+            
             component={Link}
             href={props.item.link}
             target="_blank"

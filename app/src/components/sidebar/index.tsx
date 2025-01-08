@@ -137,8 +137,8 @@ export default function Sidebar(props: { className?: string }) {
     }, [context.chat, update]);
 
     const burgerLabel = sidebarOpen
-        ? intl.formatMessage({ id: "Sidebar.close", defaultMessage: "Close sidebar" })
-        : intl.formatMessage({ id: "Sidebar.open", defaultMessage: "Open sidebar" });
+        ? intl.formatMessage({ id: 'HyS0qp', defaultMessage: "Close sidebar" })
+        : intl.formatMessage({ id: '+G35mR', defaultMessage: "Open sidebar" });
 
     const elem = useMemo(
         () => (
@@ -149,7 +149,7 @@ export default function Sidebar(props: { className?: string }) {
                 <div className="sidebar-header">
                     <h2>
                         <FormattedMessage
-                            id="Sidebar.chatHistory"
+                            id="+LMWDJ"
                             defaultMessage="Chat History"
                             description="Heading for the chat history screen"
                         />
@@ -190,10 +190,10 @@ export default function Sidebar(props: { className?: string }) {
                                 onClick={() => {
                                     dispatch(setTab("user"));
                                 }}
-                                icon={<i className="fas fa-gear" />}
+                                leftSection={<i className="fas fa-gear" />}
                             >
                                 <FormattedMessage
-                                    id="Sidebar.userSettings"
+                                    id="/xTTti"
                                     defaultMessage="User settings"
                                     description="Menu item that opens the user settings screen"
                                 />
@@ -203,9 +203,9 @@ export default function Sidebar(props: { className?: string }) {
                             <Menu.Item
                                 color="red"
                                 onClick={() => backend.current?.logout()}
-                                icon={<i className="fas fa-sign-out-alt" />}
+                                leftSection={<i className="fas fa-sign-out-alt" />}
                             >
-                                <FormattedMessage id="Sidebar.signOut" defaultMessage="Sign out" />
+                                <FormattedMessage id="xXbJso" defaultMessage="Sign out" />
                             </Menu.Item>
                         </Menu.Dropdown>
                     </Menu>

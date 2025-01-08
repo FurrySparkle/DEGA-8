@@ -43,7 +43,7 @@ export class SystemSoundPlugin extends Plugin<SystemSoundPluginOptions> {
                         displayByDefault: true,
                         label: (value, options, context) => {
                             return context.intl.formatMessage({
-                                id: "PicoPlayerSettings.customizeSystemSound.label",
+                                id: 'cKmoi0',
                                 defaultMessage: "Customize system sound"
                             });
                         },

@@ -8,7 +8,7 @@ const nextConfig = {
   // Disable ESLint during build (similar to CRACO's eslint: { enable: false })
   eslint: {
     ignoreDuringBuilds: true,
-    
+   
   },
 
 
@@ -20,6 +20,8 @@ const nextConfig = {
       config.resolve.alias['@storage'] = path.resolve('app/src/components/mockstorage.ts');
     } 
     
+
+
     // Resolve extensions and fallbacks (similar to CRACO's webpack.resolve)
     config.resolve.extensions.push('.ts', '.tsx');
     config.resolve.fallback = {
@@ -61,6 +63,8 @@ const nextConfig = {
 
     return config;
   },
+
+
 
 //   // Rewrites for proxying API requests (similar to CRACO's devServer.proxy)
 //   async rewrites() {

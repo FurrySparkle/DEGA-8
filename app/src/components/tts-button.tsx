@@ -46,16 +46,16 @@ export function TTSButton(props: { id: string, selector: string, complete: boole
     let active = state && key === props.id;
 
     return (<>
-        <Button variant="subtle" size="sm" compact onClickCapture={onClick} loading={active && state?.buffering}>
+        <Button variant="subtle" size="compact-sm"  onClickCapture={onClick} loading={active && state?.buffering}>
             {!active && <i className="fa fa-headphones" />}
             {!active && <span>
-                <FormattedMessage id="TTSButton.play" defaultMessage="Play" description="Label for the button that starts text-to-speech playback" />
+                <FormattedMessage id="S9BFby" defaultMessage="Play" description="Label for the button that starts text-to-speech playback" />
             </span>}
             {active && state?.buffering && <span>
-                <FormattedMessage id="TTSButton.loadingAudio" defaultMessage="Loading audio..." description="Message indicating that text-to-speech audio is buffering" />
+                <FormattedMessage id="6LJByb" defaultMessage="Loading audio..." description="Message indicating that text-to-speech audio is buffering" />
             </span>}
             {active && !state?.buffering && <span>
-                <FormattedMessage id="TTSButton.stop" defaultMessage="Stop" description="Label for the button that stops text-to-speech playback" />
+                <FormattedMessage id="Fko0yT" defaultMessage="Stop" description="Label for the button that stops text-to-speech playback" />
             </span>}
         </Button>
     </>);

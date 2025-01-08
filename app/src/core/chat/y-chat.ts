@@ -13,8 +13,9 @@ const CONTENT_KEY = 'messages:content';
 const DONE_KEY = 'messages:done';
 
 function GetChatIDFromURL() {
-    const params = useParams();
-    return params.id as string;
+    
+    const { id = '' } = useParams<{ id: string }>() ?? {};
+    return id as string;
 }
 export class YChat {
     

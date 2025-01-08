@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@formatjs/recommended"
+  ],
+  "plugins": ["@formatjs"],
+  "rules": {
+    "@formatjs/enforce-id": [
+      "error",
+      {
+        "idInterpolationPattern": "[sha512:contenthash:base64:6]",
+        "idWhitelist": []
+      }
+    ]
+  }
+}

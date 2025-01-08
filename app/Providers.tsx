@@ -66,7 +66,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <React.StrictMode>
       <IntlProvider locale={locale} defaultLocale="en-us" messages={messages} onError={handleIntlError}>
-        <MantineProvider theme={{ colorScheme: 'dark' }}>
+        <MantineProvider  defaultColorScheme="auto">  
           <Provider store={store}>
             <PersistGate loading={null} persistor={persistor}>
               <ModalsProvider>

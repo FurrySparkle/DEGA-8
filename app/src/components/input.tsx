@@ -211,11 +211,11 @@ export default function MessageInput(props: MessageInputProps) {
                 width: '100%',
             }}>
                 {context.generating && (<>
-                    <Button variant="subtle" size="xs" compact onClick={() => {
+                    <Button variant="subtle" size="comapct-xs"  onClick={() => { 
                         context.chat.cancelReply(context.currentChat.chat?.id, context.currentChat.leaf!.id);
                     }}>
                         <FormattedMessage
-                            id="MessageInput.cancelGeneration"
+                            id="hRCz8p"
                             defaultMessage="Cancel"
                             description="Label for the button used to cancel generation"
                         />
@@ -245,12 +245,12 @@ export default function MessageInput(props: MessageInputProps) {
                                         marginBottom: '0.5rem',
                                     }}>
                                         <FormattedMessage
-                                            id="MessageInput.speechError"
+                                            id="NiZI6p"
                                             defaultMessage="Sorry, an error occurred trying to record audio."
                                         />
                                     </p>
                                     <Button variant="light" size="xs" fullWidth onClick={onHideSpeechError}>
-                                        <FormattedMessage id="MessageInput.close" defaultMessage="Close" />
+                                        <FormattedMessage id="rbrahO" defaultMessage="Close" />
                                     </Button>
                                 </div>
                             </Popover.Dropdown>
@@ -295,7 +295,7 @@ export default function MessageInput(props: MessageInputProps) {
                 autosize
                 minRows={(hasVerticalSpace || context.isHome) ? 3 : 2}
                 maxRows={12}
-                placeholder={intl.formatMessage({ id: "MessageInput.enterInspiration", defaultMessage: "Enter your fun inspirations here...", description: "Placeholder for message input" })}
+                placeholder={intl.formatMessage({ id: 'uahKRW', defaultMessage: "Enter your fun inspirations here...", description: "Placeholder for message input" })}
                 value={message}
                 onChange={onChange}
                 rightSection={rightSection}

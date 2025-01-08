@@ -42,7 +42,7 @@ export default function ChatPage(props: any) {
     
     const [autoScrollWhenOpeningChat] = useOption('auto-scroll', 'auto-scroll-when-opening-chat')
     const [autoScrollWhileGenerating] = useOption('auto-scroll', 'auto-scroll-while-generating');
-    const  {id} = useParams<{ id: string }>();
+    const { id = '' } = useParams<{ id: string }>() ?? {};
     
 
 

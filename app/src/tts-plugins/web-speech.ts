@@ -43,7 +43,7 @@ export default class WebSpeechPlugin extends DirectTTSPlugin<WebSpeechPluginOpti
                         return {
                             type: "select",
                             label: context.intl.formatMessage({
-                                id: "webSpeech.voiceLabel", // Added id
+                                id: 'mnJYBQ', // Added id
                                 defaultMessage: "Voice",
                             }),
                             options: WebSpeechPlugin.voices.map((v) => ({

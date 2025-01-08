@@ -26,7 +26,7 @@ export class ContextTrimmerPlugin extends Plugin<ContextTrimmerPluginOptions> {
                         label: context.intl.formatMessage(
                             {
                                 defaultMessage:
-                                    "Include a maximum of {value} tokens",
+                                    "Include a maximum of {value} tokens", id: 'rq6lHK',
                             },
                             { value: value }
                         ),
@@ -51,7 +51,7 @@ export class ContextTrimmerPlugin extends Plugin<ContextTrimmerPluginOptions> {
                         label: (value, options, context) =>
                             context.intl.formatMessage(
                                 {
-                                    defaultMessage: "Max tokens: {value}",
+                                    defaultMessage: "Max tokens: {value}", id: '79mYop',
                                 },
                                 { value: value }
                             ),
@@ -83,7 +83,7 @@ export class ContextTrimmerPlugin extends Plugin<ContextTrimmerPluginOptions> {
                     renderProps: (value, options, context) => ({
                         label: context.intl.formatMessage({
                             defaultMessage:
-                                "Try to always include the System Prompt",
+                                "Try to always include the System Prompt", id: 'lxBBL0',
                         }),
                         type: "checkbox",
                     }),
@@ -96,7 +96,7 @@ export class ContextTrimmerPlugin extends Plugin<ContextTrimmerPluginOptions> {
                     renderProps: (value, options, context) => ({
                         label: context.intl.formatMessage({
                             defaultMessage:
-                                "Try to always include your first message",
+                                "Try to always include your first message", id: 'cXeWz0',
                         }),
                         type: "checkbox",
                     }),

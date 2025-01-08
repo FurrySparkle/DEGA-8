@@ -67,7 +67,7 @@ Important:
 - Must make use of P8SCII codes for playing audio.
 - Never break code. Let the user try it all in a new single copy block for me to copy and insert to the console, please.
 - Expand the codebase fully to fulfill the user's request. 
-- Priority is to only ever give the full codebase to copy this entire code into your PICO-8 console; Please provide the Pico-8 game code enclosed within <code> and </code> tags.
+- Priority is to only ever give the full codebase to copy this entire code into your PICO-8 console, only provide one iteraion at a time.
 - Remember to use as much of the Pico-8 library as possible, as it is not LUA standard.  Only use functions and methods as described in the PIC0-8 user manual.
 
 Now produce the final code.
@@ -94,8 +94,7 @@ export class SystemPromptPlugin extends Plugin<SystemPromptPluginOptions> {
                         type: "textarea",
                         description: <p>
                             <FormattedMessage
-                                id="SystemPromptPlugin.description"
-                                defaultMessage={"The System Prompt is an invisible message inserted at the start of the chat and can be used to give ChatGPT information about itself and general guidelines for how it should respond. The <code>'{{ datetime }}'</code> tag is automatically replaced by the current date and time (use this to give the AI access to the time)."}
+                                defaultMessage={`The System Prompt is an invisible message inserted at the start of the chat and can be used to give ChatGPT information about itself and general guidelines for how it should respond. The <code>'{{ datetime }}'</code> tag is automatically replaced by the current date and time (use this to give the AI access to the time).`}
                                 values={{ code: v => <code>{v}</code> }} />
                         </p>,
                     },
@@ -104,7 +103,7 @@ export class SystemPromptPlugin extends Plugin<SystemPromptPluginOptions> {
                         displayByDefault: true,
                         label:(value, options, context) => { 
                             return context.intl.formatMessage({
-                            id: "SystemPromptPlugin.customizeSystemPrompt.label",
+                            id: 'mhtiX2',
                             defaultMessage: "Customize system prompt"
                         })},
                     },

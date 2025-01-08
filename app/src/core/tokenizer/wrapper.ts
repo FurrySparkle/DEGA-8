@@ -21,7 +21,7 @@ export  function runChatTrimmer(messages: OpenAIMessage[], options: ChatHistoryT
 
 export async function countTokens(messages: OpenAIMessage[]) {
     //const worker = await getWorker();
-    return await countTokensForMessages(messages);
+    return countTokensForMessages(messages);
 }
 
 // preload the worker

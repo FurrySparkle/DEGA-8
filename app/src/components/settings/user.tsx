@@ -66,7 +66,7 @@ export default function UserOptionsTab(props: any) {
             <i className="fa fa-check-circle"></i>
             <span style={{ marginLeft: '0.5em' }}>
                 <FormattedMessage 
-                    id="UserOptionsTab.importSuccess" 
+                    id="RvwcQ5" 
                     defaultMessage="Imported {count} chat(s)"
                     description="Success message after importing chats"
                 />
@@ -77,7 +77,7 @@ export default function UserOptionsTab(props: any) {
     const errorMessageElement = errorMessage ? (
         <div style={{ color: 'red' }}>
             <FormattedMessage 
-                id="UserOptionsTab.importError" 
+                id="3z8AKW" 
                 defaultMessage="Failed to import chat data." 
             />
         </div>
@@ -85,20 +85,20 @@ export default function UserOptionsTab(props: any) {
 
     return (
         <SettingsTab name="user">
-            <SettingsOption heading={context.intl.formatMessage({defaultMessage: "Import and Export"})}>
+            <SettingsOption heading={context.intl.formatMessage({defaultMessage: "Import and Export", id: '0HTf4+'})}>
                 <div>
                     <Button variant="light" onClick={handleExport} style={{
                         marginRight: '1rem',
                     }}>
                         <FormattedMessage 
-                            id="UserOptionsTab.exportButton" 
+                            id="SVwJTM" 
                             defaultMessage="Export" 
                         />
                     </Button>
                     <FileButton onChange={handleImport} accept=".json">
                         {(props) => <Button variant="light" {...props}>
                             <FormattedMessage 
-                                id="UserOptionsTab.importButton" 
+                                id="9XUYQt" 
                                 defaultMessage="Import" 
                             />
                         </Button>}

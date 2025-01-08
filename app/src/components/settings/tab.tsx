@@ -130,7 +130,7 @@ export function PluginOptionWidget(props: { pluginID: string, option: Option, ch
         case "slider":
             component = (
                 <div className="slider-wrapper">
-                    {!option.displayAsSeparateSection && <Text size='sm' weight={500}>{renderProps.label}:</Text>}
+                    {!option.displayAsSeparateSection && <Text size='sm' >{renderProps.label}:</Text>}
                     <Slider label={value.toString()}
                         disabled={renderProps.disabled}
                         value={value}
@@ -190,7 +190,7 @@ export function PluginOptionWidget(props: { pluginID: string, option: Option, ch
     const elem = <OptionWrapper className={(focused && !option.displayAsSeparateSection) ? 'focused' : ''}>
         {component}
         {typeof renderProps.description?.props === 'undefined' && <p style={{ marginBottom: '0.7rem' }}>
-            <FormattedMessage id="PluginOptionWidget.description" values={renderProps.description} description="Description for the Plugin Option Widget" defaultMessage="Description for the Plugin Option Widget"/>
+            <FormattedMessage id="/m1j/8" values={renderProps.description} description="Description for the Plugin Option Widget" defaultMessage="Description for the Plugin Option Widget"/>
         </p>}
         {typeof renderProps.description?.props !== 'undefined' && renderProps.description}
     </OptionWrapper>;
@@ -203,8 +203,8 @@ export function PluginOptionWidget(props: { pluginID: string, option: Option, ch
                 gap: '1rem',
                 marginTop: '1rem',
             }}>
-                <Button size="xs" compact variant="light" onClick={() => setValue(option.defaultValue)}>
-                    <FormattedMessage id="PluginOptionWidget.resetToDefault" defaultMessage="Reset to default" />
+                <Button size="compact-xs"  variant="light" onClick={() => setValue(option.defaultValue)}>
+                    <FormattedMessage id="ss6kle" defaultMessage="Reset to default" />
                 </Button>
             </div>}
         </SettingsOption>;
@@ -248,8 +248,8 @@ export default function SettingsTab(props: {
                             gap: '1rem',
                             marginTop: '1rem',
                         }}>
-                            <Button size="xs" compact variant="light" onClick={() => context.chat.resetPluginOptions(id, context.id)}>
-                                <FormattedMessage id="SettingsTab.resetToDefault" defaultMessage="Reset to default" />
+                            <Button size="compact-xs" variant="light" onClick={() => context.chat.resetPluginOptions(id, context.id)}>
+                                <FormattedMessage id="ss6kle" defaultMessage="Reset to default" />
                             </Button>
                         </div>}
                     </SettingsOption>

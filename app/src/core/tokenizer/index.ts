@@ -2,6 +2,9 @@ import { OpenAIMessage } from "../chat/types";
 import { CoreBPE, RankMap } from "./bpe";
 import ranks from './cl100k_base.json';
 
+
+export type ProcessableInput = string | number | boolean | null | undefined;
+
 const special_tokens: any = {
     "<|endoftext|>": 100257,
     "<|fim_prefix|>": 100258,
@@ -25,10 +28,23 @@ const overheadTokens = {
 }
 
 const tokenCache = new Map<string, number>();
-
+export function processString(input: ProcessableInput): string {
+    // Ensure input is actually a string
+    if (input === null || input === undefined) {
+        return '';
+    }
+    return String(input);
+}
+  
+  
+//   // If you're using string arrays
+//   export function processArray(inputs: any[]): string[] {
+ 
+//     return inputs.map(input => String(input));
+//   }
 export function countTokensForText(text: string) {
     if (typeof text !== 'string') {
-        throw new TypeError('Input text must be a string');
+        throw new Error('Input must be a string');
     }
     const cacheKey = text;
     if (tokenCache.has(cacheKey)) {
@@ -42,7 +58,7 @@ export function countTokensForText(text: string) {
 
 export function countTokensForMessage(message: OpenAIMessage) {
     if (typeof message.content !== 'string') {
-        throw new TypeError('Message content must be a string');
+        message.content = processString(message.content);
     }
     return countTokensForText(message.content) + overheadTokens.perMessage;
 }
@@ -58,7 +74,7 @@ export function countTokensForMessages(messages: OpenAIMessage[]) {
 
 export function truncateText(text: string, tokens: number) {
     if (typeof text !== 'string') {
-        throw new TypeError('Input text must be a string');
+        text = processString(text);
     }
     const encoded = tokenizer.encodeOrdinary(text);
     const decoded = tokenizer.decodeBytes(encoded.slice(0, Math.max(0, tokens)));
@@ -67,12 +83,9 @@ export function truncateText(text: string, tokens: number) {
 
 export function truncateMessage(message: OpenAIMessage, tokens: number) {
     if (typeof message.content !== 'string') {
-        throw new TypeError('Message content must be a string');
+        message.content = processString(message.content);
     }
-    if (typeof window === 'undefined') {
-        // Return the message unmodified or handle accordingly
-        return message;
-      }
+    
 
     const encoded = tokenizer.encodeOrdinary(message.content);
     const decoded = tokenizer.decodeBytes(encoded.slice(0, Math.max(0, tokens - overheadTokens.perMessage)));

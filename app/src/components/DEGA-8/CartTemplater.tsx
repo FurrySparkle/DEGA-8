@@ -181,7 +181,7 @@ export const getPyodideWorker = () => {
   return pyodideWorker;
 };
 
-async function useConvertGame(gameP8Code: string) :Promise<boolean>{
+async function ConvertGame(gameP8Code: string) :Promise<boolean>{
 
 
     const worker = getPyodideWorker();
@@ -238,7 +238,7 @@ export async function P8Injector(GPTchoice:string){
 const LUACode  = extractCode(GPTchoice);
  const newCode = removeFirstLuaLines(LUACode); 
   const readyCode = cartridgeTemplate(newCode);    
-const isConverted = await useConvertGame(readyCode);
+const isConverted = await ConvertGame(readyCode);
 
 const blobCode =  await fs.promises.readlink(outputPath);
 

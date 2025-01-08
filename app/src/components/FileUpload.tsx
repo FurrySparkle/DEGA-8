@@ -2,7 +2,7 @@
 
 import {readPico8DatFile,savePico8DatFile} from "./DEGA-8/FileSystemControlCenter";
 import { ChangeEvent, useEffect, useState } from 'react';
-import { Switch, Group } from '@mantine/core';
+import { Switch, Group, Center } from '@mantine/core';
 import storage from './mockLocalStorage';
 
 
@@ -55,7 +55,7 @@ function FileUploadSingle() {
 
   return (
     <div style={{ textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
-      <Group position="center">
+      <Group pos={Center} >
         <Switch size="xl" onLabel="Loaded" offLabel="Unloaded" radius="md" checked={submitted}
       onChange={(event) => setSubmitted(event.currentTarget.checked)} />
         </Group>

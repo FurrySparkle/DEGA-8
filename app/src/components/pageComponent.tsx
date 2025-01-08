@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { SpotlightProvider } from '@mantine/spotlight';
+import { Spotlight } from '@mantine/spotlight';
 import { useChatSpotlightProps } from '../spotlight';
 import { LoginModal, CreateAccountModal } from './auth-modals';
 import Header, { HeaderProps, SubHeader } from './header';
@@ -81,8 +81,8 @@ interface PageProps {
  export const Page:NextPage<PageProps> = ({ id, headerProps, showSubHeader, children }) => {
     const spotlightProps = useChatSpotlightProps();
 
-    return <SpotlightProvider {...spotlightProps}>
-        <Container>
+    return  <Container>
+            <Spotlight {...spotlightProps} />
             <Sidebar />
             <Main key={id}>
                 <Header share={headerProps?.share}
@@ -98,6 +98,6 @@ interface PageProps {
                 <CreateAccountModal />
             </Main>
         </Container>
-    </SpotlightProvider>;
+    
 }
 

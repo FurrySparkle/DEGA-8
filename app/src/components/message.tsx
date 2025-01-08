@@ -216,14 +216,14 @@ export default function MessageComponent(props: { message: Message, last: boolea
         switch (role) {
             case 'user':
                 if (share) {
-                    return intl.formatMessage({ id: 'role-user-formal', defaultMessage: 'User', description: "Label that is shown above messages written by the user (as opposed to the AI) for publicly shared conversation (third person, formal)." });
+                    return intl.formatMessage({ id: 'rtjBsT', defaultMessage: 'User', description: "Label that is shown above messages written by the user (as opposed to the AI) for publicly shared conversation (third person, formal)." });
                 } else {
-                    return intl.formatMessage({ id: 'role-user', defaultMessage: 'You', description: "Label that is shown above messages written by the user (as opposed to the AI) in the user's own chat sessions (first person)." });
+                    return intl.formatMessage({ id: 'lZVm1z', defaultMessage: 'You', description: "Label that is shown above messages written by the user (as opposed to the AI) in the user's own chat sessions (first person)." });
                 }
             case 'assistant':
-                return intl.formatMessage({ id: 'role-chatgpt', defaultMessage: 'DEGA-8', description: "Label that is shown above messages written by the AI (as opposed to the user)" });
+                return intl.formatMessage({ id: 'TYf2vK', defaultMessage: 'DEGA-8', description: "Label that is shown above messages written by the AI (as opposed to the user)" });
             case 'system':
-                return intl.formatMessage({ id: 'role-system', defaultMessage: 'System', description: "Label that is shown above messages inserted into the conversation automatically by the system (as opposed to either the user or AI)" });
+                return intl.formatMessage({ id: '77Iskx', defaultMessage: 'System', description: "Label that is shown above messages inserted into the conversation automatically by the system (as opposed to either the user or AI)" });
             default:
                 return role;
         }
@@ -251,38 +251,38 @@ export default function MessageComponent(props: { message: Message, last: boolea
                         <div style={{ flexGrow: 1 }} />
                         <CopyButton value={props.message.content}>
                             {({ copy, copied }) => (
-                                <Button variant="subtle" size="sm" compact onClick={copy} style={{ marginLeft: '1rem' }}>
+                                <Button variant="subtle" size="compact-sm"  onClick={copy} style={{ marginLeft: '1rem' }}>
                                     <i className="fa fa-clipboard" />
-                                        {copied ? <FormattedMessage id="copy-button.copied" defaultMessage="Copied" description="Label for copy-to-clipboard button after a successful copy" />
-                                        : <span><FormattedMessage id="copy-button.copy" defaultMessage="Copy" description="Label for copy-to-clipboard button" /></span>}
+                                        {copied ? <FormattedMessage id="ljHOzQ" defaultMessage="Copied" description="Label for copy-to-clipboard button after a successful copy" />
+                                        : <span><FormattedMessage id="upBSoW" defaultMessage="Copy" description="Label for copy-to-clipboard button" /></span>}
                                 </Button>
                             )}
                         </CopyButton>
                         {typeof navigator.share !== 'undefined' && (
-                            <Button variant="subtle" size="sm" compact onClick={() => share(props.message.content)}>
+                            <Button variant="subtle" size="compact-sm"  onClick={() => share(props.message.content)}>
                                 <i className="fa fa-share" />
                                 <span>
-                                    <FormattedMessage id="share-button.share" defaultMessage="Share" description="Label for a button which shares the text of a chat message using the user device's share functionality" />
+                                    <FormattedMessage id="gzJlXS" defaultMessage="Share" description="Label for a button which shares the text of a chat message using the user device's share functionality" />
                                 </span>
                             </Button>
                         )}
                         {!context.isShare && props.message.role === 'user' && (
-                            <Button variant="subtle" size="sm" compact onClick={() => {
+                            <Button variant="subtle" size="compact-sm"  onClick={() => {
                                 setContent(props.message.content);
                                 setEditing(v => !v);
                             }}>
                                 <i className="fa fa-edit" />
                                 <span>
-                                    {editing ? <FormattedMessage id="edit-button.cancel" defaultMessage="Cancel" description="Label for a button that appears when the user is editing the text of one of their messages, to cancel without saving changes" />
-                                        : <FormattedMessage id="edit-button.edit" defaultMessage="Edit" description="Label for the button the user can click to edit the text of one of their messages" />}
+                                    {editing ? <FormattedMessage id="raQMIg" defaultMessage="Cancel" description="Label for a button that appears when the user is editing the text of one of their messages, to cancel without saving changes" />
+                                        : <FormattedMessage id="Tgo3vj" defaultMessage="Edit" description="Label for the button the user can click to edit the text of one of their messages" />}
                                 </span>
                             </Button>
                         )}
                         {!context.isShare && props.message.role === 'assistant' && (
-                            <Button variant="subtle" size="sm" compact onClick={() => context.regenerateMessage(props.message)}>
+                            <Button variant="subtle" size="compact-sm"  onClick={() => context.regenerateMessage(props.message)}>
                                 <i className="fa fa-refresh" />
                                 <span>
-                                    <FormattedMessage id="regenerate-button.regenerate" defaultMessage="Regenerate" description="Label for the button used to ask the AI to regenerate one of its messages. Since message generations are stochastic, the resulting message will be different." />
+                                    <FormattedMessage id="zBmup+" defaultMessage="Regenerate" description="Label for the button used to ask the AI to regenerate one of its messages. Since message generations are stochastic, the resulting message will be different." />
                                 </span>
                             </Button>
                         )}
@@ -293,10 +293,10 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             onChange={e => setContent(e.currentTarget.value)}
                             autosize={true} />
                         <Button variant="light" onClick={() => context.editMessage(props.message, content)}>
-                            <FormattedMessage id="save-changes-button.save" defaultMessage="Save changes" description="Label for a button that appears when the user is editing the text of one of their messages, to save the changes" />
+                            <FormattedMessage id="Bm3EKs" defaultMessage="Save changes" description="Label for a button that appears when the user is editing the text of one of their messages, to save the changes" />
                         </Button>
                         <Button variant="subtle" onClick={() => setEditing(false)}>
-                            <FormattedMessage id="cancel-button.cancel" defaultMessage="Cancel" description="Label for a button that appears when the user is editing the text of one of their messages, to cancel without saving changes" />
+                            <FormattedMessage id="raQMIg" defaultMessage="Cancel" description="Label for a button that appears when the user is editing the text of one of their messages, to cancel without saving changes" />
                         </Button>
                     </Editor>)}
                 </div>

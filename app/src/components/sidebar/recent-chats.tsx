@@ -88,7 +88,7 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
                 children: (
                     <p style={{ lineHeight: 1.7 }}>
                         <FormattedMessage
-                            id="recentChats.delete.confirmation"
+                            id="rCZ2c8"
                            
     values={{ title: chat.title }}
                             defaultMessage={`The chat "{title}" will be permanently deleted. This cannot be undone.`}
@@ -114,7 +114,7 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
                             children: (
                                 <p style={{ lineHeight: 1.7 }}>
                                     <FormattedMessage
-                                        id="recentChats.delete.error"
+                                        id="e3IOuH"
                                         defaultMessage='The chat "{title}" could not be deleted.'
                                         values={{ title: chat.title }}
     />
@@ -163,7 +163,7 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
                             }}
                         >
                             <FormattedMessage
-                                id="recentChats.saveChanges"
+                                id="X0ha1a"
                                 defaultMessage="Save changes"
                             />
                         </Button>
@@ -192,7 +192,7 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
             data-chat-id={chat.chatID}
             className={selected ? 'selected' : ''}
         >
-            <strong>{chat.title || <FormattedMessage id="recentChats.untitled" defaultMessage="Untitled" />}</strong>
+            <strong>{chat.title || <FormattedMessage id="3kbIhS" defaultMessage="Untitled" />}</strong>
             <Menu
                 opened={menuOpen}
                 closeOnClickOutside={true}
@@ -205,12 +205,12 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
                     </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                    <Menu.Item onClick={onRename} icon={<i className="fa fa-edit" />}>
-                        <FormattedMessage id="recentChats.rename" defaultMessage="Rename this chat" />
+                    <Menu.Item onClick={onRename} leftSection={<i className="fa fa-edit" />}>
+                        <FormattedMessage id="jU4MQH" defaultMessage="Rename this chat" />
                     </Menu.Item>
                     <Menu.Divider />
-                    <Menu.Item onClick={onDelete} color="red" icon={<i className="fa fa-trash" />}>
-                        <FormattedMessage id="recentChats.delete" defaultMessage="Delete this chat" />
+                    <Menu.Item onClick={onDelete} color="red" leftSection={<i className="fa fa-trash" />}>
+                        <FormattedMessage id="T8gKkC" defaultMessage="Delete this chat" />
                     </Menu.Item>
                 </Menu.Dropdown>
             </Menu>
@@ -274,7 +274,7 @@ export default function RecentChats(props: any) {
             {recentChats.length === 0 && synced && (
                 <Empty>
                     <FormattedMessage
-                        id="recentChats.noChats"
+                        id="8CYNFt"
                         defaultMessage="No chats yet."
                         description="Message shown on the Chat History screen for new users who haven't started their first chat session"
                     />

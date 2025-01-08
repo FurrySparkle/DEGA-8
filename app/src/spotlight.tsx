@@ -4,12 +4,13 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useIntl } from "react-intl";
 import { useRouter } from "next/navigation";
 import { useAppContext } from "./core/context";
+import { SpotlightActions } from "@mantine/spotlight/lib/Spotlight";
 
 export function useChatSpotlightProps() {
     const router = useRouter();
     const { chat } = useAppContext();
     const intl = useIntl();
-
+    const action: SpotlightActions[] = [];
     const [version, setVersion] = useState(0);
 
     useEffect(() => {
@@ -26,19 +27,19 @@ export function useChatSpotlightProps() {
                 ...result,
                 onTrigger: () => router.push(`/chat/${result.chatID}${result.messageID ? `#msg-${result.messageID}` : ''}`),
             }));
-    }, [chat, router, version]);
+    }, [chat, router]);
 
     const props = useMemo(() => ({
         shortcut: ['/'],
-        overlayColor: '#000000',
-        searchPlaceholder: intl.formatMessage({ 
-            id: "search.chats.placeholder",
-            defaultMessage: 'Search your chats' 
-        }),
-        searchIcon: <i className="fa fa-search" />,
-        actions: search,
+        // overlayColor: '#000000',
+        // searchPlaceholder: intl.formatMessage({ 
+        //     id: 'VL24Xt',
+        //     defaultMessage: 'Search your chats' 
+        // }),
+        // searchIcon: <i className="fa fa-search" />,
+        actions: action, // search,
         filter: (query: string, items: any[]) => items,
-    }), [search, intl]);
+    }), [ intl,action]);
 
     return props;
 }

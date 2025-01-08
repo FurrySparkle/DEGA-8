@@ -85,7 +85,7 @@ export default function SettingsDrawer(props: SettingsDrawerProps) {
 
     const dispatch = useAppDispatch();
     const close = useCallback(() => dispatch(closeSettingsUI()), [dispatch]);
-    const onTabChange = useCallback((tab: string) => dispatch(setTab(tab)), [dispatch]);
+    const onTabChange = useCallback((tab: string | null) => dispatch(setTab(tab)), [dispatch]);
 
 
     const intl = useIntl();
@@ -101,31 +101,30 @@ export default function SettingsDrawer(props: SettingsDrawerProps) {
             position='right'
             opened={!!tab}
             onClose={close}
-            transition="slide-left"
-            transitionDuration={200}
+            transitionProps={ {duration:200 , transition:"slide-left"}}
             withCloseButton={false}>
             <Container>
-                <Tabs value={tab} onTabChange={onTabChange} style={{ margin: '0rem' }}>
+                <Tabs value={tab} onChange={onTabChange} style={{ margin: '0rem' }}>
                     <Tabs.List grow={small}>
                         <Tabs.Tab value="pico">Pico Options</Tabs.Tab>
                         <Tabs.Tab value="chat">Chat</Tabs.Tab>
                         <Tabs.Tab value="speech">
                             <FormattedMessage 
-                                id="settings.tab.speech" 
+                                id="VE6FMD" 
                                 defaultMessage="Speech" 
                                 description="Label for the Speech tab in settings"
                             />
                         </Tabs.Tab>
                         <Tabs.Tab value="ui">
                             <FormattedMessage 
-                                id="settings.tab.ui" 
+                                id="2gkhvW" 
                                 defaultMessage="UI" 
                                 description="Label for the UI tab in settings"
                             />
                         </Tabs.Tab>
                         <Tabs.Tab value="user">
                             <FormattedMessage 
-                                id="settings.tab.user" 
+                                id="mFTcsl" 
                                 defaultMessage="User" 
                                 description="Label for the User tab in settings"
                             />
@@ -141,7 +140,7 @@ export default function SettingsDrawer(props: SettingsDrawerProps) {
                 <div id="save">
                     <Button variant="light" fullWidth size="md" onClick={close}>
                         <FormattedMessage 
-                            id="settings.saveAndClose" 
+                            id="iqbKb2" 
                             defaultMessage="Save and Close" 
                             description="Label for the button that closes the Settings screen, saving any changes"
                         />
