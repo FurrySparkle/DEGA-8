@@ -94,7 +94,7 @@ export class SystemPromptPlugin extends Plugin<SystemPromptPluginOptions> {
                         type: "textarea",
                         description: <p>
                             <FormattedMessage
-                                defaultMessage={`The System Prompt is an invisible message inserted at the start of the chat and can be used to give ChatGPT information about itself and general guidelines for how it should respond. The <code>'{{ datetime }}'</code> tag is automatically replaced by the current date and time (use this to give the AI access to the time).`}
+                                defaultMessage={`The System Prompt is an invisible message inserted at the start of the chat and can be used to give ChatGPT information about itself and general guidelines for how it should respond. The <code>'{{ datetime }}'</code> tag is automatically replaced by the current date and time (use this to give the AI access to the time).`} id="h9+jXQ"
                                 values={{ code: v => <code>{v}</code> }} />
                         </p>,
                     },

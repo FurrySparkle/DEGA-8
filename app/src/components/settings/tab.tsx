@@ -11,7 +11,7 @@ import { useOption } from "../../core/options/use-option";
 import { Context, useAppContext } from "../../core/context";
 import { pluginMetadata as pluginMetadata } from "../../core/plugins/metadata";
 import { globalOptions } from "../../global-options";
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 
 const Settings = styled.div`
     font-family: "Work Sans", sans-serif;
@@ -235,7 +235,7 @@ export default function SettingsTab(props: {
         <Tabs.Panel value={props.name}>
             <Settings>
                 {props.children}
-                {optionSets.map(({ name, id, description, options, resettable, collapsed }) => <>
+                {optionSets.map(({ name, id, description, options, resettable, collapsed }) => <Fragment key={id}>
                     <SettingsOption heading={name} description={description} collapsed={collapsed} key={id}>
                         {options.map(o => <PluginOptionWidget
                             pluginID={id}
@@ -253,7 +253,7 @@ export default function SettingsTab(props: {
                             </Button>
                         </div>}
                     </SettingsOption>
-                </>)}
+                </Fragment>)}
             </Settings>
         </Tabs.Panel>
     );

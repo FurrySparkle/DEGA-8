@@ -26,12 +26,12 @@ export default function UserOptionsTab(props: any) {
         const url = URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
-        link.download = "chat-with-gpt.json";
+        link.download = "DEGA8.json";
         link.click();
     }, [getData]);
 
     const handleImport = useCallback(
-        async (file: File) => {
+        async (file: File | null) => {
             try {
                 const reader = new FileReader();
                 reader.onload = (e) => {
@@ -53,7 +53,7 @@ export default function UserOptionsTab(props: any) {
                         setErrorMessage("The imported file does not contain any chat data.");
                     }
                 };
-                reader.readAsText(file);
+                reader.readAsText(file!);
             } catch (error) {
                 setErrorMessage("Failed to import chat data.");
             }

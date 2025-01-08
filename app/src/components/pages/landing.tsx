@@ -33,12 +33,12 @@ export default function LandingPage(props: any) {
     return <Page id={'landing'} showSubHeader={true}>
         <Container>
             <p>
-                <FormattedMessage id="landingPage.welcome" defaultMessage={'Hello, how can I help you today?'}
+                <FormattedMessage id="f/hGIY" defaultMessage={`Hello, how can I help you today?`}
                     description="A friendly message that appears at the start of new chat sessions" />
             </p>
             {!openAIApiKey && !isProxySupported() && (
                 <Button size="compact-xs" variant="light"  onClick={onConnectButtonClick}>
-                    <FormattedMessage id="landingPage.connect" defaultMessage={'Connect your OpenAI account and Upload your pic0-8 dat file to get started'} />
+                    <FormattedMessage id="pPju8p" defaultMessage={`Connect your OpenAI account and Upload your pic0-8 dat file to get started`} />
                 </Button>
             )}
         </Container>

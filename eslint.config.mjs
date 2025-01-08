@@ -19,11 +19,11 @@ export default [
             "@formatjs": formatjs,
         },
 
-        // rules: {
-        //     "@formatjs/enforce-id": ["error", {
-        //         idInterpolationPattern: "[sha512:contenthash:base64:6]",
-        //         idWhitelist: [],
-        //     }],
-        // },
+        rules: {
+            "@formatjs/enforce-id": ["error", {
+                idInterpolationPattern: "[sha512:contenthash:base64:6]",
+                idWhitelist: [],
+            }],
+        },
     },
 ];

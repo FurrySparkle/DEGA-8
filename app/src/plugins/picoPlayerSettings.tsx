@@ -33,8 +33,8 @@ export class SystemSoundPlugin extends Plugin<SystemSoundPluginOptions> {
                         type: "textarea",
                         description: <p>
                             <FormattedMessage
-                                id="PicoPlayerSettings.description"
-                                defaultMessage={"The Sound System is an exposure of the pico code after export. If you want to enter your own music and sounds made in your own pico editor, you can export the .p8 file and scroll to the bottom of the file in a text editor. Collect the number block under __sfx__ and insert that here. Those numbers will be converted into the player on the next load of the PicoPlayer."}
+                                id="m0pUoC"
+                                defaultMessage={`The Sound System is an exposure of the pico code after export. If you want to enter your own music and sounds made in your own pico editor, you can export the .p8 file and scroll to the bottom of the file in a text editor. Collect the number block under __sfx__ and insert that here. Those numbers will be converted into the player on the next load of the PicoPlayer.`}
                                 values={{ code: v => <code>{v}</code> }} />
                         </p>,
                     },
