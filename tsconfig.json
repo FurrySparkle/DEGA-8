@@ -7,7 +7,6 @@
       "esnext"
     ],
     "allowJs": true,
-    
     "skipLibCheck": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
@@ -33,8 +32,9 @@
     "**/*.tsx",
     "src",
     "src/components/pages",
-    "page.tsx"
-, "public/pyodideConverter.js"  ],
+    "page.tsx",
+    "public/pyodideConverter.js"
+  ],
   "exclude": [
     "node_modules"
   ]

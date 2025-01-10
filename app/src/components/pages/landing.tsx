@@ -37,7 +37,7 @@ export default function LandingPage(props: any) {
                     description="A friendly message that appears at the start of new chat sessions" />
             </p>
             {!openAIApiKey && !isProxySupported() && (
-                <Button size="compact-xs" variant="light"  onClick={onConnectButtonClick}>
+                <Button  variant="light" size="compact-xs" onClick={onConnectButtonClick}>
                     <FormattedMessage id="pPju8p" defaultMessage={`Connect your OpenAI account and Upload your pic0-8 dat file to get started`} />
                 </Button>
             )}

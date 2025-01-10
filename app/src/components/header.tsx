@@ -287,6 +287,7 @@ end\`\`\``;
                         onClick={onBurgerClick}
                         aria-label={burgerLabel}
                         transitionDuration={0}
+                        lineSize={6}
                     />
                 )}
                 <h2>

@@ -1,5 +1,6 @@
 'use client';
 
+import '@mantine/core/styles.css';
 import React, { useEffect, useState } from 'react';
 import { IntlProvider } from 'react-intl';
 import { MantineProvider } from '@mantine/core';
