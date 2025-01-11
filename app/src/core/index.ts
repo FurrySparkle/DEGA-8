@@ -71,6 +71,16 @@ export class ChatManager extends EventEmitter {
         const pluginOptionsManager = this.options as OptionsManager | undefined;
         pluginOptionsManager?.destroy();
 
+        //ensure the doc is cleared before attaching a new one
+        
+            provider?.whenSynced.then(() => {
+                if (doc) {
+                    Y.applyUpdate(this.doc.root, Y.encodeStateAsUpdate(doc.root));
+                    provider.clearData(); // remove the setTimeout and clear immediately
+                }
+            });
+       
+
         // attach new doc
         this.doc = new YChatDoc();
         this.doc.on('update', chatID => this.changedIDs.add(chatID));
@@ -211,7 +221,7 @@ export class ChatManager extends EventEmitter {
         this.activeReplies.delete(id);
     }
 
-    public async createChat(id?: string): Promise<string> {
+    public async createChat(id?: string): Promise<any> {
         return this.doc.createYChat(id);
     }
 

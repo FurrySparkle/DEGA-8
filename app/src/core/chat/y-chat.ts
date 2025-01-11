@@ -4,6 +4,7 @@ import EventEmitter from 'events';
 import { v4 as uuidv4 } from 'uuid';
 import { MessageTree } from './message-tree';
 import { useParams } from 'next/navigation';
+import { get } from 'http';
 
 const METADATA_KEY = 'metadata';
 const IMPORTED_METADATA_KEY = 'imported-metadata';
@@ -17,20 +18,24 @@ function GetChatIDFromURL() {
     const { id = '' } = useParams<{ id: string }>() ?? {};
     return id as string;
 }
+
 export class YChat {
     
     private callback: any;
     private pendingContent = new Map<string, string>();
-
     
-    private prefix = 'chat.' + GetChatIDFromURL + '.';
+    
+    private prefix : string;
+   
 
     public static from(root: Y.Doc, id: string) {
-        // const id = data.get('metadata').get('id') as string;
+        //const id = GetChatIDFromURL();
+         //const id = this.id;
         return new YChat(id, root);
     }
 
     constructor(public readonly id: string, public root: Y.Doc) {
+        this.prefix =  'chat.' + GetChatIDFromURL  + '.';
         this.purgeDeletedValues();
     }
 
@@ -249,9 +254,9 @@ export class YChatDoc extends EventEmitter {
     }
 
     public createYChat(id = uuidv4()) {
-        // return new YChat(id, this.root);
+         return new YChat(id, this.root);
         // this.set(id, chat);
-        return id;
+        //return id;
     }
 
     public getMessageTree(chatID: string): MessageTree {

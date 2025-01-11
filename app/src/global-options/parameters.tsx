@@ -1,3 +1,4 @@
+import { FormattedMessage } from "react-intl";
 import { defaultModel } from "../core/chat/openai";
 import { OptionGroup } from "../core/options/option-group";
 
@@ -87,10 +88,11 @@ export const parameterOptions: OptionGroup = {
                 min: 0,
                 max: 1,
                 step: 0.1,
-                description: context.intl.formatMessage({
-                    defaultMessage:
-                        "The temperature parameter controls the randomness of the AI's responses. Lower values will make the AI more predictable, while higher values will make it more creative.", id: 'tZdXp/',
-                }),
+                description: <>
+                    <FormattedMessage
+                    defaultMessage=
+                        "The temperature parameter controls the randomness of the AI's responses. Lower values will make the AI more predictable, while higher values will make it more creative." id= 'tZdXp/'
+                /></>,
             }),
         },
         {
@@ -123,10 +125,11 @@ export const parameterOptions: OptionGroup = {
                 min: 0,
                 max: 1,
                 step: 0.1,
-                description: context.intl.formatMessage({
-                    defaultMessage:
-                        "The Top Probability parameter controls the maximum limit of randomness of the AI's responses. An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or temperature but not both.", id: '4E4YE6',
-                }),
+                description: <>
+                    <FormattedMessage
+                    defaultMessage=
+                        "The Top Probability parameter controls the maximum limit of randomness of the AI's responses. An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered. We generally recommend altering this or temperature but not both." id= '4E4YE6'
+                /></>,
             }),
         }
     ],

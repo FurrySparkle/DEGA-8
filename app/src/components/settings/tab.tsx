@@ -1,5 +1,6 @@
 'use client';
 
+import '@mantine/core/styles.css';
 import styled from "@emotion/styled";
 import { Button, NumberInput, PasswordInput, Select, Slider, Switch, Tabs, Text, TextInput, Textarea } from "@mantine/core";
 import { Option } from "../../core/options/option";
@@ -109,11 +110,14 @@ export function PluginOptionWidget(props: { pluginID: string, option: Option, ch
         case "textarea":
             component = (
                 <Textarea label={!option.displayAsSeparateSection ? renderProps.label : null}
+                    autosize
                     placeholder={renderProps.placeholder}
                     disabled={renderProps.disabled}
                     value={value || ''}
                     onChange={e => setValue(e.target.value)}
-                    minRows={5} />
+                    minRows={6}
+                    maxRows={12} />
+                    
             );
             break;
         case "select":
@@ -189,9 +193,9 @@ export function PluginOptionWidget(props: { pluginID: string, option: Option, ch
 
     const elem = <OptionWrapper className={(focused && !option.displayAsSeparateSection) ? 'focused' : ''}>
         {component}
-        {typeof renderProps.description?.props === 'undefined' && <p style={{ marginBottom: '0.7rem' }}>
+        {/* {typeof renderProps.description?.props === 'undefined' && <p style={{ marginBottom: '0.7rem' }}>
             <FormattedMessage id="/m1j/8" values={renderProps.description} description="Description for the Plugin Option Widget" defaultMessage="Description for the Plugin Option Widget"/>
-        </p>}
+        </p>} */}
         {typeof renderProps.description?.props !== 'undefined' && renderProps.description}
     </OptionWrapper>;
 

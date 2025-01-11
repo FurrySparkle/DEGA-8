@@ -128,7 +128,7 @@ const SubHeaderContainer = styled.div`
 function HeaderButton(props: ButtonProps & { icon?: string, onClick?: () => void, children?: React.ReactNode }) {
     return (
         <Button
-            size='xs'
+            size='sm'
             variant={props.variant || 'subtle'}
             onClick={props.onClick}
         >
@@ -287,7 +287,6 @@ end\`\`\``;
                         onClick={onBurgerClick}
                         aria-label={burgerLabel}
                         transitionDuration={0}
-                        lineSize={6}
                     />
                 )}
                 <h2>
@@ -317,7 +316,7 @@ end\`\`\``;
                         />
                     </HeaderButton>
                 )}
-                <HeaderButton icon="plus" onClick={onNewChat} loading={loading} variant="light">
+                <HeaderButton icon="plus" onClick={onNewChat} loading={loading} variant="light" >
                     <FormattedMessage
                         id="74eGxP"
                         defaultMessage="New Chat"

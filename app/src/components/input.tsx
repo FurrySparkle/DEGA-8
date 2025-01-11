@@ -211,7 +211,7 @@ export default function MessageInput(props: MessageInputProps) {
                 width: '100%',
             }}>
                 {context.generating && (<>
-                    <Button variant="subtle" size="comapct-xs"  onClick={() => { 
+                    <Button variant="subtle" size="compact-xs"  onClick={() => { 
                         context.chat.cancelReply(context.currentChat.chat?.id, context.currentChat.leaf!.id);
                     }}>
                         <FormattedMessage
@@ -226,7 +226,7 @@ export default function MessageInput(props: MessageInputProps) {
                     <>
                         {showMicrophoneButton && <Popover width={200} position="bottom" withArrow shadow="md" opened={speechError !== null}>
                             <Popover.Target>
-                                <ActionIcon size="xl"
+                                <ActionIcon size="md"
                                     onClick={onSpeechStart}>
                                     {transcribing && <Loader size="xs" />}
                                     {!transcribing && <i className="fa fa-microphone" style={{ fontSize: '90%', color: recording ? 'red' : 'inherit' }} />}
@@ -255,9 +255,9 @@ export default function MessageInput(props: MessageInputProps) {
                                 </div>
                             </Popover.Dropdown>
                         </Popover>}
-                        <ActionIcon size="xl"
+                        <ActionIcon size="md" ml={'xs'}
                             onClick={onSubmit}>
-                            <i className="fa fa-paper-plane" style={{ fontSize: '90%' }} />
+                            <i className="fa fa-paper-plane" style={{ fontSize: '90%'}} />
                         </ActionIcon>
                     </>
                 )}

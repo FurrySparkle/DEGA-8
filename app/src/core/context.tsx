@@ -124,9 +124,9 @@ export function useCreateAppContext(): Context {
                 }
             }
 
-            if (!chatManager.has(id)) {
-                await chatManager.createChat(id);
-            };
+           
+                //await chatManager.createChat(id);
+          
         }
 
         
