@@ -51,6 +51,7 @@ function FileUploadSingle() {
       return;
     }
    savePico8DatFile(file);
+   setProgress(100)
   };
 
   return (

@@ -226,7 +226,7 @@ export default function MessageInput(props: MessageInputProps) {
                     <>
                         {showMicrophoneButton && <Popover width={200} position="bottom" withArrow shadow="md" opened={speechError !== null}>
                             <Popover.Target>
-                                <ActionIcon size="md"
+                                <ActionIcon size="md" ml={'xs'}
                                     onClick={onSpeechStart}>
                                     {transcribing && <Loader size="xs" />}
                                     {!transcribing && <i className="fa fa-microphone" style={{ fontSize: '90%', color: recording ? 'red' : 'inherit' }} />}
