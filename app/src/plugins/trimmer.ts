@@ -20,7 +20,7 @@ export class ContextTrimmerPlugin extends Plugin<ContextTrimmerPluginOptions> {
                 {
                     id: "maxTokens",
                     displayOnSettingsScreen: "chat",
-                    defaultValue: 2048,
+                    defaultValue: 65000,
                     scope: "chat",
                     renderProps: (value, options, context) => ({
                         label: context.intl.formatMessage(
