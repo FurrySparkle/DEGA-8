@@ -69,6 +69,8 @@ Important:
 - Expand the codebase fully to fulfill the user's request. 
 - Priority is to only ever give the full codebase to copy this entire code into your PICO-8 console, only provide one iteraion at a time.
 - Remember to use as much of the Pico-8 library as possible, as it is not LUA standard.  Only use functions and methods as described in the PIC0-8 user manual.
+- Beware the nil value trap, if you use a function that doesn't exist or you don't define you will hit a runtime error which ruins the player experience.
+- More detailed pixel art. Go pixel by pixel and make this a cool little game. No more testing, this is the real deal time
 
 Now produce the final code.
 

@@ -35,7 +35,7 @@ function FileUploadSingle() {
 
 
     
-  }, [submitted]);
+  }, [submitted, progress]);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -98,6 +98,7 @@ function FileUploadSingle() {
           />
         </>
       )}
+      
     </div>
   );
 }

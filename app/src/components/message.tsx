@@ -258,14 +258,14 @@ export default function MessageComponent(props: { message: Message, last: boolea
                                 </Button>
                             )}
                         </CopyButton>
-                        {typeof navigator.share !== 'undefined' && (
+                        {/* {typeof navigator.share !== 'undefined' && (   // Share API is not supported in Version 1.0 TODO: rework into a new share page with a subscription system and commenting
                             <Button variant="subtle" size="compact-sm"  onClick={() => share(props.message.content)}>
                                 <i className="fa fa-share" />
                                 <span>
                                     <FormattedMessage id="gzJlXS" defaultMessage="Share" description="Label for a button which shares the text of a chat message using the user device's share functionality" />
                                 </span>
                             </Button>
-                        )}
+                        )} */}
                         {!context.isShare && props.message.role === 'user' && (
                             <Button variant="subtle" size="compact-sm"  onClick={() => {
                                 setContent(props.message.content);
