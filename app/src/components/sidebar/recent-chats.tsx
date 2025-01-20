@@ -8,9 +8,10 @@ import { useRouter } from 'next/navigation';
 import { useAppContext } from '../../core/context';
 import { useAppDispatch } from '../../store';
 import { toggleSidebar } from '../../store/sidebar';
-import { ActionIcon, Button, Loader, Menu, Textarea } from '@mantine/core';
+import { ActionIcon, Button, Center, Loader, Menu, px, Textarea } from '@mantine/core';
 import { useModals } from '@mantine/modals';
 import { backend } from '../../core/backend';
+import { BorderBottom } from 'tabler-icons-react';
 
 const Container = styled.div`
     margin: calc(1.618rem - 1rem);
@@ -198,9 +199,10 @@ function ChatListItem(props: { chat: any; onClick: any; selected: boolean }) {
                 closeOnClickOutside={true}
                 closeOnEscape={true}
                 onClose={() => setMenuOpen(false)}
+                shadow='lg'
             >
-                <Menu.Target>
-                    <ActionIcon size="xl" onClick={toggleMenu}>
+                <Menu.Target >
+                    <ActionIcon size={'lg'} p={'lg'} onClick={toggleMenu} >
                         <i className="fas fa-ellipsis" />
                     </ActionIcon>
                 </Menu.Target>

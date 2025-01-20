@@ -35,7 +35,7 @@ export class ContextTrimmerPlugin extends Plugin<ContextTrimmerPluginOptions> {
                         max:
                             maxTokensByModel[
                                 options.getOption("parameters", "model")
-                            ] || 2048,
+                            ] || 128000,
                         step: 512,
                     }),
                     validate: (value, options) => {
@@ -114,7 +114,7 @@ export class ContextTrimmerPlugin extends Plugin<ContextTrimmerPluginOptions> {
         const options = this.options;
 
         const trimmed = await runChatTrimmer(messages, {
-            maxTokens: options?.maxTokens ?? 2048,
+            maxTokens: options?.maxTokens ?? 65000,
             nMostRecentMessages: options?.maxMessages ?? undefined,
             preserveFirstUserMessage: options?.preserveFirstUserMessage || true,
             preserveSystemPrompt: options?.preserveSystemPrompt || true,

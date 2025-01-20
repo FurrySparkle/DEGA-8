@@ -131,7 +131,7 @@ export class YChat {
         }
     }
 
-    private purgeDeletedValues() {
+    private purgeDeletedValues() {  //purgeDeletedValues might need a different boolean flag to check if the chat is deleted
         if (this.deleted) {
             if (this.metadata.size > 1) {
                 for (const key of Array.from(this.metadata.keys())) {
@@ -152,6 +152,8 @@ export class YChat {
             if (this.done.size > 0) {
                 this.done.clear();
             }
+
+            console.log('purged deleted values');
         }
     }
 }

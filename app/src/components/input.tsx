@@ -204,11 +204,12 @@ export default function MessageInput(props: MessageInputProps) {
         return (
             <div style={{
                 opacity: '0.8',
-                paddingRight: '0.5rem',
+                paddingRight: '1.3rem',
                 display: 'flex',
                 justifyContent: 'flex-end',
                 alignItems: 'center',
                 width: '100%',
+                marginLeft: '2.5rem',
             }}>
                 {context.generating && (<>
                     <Button variant="subtle" size="compact-xs"  onClick={() => { 
@@ -226,7 +227,7 @@ export default function MessageInput(props: MessageInputProps) {
                     <>
                         {showMicrophoneButton && <Popover width={200} position="bottom" withArrow shadow="md" opened={speechError !== null}>
                             <Popover.Target>
-                                <ActionIcon size="md" ml={'xs'}
+                                <ActionIcon size="md" ml={'md'}
                                     onClick={onSpeechStart}>
                                     {transcribing && <Loader size="xs" />}
                                     {!transcribing && <i className="fa fa-microphone" style={{ fontSize: '90%', color: recording ? 'red' : 'inherit' }} />}
@@ -255,7 +256,7 @@ export default function MessageInput(props: MessageInputProps) {
                                 </div>
                             </Popover.Dropdown>
                         </Popover>}
-                        <ActionIcon size="md" ml={'xs'}
+                        <ActionIcon size="md" ml={'0.1rem'}
                             onClick={onSubmit}>
                             <i className="fa fa-paper-plane" style={{ fontSize: '90%'}} />
                         </ActionIcon>
@@ -299,7 +300,7 @@ export default function MessageInput(props: MessageInputProps) {
                 value={message}
                 onChange={onChange}
                 rightSection={rightSection}
-                rightSectionWidth={context.generating ? 100 : 55}
+                rightSectionWidth={context.generating ? 200 : 55}
                 onKeyDown={hotkeyHandler} />
             <QuickSettings key={tab} />
         </div>

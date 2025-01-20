@@ -14,7 +14,7 @@ export const parameterOptions: OptionGroup = {
             displayAsSeparateSection: true,
             displayInQuickSettings: {
                 name: "Model",
-                displayByDefault: true,
+                displayByDefault: false,
                 label: (value) => value,
             },
             renderProps: (value, options, context) => ({
@@ -67,7 +67,7 @@ export const parameterOptions: OptionGroup = {
             displayAsSeparateSection: true,
             displayInQuickSettings: {
                 name: "Temperature",
-                displayByDefault: false,
+                displayByDefault: true,
                 label: (value, options, context) =>
                     context.intl.formatMessage({
                         id: 'cG0Q8M',
