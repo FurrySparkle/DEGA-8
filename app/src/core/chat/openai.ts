@@ -74,9 +74,7 @@ export async function createChatCompletion(messages: OpenAIMessage[], parameters
     });
 
     const data = await response.json();
-    //possible location for .p8 injection
-    // P8Injector(data.choices[0].message?.content?.trim() || '');
-    // console.log("P8 Injector Fired! Data:" + data.choices[0].message?.content?.trim() || '');
+   
     return data.choices[0].message?.content?.trim() || '';
 }
 

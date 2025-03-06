@@ -13,12 +13,6 @@ const MESSAGES_KEY = 'messages';
 const CONTENT_KEY = 'messages:content';
 const DONE_KEY = 'messages:done';
 
-function GetChatIDFromURL() {
-    
-    const { id = '' } = useParams<{ id: string }>() ?? {};
-    return id as string;
-}
-
 export class YChat {
     
     private callback: any;
@@ -35,7 +29,7 @@ export class YChat {
     }
 
     constructor(public readonly id: string, public root: Y.Doc) {
-        this.prefix =  'chat.' + GetChatIDFromURL  + '.';
+        this.prefix =  `chat.${id}.`;
         this.purgeDeletedValues();
     }
 
@@ -203,7 +197,7 @@ export class YChatDoc extends EventEmitter {
         let yChat = this.yChats.get(id);
 
         if (!yChat) {
-            yChat = YChat.from(this.root, id);
+            yChat = new YChat(id, this.root);
             this.yChats.set(id, yChat);
         }
 
