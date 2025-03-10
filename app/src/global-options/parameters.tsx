@@ -1,6 +1,9 @@
 import { FormattedMessage } from "react-intl";
 import { defaultModel } from "../core/chat/openai";
 import { OptionGroup } from "../core/options/option-group";
+import { MODEL_PROVIDERS } from "../core/chat/types";
+import storage from "../components/mockLocalStorage";
+import { useAppContext } from "../core/context";
 
 export const parameterOptions: OptionGroup = {
     id: "parameters",
@@ -17,46 +20,26 @@ export const parameterOptions: OptionGroup = {
                 displayByDefault: false,
                 label: (value) => value,
             },
-            renderProps: (value, options, context) => ({
-                type: "select",
-                label: context.intl.formatMessage({
-                    id: 'rhSI1/',
-                    defaultMessage: "Model"
-                }),
-                description:
-                    value === "gpt-4" &&
-                    context.intl.formatMessage(
-                        {
-                            defaultMessage:
-                                "Note: GPT-4 will only work if your OpenAI account has been granted access to the new model. <a>Request access here.</a>", id: 'NRJ4IQ',
-                        },
-                        {
-                            a: (text: string) => (
-                                <a
-                                    href="https://openai.com/waitlist/gpt-4-api"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {text}
-                                </a>
-                            ),
-                        } as any
-                    ),
-                options: [
-                    {
+            renderProps: (value, options, context) => {
+                const appContext = useAppContext();
+                
+                return {
+                    type: "select",
+                    label: context.intl.formatMessage({
+                        id: 'rhSI1/',
+                        defaultMessage: "Model"
+                    }),
+                    options: Object.keys(MODEL_PROVIDERS).map(model => ({
                         label: context.intl.formatMessage({
-                            defaultMessage: "GPT 4o (default)", id: 'mF3lx/',
+                            defaultMessage: `${model} ${model === defaultModel ? '(default)' : ''}`,
+                            id: `model-${model}`,
                         }),
-                        value: "gpt-4o",
-                    },
-                    // {
-                    //     label: context.intl.formatMessage({
-                    //         defaultMessage: "GPT o1-preview(requires invite)",
-                    //     }),
-                    //     value: "o1-preview",
-                    // },
-                ],
-            }),
+                        value: model,
+                    })),
+                    
+                    
+                };
+            },
         },
         {
             id: "temperature",
@@ -86,8 +69,8 @@ export const parameterOptions: OptionGroup = {
                     ": " +
                     value.toFixed(1),
                 min: 0,
-                max: 1,
-                step: 0.1,
+                max: 2,
+                step: 0.05,
                 description: <>
                     <FormattedMessage
                     defaultMessage=

@@ -4,7 +4,9 @@ import SSE from "../utils/sse";
 import { OpenAIMessage, Parameters } from "./types";
 import { backend } from "../backend";
 import { P8Injector } from "../../components/DEGA-8/CartTemplater";
-export const defaultModel = "gpt-4o";
+import { MODEL_PROVIDERS } from "./types";
+
+export const defaultModel = Object.keys(MODEL_PROVIDERS)[0];
 
 export function isProxySupported() {
     return !!backend.current?.services?.includes('openai');
@@ -14,8 +16,11 @@ function shouldUseProxy(apiKey: string | undefined | null) {
     return !apiKey && isProxySupported();
 }
 
-function getEndpoint(proxied = false) {
-    return proxied ? '/chatapi/proxies/openai' : 'https://api.openai.com';
+function getEndpoint(parameters: Parameters, proxied = false) {
+    if (proxied) {
+        return '/chatapi/proxies/openai';
+    }
+    return parameters.endpoint || MODEL_PROVIDERS[parameters.model].endpoint;
 }
 
 export interface OpenAIResponseChunk {
@@ -52,7 +57,7 @@ function parseResponseChunk(buffer: any): OpenAIResponseChunk {
 
 export async function createChatCompletion(messages: OpenAIMessage[], parameters: Parameters): Promise<string> {
     const proxied = shouldUseProxy(parameters.apiKey);
-    const endpoint = getEndpoint(proxied);
+    const endpoint = getEndpoint(parameters, proxied);
 
     if (!proxied && !parameters.apiKey) {
         throw new Error('No API key provided');
@@ -82,7 +87,7 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
     const emitter = new EventEmitter();
 
     const proxied = shouldUseProxy(parameters.apiKey);
-    const endpoint = getEndpoint(proxied);
+    const endpoint = getEndpoint(parameters, proxied);
 
     if (!proxied && !parameters.apiKey) {
         throw new Error('No API key provided');
@@ -151,4 +156,5 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
 export const maxTokensByModel = {
     //"o3-preview": 16048,
     "gpt-4o": 127500,
+    "deepseek-reasoner": 64000,
 }

@@ -1,11 +1,28 @@
 import { MessageTree } from "./message-tree";
 
+// Add provider configurations
+export const MODEL_PROVIDERS = {
+  'gpt-4o': {
+    endpoint: 'https://api.openai.com',
+    keyName: 'openai-api-key'
+  },
+  'deepseek-reasoner': {
+    endpoint: 'https://api.deepseek.com',
+    keyName: 'deepseek-api-key'
+  },
+//   'o3-mini': {
+//     endpoint: 'https://api.openai.com',
+//     keyName: 'openai-api-key'
+//   }
+} as const;
+
 export interface Parameters {
     temperature: number;
     topP: number;
     apiKey?: string;
     initialSystemPrompt?: string;
     model: string;
+    endpoint: string;
 }
 
 export interface Message {
@@ -62,3 +79,4 @@ export function deserializeChat(serialized: string) {
     chat.messages = new MessageTree(chat.messages);
     return chat as Chat;
 }
+

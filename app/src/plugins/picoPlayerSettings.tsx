@@ -79,3 +79,6 @@ export class SystemSoundPlugin extends Plugin<SystemSoundPluginOptions> {
    
     
 }
+
+
+//TODO: copy sfx template above for gfx template
