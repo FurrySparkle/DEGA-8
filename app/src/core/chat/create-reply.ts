@@ -15,6 +15,7 @@ export class ReplyRequest extends EventEmitter {
     private timer: any;
     private done: boolean = false;
     private content = '';
+    private reasoningContent = '';
     private cancelSSE: any;
 
     constructor(private chat: Chat,
@@ -81,7 +82,7 @@ export class ReplyRequest extends EventEmitter {
             });
             this.cancelSSE = cancel;
 
-            const eventIterator = new EventEmitterAsyncIterator<string>(emitter, ["data", "done", "error"]);
+            const eventIterator = new EventEmitterAsyncIterator<string>(emitter, ["data", "reasoning", "done", "error"]);
 
             for await (const event of eventIterator) {
                 const { eventName, value } = event;
@@ -91,11 +92,12 @@ export class ReplyRequest extends EventEmitter {
                     case 'data':
                         await this.onData(value);
                         break;
-
+                    case 'reasoning':
+                        await this.onReasoning(value);
+                        break;
                     case 'done':
                         await this.onDone();
                         break;
-
                     case 'error':
                         if (!this.content || !this.done) {
                             await this.onError(value);
@@ -115,19 +117,42 @@ export class ReplyRequest extends EventEmitter {
         }
 
         this.lastChunkReceivedAt = Date.now();
-
         this.content = value;
+
+        await this.updateMessageContent();
+    }
+
+    public async onReasoning(value: any) {
+        if (this.done) {
+            return;
+        }
+
+        this.lastChunkReceivedAt = Date.now();
+        this.reasoningContent = value;
+
+        await this.updateMessageContent();
+    }
+
+    private async updateMessageContent() {
+        let formattedContent = '';
+        
+        // Only show reasoning section for deepseek-reasoner model
+        if (this.requestedParameters.model === 'deepseek-reasoner' && this.reasoningContent) {
+            formattedContent = `💭 Thinking Process:\n\`\`\`\n${this.reasoningContent}\n\`\`\`\n\n`;
+        }
+        
+        formattedContent += this.content;
 
         await pluginRunner("postprocess-model-output", this.pluginContext, async plugin => {
             const output = await plugin.postprocessModelOutput({
                 role: 'assistant',
-                content: this.content,
+                content: formattedContent,
             }, this.mutatedMessages, this.mutatedParameters, false);
 
-            this.content = output.content;
+            formattedContent = output.content;
         });
 
-        this.yChat.setPendingMessageContent(this.replyID, this.content);
+        this.yChat.setPendingMessageContent(this.replyID, formattedContent);
     }
 
     public async onDone() {
@@ -141,20 +166,25 @@ export class ReplyRequest extends EventEmitter {
 
         this.yChat.onMessageDone(this.replyID);
 
+        let finalContent = '';
+        if (this.requestedParameters.model === 'deepseek-reasoner' && this.reasoningContent) {
+            finalContent = `💭 Thinking Process:\n\`\`\`\n${this.reasoningContent}\n\`\`\`\n\n`;
+        }
+        finalContent += this.content;
+
         await pluginRunner("postprocess-model-output", this.pluginContext, async plugin => {
             const output = await plugin.postprocessModelOutput({
                 role: 'assistant',
-                content: this.content,
+                content: finalContent,
             }, this.mutatedMessages, this.mutatedParameters, true);
 
-            this.content = output.content;
+            finalContent = output.content;
         });
 
-        this.yChat.setMessageContent(this.replyID, this.content);
-          //possible location for .p8 injection
-    P8Injector(this.content.trim() || '');
-    console.log("P8 Injector Fired! Data:" + this.content.trim() || '');
-       
+        this.yChat.setMessageContent(this.replyID, finalContent);
+        //possible location for .p8 injection
+        P8Injector(this.content.trim() || '');
+        console.log("P8 Injector Fired! Data:" + this.content.trim() || '');
     }
 
     public async onError(error: string) {

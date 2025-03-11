@@ -29,6 +29,7 @@ export interface OpenAIResponseChunk {
     choices?: {
         delta: {
             content: string;
+            reasoning_content?: string;
         };
         index: number;
         finish_reason: string | null;
@@ -84,7 +85,8 @@ function parseResponseChunk(buffer: any): OpenAIResponseChunk {
             done: false,
             choices: parsed.choices?.map((choice: any) => ({
                 delta: {
-                    content: choice.delta?.content || ''
+                    content: choice.delta?.content || '',
+                    reasoning_content: choice.delta?.reasoning_content
                 },
                 index: choice.index || 0,
                 finish_reason: choice.finish_reason
@@ -164,6 +166,7 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
     }) as SSE;
 
     let contents = '';
+    let reasoningContents = '';
 
     eventSource.addEventListener('error', (event: any) => {
         if (!contents) {
@@ -188,10 +191,17 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
             }
 
             if (chunk.choices && chunk.choices.length > 0) {
-                const content = chunk.choices[0]?.delta?.content || '';
-                if (content) {
-                    contents += content;
+                const choice = chunk.choices[0];
+                const content = choice?.delta?.content || '';
+                const reasoningContent = choice?.delta?.reasoning_content || '';
+
+                if (content || reasoningContent) {
+                    if (content) contents += content;
+                    if (reasoningContent) {
+                        reasoningContents += reasoningContent;
+                    }
                     emitter.emit('data', contents);
+                    emitter.emit('reasoning', reasoningContents);
                 }
             }
         } catch (e) {
