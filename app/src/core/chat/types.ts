@@ -22,7 +22,7 @@ export interface Parameters {
     apiKey?: string;
     initialSystemPrompt?: string;
     model: string;
-    endpoint: string;
+    endpoint?: string;
     maxTokens?: number;
     presencePenalty?: number;
     frequencyPenalty?: number;
