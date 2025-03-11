@@ -114,7 +114,7 @@ export default class SSE {
 
         const e: any = { 'id': null, 'retry': null, 'data': '', 'event': 'message' };
         chunk.split(/\n|\r\n|\r/).forEach((line: string) => {
-            line = line.trimRight();
+            line = line.trimEnd();
             const index = line.indexOf(this.FIELD_SEPARATOR);
             if (index <= 0) {
                 // Line was either empty, or started with a separator and is a comment.

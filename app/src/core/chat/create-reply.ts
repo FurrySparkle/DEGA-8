@@ -58,10 +58,10 @@ export class ReplyRequest extends EventEmitter {
 
         this.timer = setInterval(() => {
             const sinceLastChunk = Date.now() - this.lastChunkReceivedAt;
-            if (sinceLastChunk > 30000 && !this.done) {
-                this.onError('no response from OpenAI in the last 30 seconds');
+            if (sinceLastChunk > 60000 && !this.done) {
+                this.onError('Connection timed out after 60 seconds of inactivity');
             }
-        }, 2000);
+        }, 5000);
     }
 
     public async execute() {
@@ -75,8 +75,6 @@ export class ReplyRequest extends EventEmitter {
                 this.lastChunkReceivedAt = Date.now();
             });
 
-            
-           // if (typeof window !== 'undefined') {
             const { emitter, cancel } = await createStreamingChatCompletion(this.mutatedMessages, {
                 ...this.mutatedParameters,
                 apiKey: this.requestedParameters.apiKey,
@@ -87,6 +85,7 @@ export class ReplyRequest extends EventEmitter {
 
             for await (const event of eventIterator) {
                 const { eventName, value } = event;
+                this.lastChunkReceivedAt = Date.now();
 
                 switch (eventName) {
                     case 'data':
@@ -104,11 +103,6 @@ export class ReplyRequest extends EventEmitter {
                         break;
                 }
             }
-        // } else {
-        //     // Handle the server-side case or throw an error
-        //     throw new Error('This code must be executed on the client side.');
-        // }
-
         } catch (e: any) {
             console.error(e);
             this.onError(e.message);
@@ -172,7 +166,7 @@ export class ReplyRequest extends EventEmitter {
         clearInterval(this.timer);
         this.cancelSSE?.();
 
-        this.content += `\n\nI'm sorry, I'm having trouble connecting to OpenAI (${error || 'no response from the API'}). Please make sure you've entered your OpenAI API key correctly and try again.`;
+        this.content += `\n\nI'm sorry, I'm having trouble connecting to the Model Provider (${error || 'no response from the API'}). Please make sure you've entered your API key correctly and try again.`;
         this.content = this.content.trim();
 
         this.yChat.setMessageContent(this.replyID, this.content);

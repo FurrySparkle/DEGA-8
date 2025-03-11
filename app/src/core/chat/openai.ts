@@ -37,22 +37,71 @@ export interface OpenAIResponseChunk {
 }
 
 function parseResponseChunk(buffer: any): OpenAIResponseChunk {
-    const chunk = buffer.toString().replace('data: ', '').trim();
-
-    if (chunk === '[DONE]') {
+    // If buffer is undefined/null, return empty response
+    if (!buffer) {
         return {
-            done: true,
+            done: false,
+            choices: [{
+                delta: { content: '' },
+                index: 0,
+                finish_reason: null
+            }]
         };
     }
 
-    const parsed = JSON.parse(chunk);
+    // Ensure we have a string to work with
+    const rawData = typeof buffer === 'string' ? buffer : String(buffer);
 
-    return {
-        id: parsed.id,
-        done: false,
-        choices: parsed.choices,
-        model: parsed.model,
-    };
+    // Check for [DONE] message
+    if (rawData.includes('[DONE]')) {
+        return { done: true };
+    }
+
+    try {
+        // For SSE data format, we need to handle the 'data: ' prefix
+        let jsonStr = rawData;
+        if (rawData.startsWith('data: ')) {
+            jsonStr = rawData.slice(6); // Remove 'data: ' prefix
+        }
+        jsonStr = jsonStr.trim();
+
+        if (!jsonStr) {
+            return {
+                done: false,
+                choices: [{
+                    delta: { content: '' },
+                    index: 0,
+                    finish_reason: null
+                }]
+            };
+        }
+
+        const parsed = JSON.parse(jsonStr);
+        
+        // Handle DeepSeek's response format
+        return {
+            id: parsed.id,
+            done: false,
+            choices: parsed.choices?.map((choice: any) => ({
+                delta: {
+                    content: choice.delta?.content || ''
+                },
+                index: choice.index || 0,
+                finish_reason: choice.finish_reason
+            })) || [],
+            model: parsed.model
+        };
+    } catch (e) {
+        console.error('Failed to parse chunk:', e, 'Raw data:', rawData);
+        return {
+            done: false,
+            choices: [{
+                delta: { content: '' },
+                index: 0,
+                finish_reason: null
+            }]
+        };
+    }
 }
 
 export async function createChatCompletion(messages: OpenAIMessage[], parameters: Parameters): Promise<string> {
@@ -93,20 +142,25 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
         throw new Error('No API key provided');
     }
 
+    const payload = {
+        model: parameters.model,
+        messages: messages,
+        temperature: parameters.temperature,
+        top_p: parameters.topP,
+        stream: true,
+        max_tokens: parameters.maxTokens,
+        presence_penalty: parameters.presencePenalty,
+        frequency_penalty: parameters.frequencyPenalty
+    };
+
     const eventSource = new SSE(endpoint + '/v1/chat/completions', {
         method: "POST",
         headers: {
-            'Accept': 'application/json, text/plain, */*',
+            'Accept': 'text/event-stream',
             'Authorization': !proxied ? `Bearer ${parameters.apiKey}` : '',
             'Content-Type': 'application/json',
         },
-        payload: JSON.stringify({
-            "model": parameters.model,
-            "messages": messages,
-            "temperature": parameters.temperature,
-            "top_p": parameters.topP,
-            "stream": true,
-        }),
+        payload: JSON.stringify(payload),
     }) as SSE;
 
     let contents = '';
@@ -116,40 +170,45 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
             let error = event.data;
             try {
                 error = JSON.parse(error).error.message;
-            } catch (e) {}
+            } catch (e) {
+                // If parsing fails, use the raw error message
+                error = error || 'Unknown error occurred';
+            }
             emitter.emit('error', error);
         }
     });
 
     eventSource.addEventListener('message', async (event: any) => {
-        if (event.data === '[DONE]') {
-            emitter.emit('done');
-            return;
-        }
-
         try {
             const chunk = parseResponseChunk(event.data);
-            if (chunk.choices && chunk.choices.length > 0) {
-                contents += chunk.choices[0]?.delta?.content || '';
-                emitter.emit('data', contents);
-                
-            }
-                
             
+            if (chunk.done) {
+                emitter.emit('done');
+                return;
+            }
+
+            if (chunk.choices && chunk.choices.length > 0) {
+                const content = chunk.choices[0]?.delta?.content || '';
+                if (content) {
+                    contents += content;
+                    emitter.emit('data', contents);
+                }
+            }
         } catch (e) {
-            console.error(e);
+            console.error('Error processing message:', e);
+            emitter.emit('error', 'Error processing message');
         }
     });
-    
+
     eventSource.stream();
 
     return {
         emitter,
-        cancel: () =>{
-            //possible location for .p8 injection
-    P8Injector(contents?.trim() || '');
-    console.log("P8 Injector Fired! Data:" + contents.trim() || '');
-             eventSource.close();}
+        cancel: () => {
+            P8Injector(contents?.trim() || '');
+            console.log("P8 Injector Fired! Data:" + contents.trim() || '');
+            eventSource.close();
+        }
     };
 }
 

@@ -23,6 +23,9 @@ export interface Parameters {
     initialSystemPrompt?: string;
     model: string;
     endpoint: string;
+    maxTokens?: number;
+    presencePenalty?: number;
+    frequencyPenalty?: number;
 }
 
 export interface Message {
