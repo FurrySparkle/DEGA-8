@@ -138,7 +138,9 @@ export class ReplyRequest extends EventEmitter {
         
         // Only show reasoning section for deepseek-reasoner model
         if (this.requestedParameters.model === 'deepseek-reasoner' && this.reasoningContent) {
-            formattedContent = `💭 Thinking Process:\n\`\`\`\n${this.reasoningContent}\n\`\`\`\n\n`;
+            // If we're starting to get actual content, collapse the thinking process
+            const isThinking = !this.content.trim();
+            formattedContent = `<ThinkingSection content="${this.reasoningContent.replace(/"/g, '&quot;')}" isThinking="${isThinking}" />\n\n`;
         }
         
         formattedContent += this.content;
@@ -168,7 +170,7 @@ export class ReplyRequest extends EventEmitter {
 
         let finalContent = '';
         if (this.requestedParameters.model === 'deepseek-reasoner' && this.reasoningContent) {
-            finalContent = `💭 Thinking Process:\n\`\`\`\n${this.reasoningContent}\n\`\`\`\n\n`;
+            finalContent = `<ThinkingSection content="${this.reasoningContent.replace(/"/g, '&quot;')}" />\n\n`;
         }
         finalContent += this.content;
 

@@ -10,6 +10,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useAppSelector } from '../store';
 import { selectSettingsTab } from '../store/settings-ui';
+import { ThinkingSection } from './ThinkingSection';
 
 // hide for everyone but screen readers
 const SROnly = styled.span`
@@ -53,6 +54,57 @@ const Container = styled.div`
 
         * {
             color: white;
+        }
+
+        .thinking-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            
+            .thinking-header {
+                cursor: pointer;
+                padding: 0.5rem;
+                user-select: none;
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                margin: -0.5rem -0.5rem 0;
+                border-radius: 8px 8px 0 0;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.05);
+                }
+
+                .chevron {
+                    display: inline-block;
+                    transition: transform 0.2s ease;
+                    margin-right: 0.5rem;
+                    width: 1rem;
+                    text-align: center;
+
+                    &.open {
+                        transform: rotate(90deg);
+                    }
+                }
+            }
+
+            .thinking-content {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-out;
+                margin-top: 0;
+
+                &.open {
+                    max-height: 2000px;
+                    transition: max-height 0.5s ease-in;
+                }
+
+                pre {
+                    margin-top: 0.5rem !important;
+                    background: rgba(0, 0, 0, 0.3) !important;
+                }
+            }
         }
 
         p, ol, ul, li, h1, h2, h3, h4, h5, h6, img, blockquote, &>pre {
@@ -212,6 +264,19 @@ export default function MessageComponent(props: { message: Message, last: boolea
 
     const tab = useAppSelector(selectSettingsTab);
 
+    // Extract reasoning content if it exists
+    const { reasoningContent, mainContent } = useMemo(() => {
+        const match = props.message.content.match(/^<ThinkingSection content="([^"]*)"(?:\s*isThinking="([^"]*)")?\s*\/>\n\n([\s\S]*)$/);
+        if (match) {
+            return {
+                reasoningContent: match[1],
+                isThinking: match[2] === 'true',
+                mainContent: match[3]
+            };
+        }
+        return { mainContent: props.message.content };
+    }, [props.message.content]);
+
     const getRoleName = useCallback((role: string, share = false) => {
         switch (role) {
             case 'user':
@@ -287,23 +352,35 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             </Button>
                         )}
                     </div>
-                    {!editing && <Markdown content={props.message.content} className={"content content-" + props.message.id} />}
-                    {editing && (<Editor>
-                        <Textarea value={content}
-                            onChange={e => setContent(e.currentTarget.value)}
-                            autosize={true} />
-                        <Button variant="light" onClick={() => context.editMessage(props.message, content)}>
-                            <FormattedMessage id="Bm3EKs" defaultMessage="Save changes" description="Label for a button that appears when the user is editing the text of one of their messages, to save the changes" />
-                        </Button>
-                        <Button variant="subtle" onClick={() => setEditing(false)}>
-                            <FormattedMessage id="raQMIg" defaultMessage="Cancel" description="Label for a button that appears when the user is editing the text of one of their messages, to cancel without saving changes" />
-                        </Button>
-                    </Editor>)}
+                    {!editing && (
+                        <div className="content content-{props.message.id}">
+                            {reasoningContent && (
+                                <ThinkingSection 
+                                    content={reasoningContent} 
+                                    isThinking={!mainContent.trim()} 
+                                />
+                            )}
+                            <Markdown content={mainContent} />
+                        </div>
+                    )}
+                    {editing && (
+                        <Editor>
+                            <Textarea value={content}
+                                onChange={e => setContent(e.currentTarget.value)}
+                                autosize={true} />
+                            <Button variant="light" onClick={() => context.editMessage(props.message, content)}>
+                                <FormattedMessage id="Bm3EKs" defaultMessage="Save changes" />
+                            </Button>
+                            <Button variant="subtle" onClick={() => setEditing(false)}>
+                                <FormattedMessage id="raQMIg" defaultMessage="Cancel" />
+                            </Button>
+                        </Editor>
+                    )}
                 </div>
                 {props.last && <EndOfChatMarker />}
             </Container>
-        )
-    }, [props.message, props.share, props.last, getRoleName, context, editing, content]);
+        );
+    }, [props.message, props.share, props.last, getRoleName, context, editing, content, reasoningContent, mainContent]);
 
     return elem;
 }
