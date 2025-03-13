@@ -16,7 +16,7 @@ import type { Context } from "../context";
  * @property {Array<{ label: string; value: string; }>} [options] - The options for the select input.
  */
 export interface RenderProps {
-    type: 'text' | 'textarea' | 'select' | 'number' | 'slider' | 'checkbox' | 'password' ;
+    type: 'text' | 'textarea' | 'select' | 'number' | 'slider' | 'checkbox' | 'password'  ;
 
     label?: any;
     description?: any;

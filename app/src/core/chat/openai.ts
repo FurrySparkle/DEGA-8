@@ -126,6 +126,10 @@ export async function createChatCompletion(messages: OpenAIMessage[], parameters
             "messages": messages,
             "temperature": parameters.temperature,
             "top_p": parameters.topP,
+            "reasoning_effort": parameters.reasoning_effort,
+            "frequency_penalty": parameters.frequencyPenalty,
+            "presence_penalty": parameters.presencePenalty,
+            
         }),
     });
 
@@ -150,9 +154,10 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
         temperature: parameters.temperature,
         top_p: parameters.topP,
         stream: true,
-        max_tokens: parameters.maxTokens,
+       
         presence_penalty: parameters.presencePenalty,
-        frequency_penalty: parameters.frequencyPenalty
+        frequency_penalty: parameters.frequencyPenalty,
+        reasoning_effort: parameters.reasoning_effort
     };
 
     const eventSource = new SSE(endpoint + '/v1/chat/completions', {
@@ -222,8 +227,8 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
     };
 }
 
-export const maxTokensByModel = {
-    //"o3-preview": 16048,
-    "gpt-4o": 127500,
-    "deepseek-reasoner": 64000,
-}
+// export const maxTokensByModel = {
+//     //"o3-preview": 16048,
+//     "gpt-4o": 127500,
+//     "deepseek-reasoner": 64000,
+// }

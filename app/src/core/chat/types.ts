@@ -4,11 +4,15 @@ import { MessageTree } from "./message-tree";
 export const MODEL_PROVIDERS = {
   'gpt-4o': {
     endpoint: 'https://api.openai.com',
-    keyName: 'openai-api-key'
+    keyName: 'openai-api-key',
+    maxTokens: 128000,
+    reasoning: false,
   },
   'deepseek-reasoner': {
     endpoint: 'https://api.deepseek.com',
-    keyName: 'deepseek-api-key'
+    keyName: 'deepseek-api-key',
+    maxTokens: 64000,
+    reasoning: true,
   },
 //   'o3-mini': {
 //     endpoint: 'https://api.openai.com',
@@ -23,9 +27,10 @@ export interface Parameters {
     initialSystemPrompt?: string;
     model: string;
     endpoint?: string;
-    maxTokens?: number;
+    
     presencePenalty?: number;
     frequencyPenalty?: number;
+    reasoning_effort?: 'low' | 'medium' | 'high';
 }
 
 export interface Message {

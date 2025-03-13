@@ -34,7 +34,7 @@ const Chevron = styled.span<{ isOpen: boolean }>`
 `;
 
 const ThinkingContent = styled.div<{ isOpen: boolean }>`
-    max-height: ${props => props.isOpen ? '20000' : '0'};
+    max-height: ${props => props.isOpen ? '2000px' : '0'};
     overflow: hidden;
     transition: max-height 0.3s ease-out;
     margin-top: ${props => props.isOpen ? '0.5rem' : '0'};

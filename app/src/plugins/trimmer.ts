@@ -1,8 +1,9 @@
 import Plugin from "../core/plugins";
 import { PluginDescription } from "../core/plugins/plugin-description";
 import { OpenAIMessage, Parameters } from "../core/chat/types";
-import { maxTokensByModel } from "../core/chat/openai";
+
 import { countTokens, runChatTrimmer } from "../core/tokenizer/wrapper";
+import { MODEL_PROVIDERS } from "../core/chat/types";
 
 export interface ContextTrimmerPluginOptions {
     maxTokens: number;
@@ -20,7 +21,7 @@ export class ContextTrimmerPlugin extends Plugin<ContextTrimmerPluginOptions> {
                 {
                     id: "maxTokens",
                     displayOnSettingsScreen: "chat",
-                    defaultValue: 65000,
+                    defaultValue: 64000,
                     scope: "chat",
                     renderProps: (value, options, context) => ({
                         label: context.intl.formatMessage(
@@ -33,16 +34,16 @@ export class ContextTrimmerPlugin extends Plugin<ContextTrimmerPluginOptions> {
                         type: "slider",
                         min: 512,
                         max:
-                            maxTokensByModel[
+                            MODEL_PROVIDERS[
                                 options.getOption("parameters", "model")
-                            ] || 128000,
+                            ]?.maxTokens || 64000,
                         step: 512,
                     }),
                     validate: (value, options) => {
                         const max =
-                            maxTokensByModel[
+                                MODEL_PROVIDERS[
                                 options.getOption("parameters", "model")
-                            ] || 2048;
+                            ]?.maxTokens || 64000;
                         return value < max;
                     },
                     displayInQuickSettings: {
