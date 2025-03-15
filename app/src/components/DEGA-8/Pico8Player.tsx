@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-const Pico8Player = () => {
+const Pico8Player = ({ width = 356, height = 256 }: { width?: number|string, height?: number|string }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   
   const [iframeSrc, setIframeSrc] = useState<string>("/Pic0-8/degademo.html");
@@ -40,9 +40,9 @@ const Pico8Player = () => {
         title="PicoPlayer"
         ref={iframeRef}
         src= {iframeSrc}
-        width="356"
-        height="256"
-        style={{ border: 'none' }}
+        width={width}
+        height={height}
+        style={{ border: 'none',  }}
         sandbox = "allow-scripts allow-same-origin"
         
       ></iframe>

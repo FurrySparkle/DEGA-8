@@ -306,7 +306,7 @@ end\`\`\``;
                 </h2>
                 <div className="spacer" />
                 <HeaderButton icon="search" onClick={spotlight.open} />
-                <HeaderButton icon="gear" onClick={openSettings} />
+               { !props.share && <HeaderButton icon="gear" onClick={openSettings} />}
                 {backend.current && !props.share && props.canShare && typeof navigator.share !== 'undefined' && (
                     <HeaderButton icon="share" onClick={props.onShare}>
                         <FormattedMessage
