@@ -11,7 +11,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { useAppSelector } from '../store';
 import { selectSettingsTab } from '../store/settings-ui';
 import { ThinkingSection } from './ThinkingSection';
-
+import { SharePrompt } from './DEGA-8/SharePrompt';
+import { useParams } from 'next/navigation';
 // hide for everyone but screen readers
 const SROnly = styled.span`
     position: fixed;
@@ -261,9 +262,13 @@ export default function MessageComponent(props: { message: Message, last: boolea
     const [editing, setEditing] = useState(false);
     const [content, setContent] = useState('');
     const intl = useIntl();
-
+    const [shareModalOpen, setShareModalOpen] = useState(false);
+    const { id = '' } = useParams<{ id: string }>();
     const tab = useAppSelector(selectSettingsTab);
 
+if (props.share) {
+    props.message.done = true;
+}
     // Extract reasoning content if it exists
     const { reasoningContent, mainContent } = useMemo(() => {
         const match = props.message.content.match(/^<ThinkingSection content="([^"]*)"(?:\s*isThinking="([^"]*)")?\s*\/>\n\n([\s\S]*)$/);
@@ -314,23 +319,25 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             complete={!!props.message.done}
                             autoplay={props.last && context.chat.lastReplyID === props.message.id} />
                         <div style={{ flexGrow: 1 }} />
-                        <CopyButton value={props.message.content}>
-                            {({ copy, copied }) => (
-                                <Button variant="subtle" size="compact-sm"  onClick={copy} style={{ marginLeft: '1rem' }}>
-                                    <i className="fa fa-clipboard" />
-                                        {copied ? <FormattedMessage id="ljHOzQ" defaultMessage="Copied" description="Label for copy-to-clipboard button after a successful copy" />
-                                        : <span><FormattedMessage id="upBSoW" defaultMessage="Copy" description="Label for copy-to-clipboard button" /></span>}
-                                </Button>
-                            )}
-                        </CopyButton>
-                        {/* {typeof navigator.share !== 'undefined' && (   // Share API is not supported in Version 1.0 TODO: rework into a new share page with a subscription system and commenting
-                            <Button variant="subtle" size="compact-sm"  onClick={() => share(props.message.content)}>
+                        {!props.share && (
+                            <CopyButton value={props.message.content}>
+                                {({ copy, copied }) => (
+                                    <Button variant="subtle" size="compact-sm"  onClick={copy} style={{ marginLeft: '1rem' }}>
+                                        <i className="fa fa-clipboard" />
+                                            {copied ? <FormattedMessage id="ljHOzQ" defaultMessage="Copied" description="Label for copy-to-clipboard button after a successful copy" />
+                                            : <span><FormattedMessage id="upBSoW" defaultMessage="Copy" description="Label for copy-to-clipboard button" /></span>}
+                                    </Button>
+                                )}
+                            </CopyButton>
+                        )}
+                        {!props.share && typeof navigator.share !== 'undefined' && (   //TODO: rework into a new share page with a subscription system and commenting ---DONE
+                            <Button variant="subtle" size="compact-sm"  onClick={ () => setShareModalOpen(true)}>
                                 <i className="fa fa-share" />
                                 <span>
                                     <FormattedMessage id="gzJlXS" defaultMessage="Share" description="Label for a button which shares the text of a chat message using the user device's share functionality" />
                                 </span>
                             </Button>
-                        )} */}
+                        )}
                         {!context.isShare && props.message.role === 'user' && (
                             <Button variant="subtle" size="compact-sm"  onClick={() => {
                                 setContent(props.message.content);
@@ -352,6 +359,10 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             </Button>
                         )}
                     </div>
+
+         
+
+                    {/* //buttons above, content below */}
                     {!editing && (
                         <div className="content content-{props.message.id}">
                             {reasoningContent && (
@@ -376,11 +387,19 @@ export default function MessageComponent(props: { message: Message, last: boolea
                             </Button>
                         </Editor>
                     )}
+                              <SharePrompt 
+        isOpen={shareModalOpen}
+        onClose={() => setShareModalOpen(false)}
+        messageContent={props.message.content}
+        chatId={id}
+      />
                 </div>
+
+                
                 {props.last && <EndOfChatMarker />}
             </Container>
         );
-    }, [props.message, props.share, props.last, getRoleName, context, editing, content, reasoningContent, mainContent]);
+    }, [props.message, props.share, props.last, getRoleName, context, editing, content, reasoningContent, mainContent, shareModalOpen,id]);
 
     return elem;
 }

@@ -220,8 +220,8 @@ export async function createStreamingChatCompletion(messages: OpenAIMessage[], p
     return {
         emitter,
         cancel: () => {
-            P8Injector(contents?.trim() || '');
-            console.log("P8 Injector Fired! Data:" + contents.trim() || '');
+            // P8Injector(contents?.trim() || '');
+            // console.log("P8 Injector Fired! Data:" + contents.trim() || '');
             eventSource.close();
         }
     };

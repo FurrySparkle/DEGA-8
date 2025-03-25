@@ -8,6 +8,7 @@ import SharedPage from '../../src/components/pages/shared';
 //export const runtime = 'edge';
 
 export default function SharedChatPage() {
-  const { id = '' } = useParams<{ id: string }>();
+  const params = useParams<{ id: string }>();
+  const id = params?.id || '';
   return <SharedPage id={id} />;
 }

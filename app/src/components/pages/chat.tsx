@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useCallback, useEffect } from 'react';
+import React, { Suspense, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import slugify from 'slugify';
 import { useParams } from 'next/navigation';
@@ -10,6 +10,7 @@ import { useAppContext } from '../../core/context';
 import { backend } from '../../core/backend';
 import { Page } from '../pageComponent';
 import { useOption } from '../../core/options/use-option';
+import { P8Injector } from '../DEGA-8/CartTemplater';
 
 const Message = React.lazy(() => import(/* webpackPreload: true */ '../message'));
 
@@ -39,11 +40,28 @@ const EmptyMessage = styled.div`
 export default function ChatPage(props: any) {
     
     const context = useAppContext();
-    
+    const [chatData, setChatData] = useState<string>(props.chatData);
     const [autoScrollWhenOpeningChat] = useOption('auto-scroll', 'auto-scroll-when-opening-chat')
     const [autoScrollWhileGenerating] = useOption('auto-scroll', 'auto-scroll-while-generating');
     const { id = '' } = useParams<{ id: string }>() ?? {};
-    
+    useEffect(() => {
+        if (props.share && props.chatMetadata?.id === id && chatData) {
+            const sharedChat = {
+                id: props.chatMetadata.id,
+                chatID: props.chatMetadata.id,
+                timestamp: Date.now(),
+                role: "assistant",
+                content: chatData
+            };
+            console.log("sharedChat--", sharedChat);
+            // Check if message already exists to prevent duplicates
+            if (!context.currentChat.messagesToDisplay.some(m => m.id === sharedChat.id)) {
+                // Use the appropriate context method to update messages
+                // If there isn't one, you might need to add it to your context
+                context.currentChat.messagesToDisplay = [...context.currentChat.messagesToDisplay, sharedChat];
+            }
+        }
+    }, [props.share, props.chatMetadata, chatData, id, context.currentChat]);
 
 
     useEffect(() => {
@@ -85,7 +103,17 @@ export default function ChatPage(props: any) {
 
     const messagesToDisplay = context.currentChat.messagesToDisplay;
 
-    const shouldShowChat = id && context.currentChat.chat && !!messagesToDisplay.length;
+    const shouldShowChat = id && context.currentChat.chat && !!messagesToDisplay.length || props.share;
+
+
+    useEffect(() => {
+        if (messagesToDisplay.length > 0 && context.currentChat.chat && !props.share) {
+            const lastMessage = messagesToDisplay[messagesToDisplay.length - 1];
+            if (lastMessage.role === 'assistant') {
+                P8Injector(lastMessage.content);
+            }
+        }
+    }, [messagesToDisplay]);
 
     return <Page id={id || 'landing'}
         headerProps={{
@@ -120,7 +148,7 @@ export default function ChatPage(props: any) {
                             <Message key={id + ":" + message.id}
                                 message={message}
                                 share={props.share}
-                                last={context.currentChat.chat!.messages.leafs.some(n => n.id === message.id)} />
+                                last={props.share ? true : context.currentChat.chat!.messages.leafs.some(n => n.id === message.id)} />
                         ))}
                     </div>
                 )}

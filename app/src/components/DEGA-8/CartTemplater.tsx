@@ -213,6 +213,14 @@ worker.onmessage = async (e) => {
 
 
 
+export const GameConverted = (gamelink:string) =>{
+  window.localStorage.setItem('nonce', crypto.randomBytes(16).toString("base64"))
+  window.localStorage.setItem('gamelink', gamelink);
+  console.log("Game conversion successful" + gamelink);
+    const event = new Event('GameConverted');
+      window.dispatchEvent(event);
+}
+
 export async function P8Injector(GPTchoice:string){
     console.log(GPTchoice)
     
@@ -246,11 +254,7 @@ const blobCode =  await fs.promises.readlink(outputPath);
 
 globalThis.gamelink =  blobCode;
 if ( isConverted) {
-  window.localStorage.setItem('nonce', crypto.randomBytes(16).toString("base64"))
-  window.localStorage.setItem('gamelink', globalThis.gamelink);
-  console.log("Game conversion successful" + globalThis.gamelink);
-    const event = new Event('GameConverted');
-      window.dispatchEvent(event);
+      GameConverted(globalThis.gamelink);  
 }
 
     

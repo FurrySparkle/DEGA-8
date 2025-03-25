@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import domtoimage from 'dom-to-image';
 
 const Pico8Player = ({ width = 356, height = 256 }: { width?: number|string, height?: number|string }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -13,6 +14,31 @@ const Pico8Player = ({ width = 356, height = 256 }: { width?: number|string, hei
     iframe!.contentWindow?.location.reload();
     console.log('Iframe reloaded with new game code.');
   };
+
+
+  // Add screenshot function
+  const captureScreenshot = async (): Promise<string> => {
+    if (!iframeRef.current) {
+      throw new Error('Iframe not found');
+    }
+    
+    try {
+      const dataUrl = await domtoimage.toPng(iframeRef.current);
+      return dataUrl.split(',')[1]; // Return base64 without data:image/png;base64, prefix
+    } catch (error) {
+      console.error('Error capturing screenshot:', error);
+      throw error;
+    }
+  };
+
+  // Expose the capture function to window for external access
+  useEffect(() => {
+    (window as any).captureGameScreenshot = captureScreenshot;
+    return () => {
+      delete (window as any).captureGameScreenshot;
+    };
+  }, []);
+
 
   useEffect(() => {
    

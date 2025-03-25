@@ -639,7 +639,7 @@
 		e.type = "text/javascript";
 		//e.async = true;
 
-		const code = window.localStorage.getItem("gamelink");
+		const code = window.localStorage.getItem("gamelink"); //This is the game link injection for DEGA-8 to show the game
 		const blob = new Blob([ eval(code)], { type: e.type });
 		//const blob = new Blob([ window.localStorage.getItem("gamelink")], { type: e.type });
 		//e.nonce = window.localStorage.getItem("nonce");
