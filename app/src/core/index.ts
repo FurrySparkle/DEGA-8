@@ -37,7 +37,7 @@ export class ChatManager extends EventEmitter {
 
         console.log('initializing chat manager');
 
-        this.doc = this.attachYDoc('anonymous');
+        this.doc = this.attachYDoc('anonymous') as YChatDoc;
 
         loadSavedChatsFromPreviousVersion(this.doc)
             .then(() => this.emit('update'));
