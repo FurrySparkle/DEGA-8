@@ -47,7 +47,7 @@ export default function SharedPage({ id }: SharedPageProps) {
         });
         setChatMessages(data.chat);
         setChatCode(data.code);
-        GameConverted(data.code);
+       // GameConverted(data.code);
       } finally {
         setIsLoading(false);
       }
@@ -55,6 +55,15 @@ export default function SharedPage({ id }: SharedPageProps) {
 
     fetchChatData();
   }, [id]);
+
+// Separate useEffect for client-side only operations
+useEffect(() => {
+  if (typeof window !== 'undefined' && chatCode) {
+    // Only run GameConverted on the client side when we have the code
+    GameConverted(chatCode);
+  }
+}, [chatCode]);
+
 
   // Separate useEffect to handle chatData changes
   useEffect(() => {

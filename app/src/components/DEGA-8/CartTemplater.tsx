@@ -214,7 +214,7 @@ worker.onmessage = async (e) => {
 
 
 export const GameConverted = (gamelink:string) =>{
-  if (typeof window === 'undefined') return; // Early return on server-side
+ // if (typeof window === 'undefined') return; // Early return on server-side
   window.localStorage.setItem('nonce', crypto.randomBytes(16).toString("base64"))
   window.localStorage.setItem('gamelink', gamelink);
   console.log("Game conversion successful" + gamelink);
