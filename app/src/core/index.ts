@@ -62,7 +62,7 @@ export class ChatManager extends EventEmitter {
 
     private attachYDoc(username: string) {
         console.log('attaching y-doc for ' + username);
-
+        if(typeof window !== 'undefined'){  
         // detach current doc
         const doc = this.doc as YChatDoc | undefined;
         const provider = this.provider as IndexeddbPersistence | undefined;
@@ -123,7 +123,7 @@ export class ChatManager extends EventEmitter {
         }
 
         return this.doc;
-    }
+    }  }
 
     public applyYUpdate(update: Uint8Array) {
         Y.applyUpdate(this.doc.root, update);
