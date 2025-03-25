@@ -37,6 +37,10 @@ export default function SharedPage({ id }: SharedPageProps) {
         }
 
         const { data } = result;
+        if (!data) {
+          console.error('No data received');
+          return;
+        }
         setChatMetadata({
           id: data.id,
           clip_pic: data.clip_pic
