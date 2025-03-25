@@ -21,12 +21,21 @@ interface ChatData {
 }
 
 export default function SharedPage({ id }: SharedPageProps) {
+  const [mounted, setMounted] = useState(false);
+
+  // Add this effect to handle client-side mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [chatMetadata, setChatMetadata] = useState<{id: string, clip_pic: string}>();
   const [chatMessages, setChatMessages] = useState<string>('');
   const [chatCode, setChatCode] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!mounted) return; // Don't run until component is mounted
+
     const fetchChatData = async () => {
       try {
         const result = await getSharedGame(id);
@@ -47,31 +56,29 @@ export default function SharedPage({ id }: SharedPageProps) {
         });
         setChatMessages(data.chat);
         setChatCode(data.code);
-       // GameConverted(data.code);
       } finally {
         setIsLoading(false);
       }
     };
 
     fetchChatData();
-  }, [id]);
+  }, [id, mounted]);
 
-// Separate useEffect for client-side only operations
-useEffect(() => {
-  if (typeof window !== 'undefined' && chatCode) {
-    // Only run GameConverted on the client side when we have the code
-    GameConverted(chatCode);
-  }
-}, [chatCode]);
-
-
-  // Separate useEffect to handle chatData changes
+  // Modify the GameConverted effect
   useEffect(() => {
-    if (chatMetadata) {
-        GameConverted(chatCode);
+    if (!mounted || !chatMetadata || !chatCode) return;
+
+    try {
+      GameConverted(chatCode);
+    } catch (err) {
+      console.error('GameConverted error:', err);
     }
     console.log("chatMessages--", chatMessages);
-  }, [chatMetadata, chatCode, chatMessages]);
+  }, [chatMetadata, chatCode, mounted]);
+
+  if (!mounted) {
+    return <Loader />;  // Or some loading state
+  }
 
   return (
     <Container 
