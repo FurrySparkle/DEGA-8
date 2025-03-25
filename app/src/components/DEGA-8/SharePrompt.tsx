@@ -4,8 +4,8 @@ import { createClient } from '@supabase/supabase-js';
 import { CopyButton } from '@mantine/core';
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPAURL || '',
-  process.env.NEXT_PUBLIC_SUPAKEY || ''
+  process.env.SUPAURL || '',
+  process.env.SUPAKEY || ''
 );
 
 interface SharePromptProps {

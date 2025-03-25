@@ -7,8 +7,8 @@ import Pico8Player from '../DEGA-8/Pico8Player';
 import { GameConverted } from '../DEGA-8/CartTemplater';
 // Supabase client initialization
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPAURL || '',
-  process.env.NEXT_PUBLIC_SUPAKEY || ''
+  process.env.SUPAURL || '',
+  process.env.SUPAKEY || ''
 );
 
 interface SharedPageProps {
