@@ -263,7 +263,7 @@ export default function MessageComponent(props: { message: Message, last: boolea
     const [content, setContent] = useState('');
     const intl = useIntl();
     const [shareModalOpen, setShareModalOpen] = useState(false);
-    const { id = '' } = useParams<{ id: string }>();
+    const { id = '' } = useParams<{ id: string }>()!;
     const tab = useAppSelector(selectSettingsTab);
 
 if (props.share) {
