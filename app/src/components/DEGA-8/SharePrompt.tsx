@@ -1,12 +1,9 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Modal, Button, Text, LoadingOverlay, Box, TextInput } from '@mantine/core';
-import { createClient } from '@supabase/supabase-js';
 import { CopyButton } from '@mantine/core';
-
-const supabase = createClient(
-  process.env.SUPAURL || '',
-  process.env.SUPAKEY || ''
-);
+import { shareGame } from '../../../actions/shareGame';
 
 interface SharePromptProps {
   isOpen: boolean;
@@ -47,33 +44,16 @@ export function SharePrompt({ isOpen, onClose, messageContent, chatId }: SharePr
         throw new Error('Failed to capture game preview');
       }
 
-      // Insert data into Supabase with upsert operation
-      const { data, error: supabaseError } = await supabase
-        .from('chats')
-        .upsert<ChatRecord>([
-          {
-            id: chatId,
-            chat: messageContent,
-            code: gameCode,
-            clip_pic: screenshot
-          }
-        ], {
-          onConflict: 'id',
-          ignoreDuplicates: false
-        })
-        .select()
-        .single();
+      // Call server action
+      const result = await shareGame({
+        chatId,
+        messageContent,
+        gameCode,
+        screenshot
+      });
 
-      if (supabaseError) {
-        // Handle specific Supabase errors
-        if (supabaseError.code === '23505') { // Unique violation
-          throw new Error('This game has already been shared');
-        }
-        throw supabaseError;
-      }
-
-      if (!data) {
-        throw new Error('Failed to save game data');
+      if (!result.success) {
+        throw new Error(result.error);
       }
 
       // Generate share URL

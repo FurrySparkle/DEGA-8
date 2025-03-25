@@ -1,15 +1,12 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import { Container, Grid, Paper, Box, ScrollArea, Loader } from '@mantine/core';
 import Image from 'next/image';
 import ChatPage from './chat';
 import Pico8Player from '../DEGA-8/Pico8Player';
 import { GameConverted } from '../DEGA-8/CartTemplater';
-// Supabase client initialization
-const supabase = createClient(
-  process.env.SUPAURL || '',
-  process.env.SUPAKEY || ''
-);
+import { getSharedGame } from '../../../actions/getSharedGame';
 
 interface SharedPageProps {
   id: string;
@@ -31,27 +28,15 @@ export default function SharedPage({ id }: SharedPageProps) {
 
   useEffect(() => {
     const fetchChatData = async () => {
-      // Dummy data for now
-      // setChatData({
-      //   id: id,
-      //   chat: {},
-      //   code: 'console.log("Hello World")',
-      //   clip_pic: '',
-      //   comments: ['Great game!', 'Nice work!']
-      // });
       try {
-      // Actual Supabase query to be implemented
-      const { data, error } = await supabase
-        .from('chats')
-        .select()
-        .eq('id', id)
-        .single();
-
-        if(error){
-          console.log(error);
+        const result = await getSharedGame(id);
+        
+        if (!result.success) {
+          console.error(result.error);
+          return;
         }
-      
-      if (data) { 
+
+        const { data } = result;
         setChatMetadata({
           id: data.id,
           clip_pic: data.clip_pic
@@ -59,15 +44,12 @@ export default function SharedPage({ id }: SharedPageProps) {
         setChatMessages(data.chat);
         setChatCode(data.code);
         GameConverted(data.code);
+      } finally {
+        setIsLoading(false);
       }
-    } finally {
-      setIsLoading(false);
-    }
     };
 
     fetchChatData();
-
-  
   }, [id]);
 
   // Separate useEffect to handle chatData changes
